@@ -9,8 +9,8 @@ in school in different countries from
 <a href="http://unstats.un.org/unsd/demographic/products/socind/education.htm">this page</a> on a UN site.
 </p>
 
-<p>Pick "new scraper" from the main menu on the right, and choose PHP.
-(If you're more comfortable with Python, Ruby or Perl, choose a different language
+<p>Pick "new scraper" from the main menu on the right, and choose Perl.
+(If you're more comfortable with Ruby, Python or PHP, choose a different language
 above). You'll get a web based code editor.
 </p>
 
@@ -18,7 +18,7 @@ above). You'll get a web based code editor.
 type Ctrl+R.
 </p>
 
-<code>print "Hello, coding in the cloud!";
+<code>print "Hello, coding in the cloud!"
 </code>
 
 <p>(As we go through this tutorial, you can copy and paste each 
@@ -30,12 +30,13 @@ printed in the Console tab at the bottom of the editor.
 
 <h2>2. Download HTML from the web</h2>
 
-<p>You can use any normal PHP function to crawl the web, such as cURL.
-There is also a simple built in ScraperWiki function which may be easier to use.
+<p>You can use any normal Perl library to crawl the web, such as LWP::Simple
+or WWW::Mechanize. There is also a simple built in ScraperWiki function which may
+be easier to use.
 </p>
 
-<code>$html = scraperWiki::scrape("http://unstats.un.org/unsd/demographic/products/socind/education.htm");
-print $html . "\n";
+<code>my $html = Scraperwiki::scrape ('http://unstats.un.org/unsd/demographic/products/socind/education.htm');
+print $html;
 </code>
 
 <p>When you print something quite large, click "more" in the console
@@ -44,24 +45,29 @@ everything that has been downloaded.</p>
 
 <h2>3. Parsing the HTML to get your content</h2>
 
-<p>To help your parse the HTML we provide a Simple HTML DOM script that you can use as follows.
+<p>HTML::TreeBuilder can be used to walk the HTML parse tree.
 </p>
 
-<code>require 'scraperwiki/simple_html_dom.php';
-$dom = new simple_html_dom();
-$dom->load($html);
-foreach($dom->find("div[@align='left'] tr.tcont") as $data){
-    $tds = $data->find("td");
-    $record = array(
-        'country' => $tds[0]->plaintext, 
-        'years_in_school' => intval($tds[4]->plaintext)
-    );
-    print_r($record);
+<code>use HTML::TreeBuilder;
+
+my $tree = new HTML::TreeBuilder;
+$tree-&gt;parse ($html); 
+$tree-&gt;eof;
+
+foreach my $v ($tree-&gt;look_down (_tag =&gt; 'tr', class =&gt; 'tcont',
+        sub { shift-&gt;look_up (_tag =&gt; 'div', align =&gt; 'left') })) {
+
+        my $data = {
+                country =&gt; [$v-&gt;content_list]-&gt;[0]-&gt;as_text,
+                years_in_school =&gt; [$v-&gt;content_list]-&gt;[1]-&gt;as_text,
+        };
+
+	use Data::Dumper; print Dumper $data;
 }
 </code>
 
-<p>The bits of code like 'tr.tcont' are CSS selectors, just like 
-those used to style HTML.
+<p>We're selecting 'tr' tags of 'tcont' class that are preceded by
+a 'div' with 'align=left' attribute.
 </p>
 
 <h2>4. Saving to the ScraperWiki datastore</h2>
@@ -69,9 +75,10 @@ those used to style HTML.
 <p>The datastore is a magic SQL store, one where you don't need to make
 a schema up front.</p>
 
-<p>Replace "print_r($record);" in the loop with this save command:</p>
+<p>Replace the "Data::Dumper" line in the loop
+with this save command:</p>
 
-<code>    scraperwiki::save(array('country'), $record);
+<code>	Scraperwiki::save_sqlite (unique_keys =&gt; ['country'], data =&gt; $data);
 </code>
 
 <p>The unique keys (just country in this case) identify each piece of data.
@@ -111,7 +118,7 @@ the SQL query in the URL.</p>
 <ul>
     <li>
         <a href="{% url docs language %}">More documentation</a> on ScraperWiki
-        and common PHP scraping libraries.
+        and common Perl scraping libraries.
     </li>
     <li>
         <a href="{% url get_involved %}" title="Get involved">Get involved!</a>
