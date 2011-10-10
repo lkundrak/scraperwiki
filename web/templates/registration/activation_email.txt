@@ -1,0 +1,3 @@
+Click on this link to confirm your ScraperWiki account:
+
+http://{{ site }}/accounts/activate/{{activation_key}}/

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+test $# -lt 2 &&
+{
+	echo	usage: command ip cmd [args ...]]
+	exit	1
+}
+
+ip=$1
+shift
+
+curl -F command="$*" http://192.168.254.$ip:9001/Command

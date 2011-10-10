@@ -1,0 +1,6 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+0 3 * * * root dir=$(mktemp -d) && for s in $(ls /var/www/scraperwiki/resourcedir); do sqlite3 /var/www/scraperwiki/resourcedir/$s/defaultdb.sqlite .dump | gzip > $dir/$s.sql.gz; done && tar zcfP /root/backup/sqlite.tar.gz $dir && rm -rf $dir
+0 5 * * * root rsync -qazr /root/backup datastore.backup.bytemark.co.uk::datastore/
+

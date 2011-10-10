@@ -1,0 +1,312 @@
+{% load doc_links %}
+
+     <h2>Getting started</h2>
+     <ul>
+           <li><a href="#what">What is ScraperWiki?</a></li>
+           <li><a href="#who">Who is ScraperWiki for?</a></li>
+     </ul>
+     <h2>Technical overview questions</h2>
+     <ul>
+           <li><a href="#languages">What programming languages can I use to write scrapers?</a></li>
+           <li><a href="#how">How do I write a screen scraper?</a></li>
+           <li><a href="#running">How often does my scraper run?</a></li>
+           <li><a href="#editing">Who can edit a scraper?</a></li>
+           <li><a href="#data">How can I get data out of ScraperWiki?</a></li>
+           <li><a href="#errors">What happens if my scraper breaks?</a></li>
+           <li><a href="#bits">What are all the bits of ScraperWiki?</a></li>
+     </ul>
+     <h2>Technical detail questions</h2>
+     <ul>
+           <li><a href="#clear_datastore">I made a column or a table I don't need, how do I remove it?</a></li>
+           <li><a href="#view_parameters">How do I get query parameters in my view?</a></li>
+           <li><a href="#cpu_limit">What is the CPU limit, and what do I do if my scraper reaches it?</a></li>
+           <li><a href="#memory_limit">What is the limit on memory use?</a></li>
+           <li><a href="#https">Can I scrape secure (https://) sites?</a></li>
+           <li><a href="#editor">Is there an editor other than the CodeMirror one?</a></li>
+           <li><a href="#rollback">How do I revert to an earlier version of my code?</a></li>
+           <li><a href="#viewsbanner">When do views show a "powered by ScraperWiki" banner?</a></li>
+           <li><a href="#files">Can I save files, and if so where?</a></li>
+     </ul>
+     <h2>Licensing questions</h2>
+     <ul>
+           <li><a href="#licence">Who owns the code I write on ScraperWiki?</a></li>                                        
+           <li><a href="#data_ownership">Who owns the data in ScraperWiki?</a></li>                                
+           <li><a href="#data_types">What sort of data can/can't I scrape?</a></li>   
+           <li><a href="#source_code">Can I get a copy of the ScraperWiki source code?</a></li>
+     </ul>
+     <h2>Everything else</h2>
+     <ul>
+           <li><a href="#security">How secure is your system? Can I try to break it?</a></li>
+           <li><a href="#contact">How do I get in touch with you?</a></li>
+     </ul>
+
+       <dl class="faq">
+           <dt id="what">What is ScraperWiki?</dt>
+
+           <dd>
+               <p>ScraperWiki is a platform for writing and scheduling <a href="http://en.wikipedia.org/wiki/Data_scraping">screen scrapers</a>, and for storing the data they generate. There's lots of useful data locked away on the internet and we want to open it up!
+               </p>
+
+               <p>If you need a parallel, <a href="http://www.dracos.co.uk/play/great-ideas-generator/">and every self respecting website does</a>, then it's like GitHub, except with an execute button and a database behind it.
+               </p>
+           </dd>
+           <dt id="who">Who is ScraperWiki for?</dt>
+
+           <dd>
+               <p>ScraperWiki is useful both for programmers who want to write screen scrapers with less fuss, and for journalists, activists and the general public who want to discover and re-use interesting, useful data.
+               </p>
+           </dd>
+
+           <dt id="languages">What programming languages can I use to write scrapers?</dt>
+
+           <dd>
+               <p>
+               We support Ruby, Python and PHP.
+               </p>
+           </dd>
+
+           <dt id="how">How do I write a screen scraper?</dt>
+          <dd>
+           
+           <p>See our <a href="/docs/">documentation</a> for tutorials.</p>
+           </dd>
+
+           <dt id="running">How often does my scraper run?</dt>
+
+           <dd>
+               <p>
+                   By default scrapers only run when you do so from the editor.
+                   You can set your scraper to run automatically (e.g. once a
+                   day) in the "schedule" section of its main page.
+               </p>
+               <p>
+                   Currently you can't go more frequently than once a day.
+                   We can do so on a case by case basis,
+                   please <a href="/contact/">get in touch</a> if you have an
+                   application that needs it.
+               </p>
+           </dd>
+           <dt id="editing">Who can edit a scraper?</dt>
+
+           <dd>
+               <p>By default anyone can edit anyone else's scraper; this
+               means other people can help extend or fix your code. You
+               will be emailed so you'll know when your scraper is edited
+               and by whom.</p>
+
+               <p>You can also protect a scraper, so only people you choose
+               can edit it, or alter the data associated with it.  Go to the
+               Contributors section on the scraper overview page. Where it says
+               "This scraper is public" choose "edit" and change it to
+               "Protected". 
+               </p>
+
+               <p>Eventually you will have the option to keep scrapers
+               completely private. If you are interested in testing an earlier
+               version of this, please <a href="/contact/">get in touch</a>.
+               </p>
+           </dd>
+
+           <dt id="data">How can I get data out of ScraperWiki?</dt>
+
+           <dd>
+               <p>The simplest way is to download a CSV file from the link on the scraper page, or you can <a href="/docs/api">use the API</a>.
+               </p>
+           </dd>
+
+
+           <dt id="errors">What happens if my scraper breaks?</dt>
+
+           <dd>
+             <p>We will send you an 
+              <a href="http://blog.scraperwiki.com/2011/01/31/be-alert-your-scrapers-need-lerts/">email alert</a> to warn you if your scraper breaks.
+               </p>
+           </dd>
+
+           <dt id="bits">What are all the bits of ScraperWiki?</dt>
+            <dd>
+            <p>These are the major parts of ScraperWiki, from a technical point of view.</p>
+            <ul>
+                <li>Edit code with a browser-based code editor, it's called <a href="http://codemirror.net/">CodeMirror</a>.</li>
+                <li>Normal Python, Ruby and PHP scripts run in a sandbox on ScraperWiki's servers.</li>
+                <li>Nokogiri, lxml, Mechanize &mdash; all the {% doc_link_full 'LANG_libraries' language %} you're used to.</li>
+                <li>{% doc_link_full 'LANG_help_documentation' language %} makes scraping and storing data simple.</li>
+                <li>Data is stored direct in a SQLite datastore, schemaless unless you want control ({% doc_link_full 'LANG_datastore_guide' language %}).</li>
+                <li>Access to data in JSON, CSV or RSS using SQL in URLs via the <a href="{% url docsexternal %}">ScraperWiki external API</a>.</li>
+                <li>Views for exporting the data in any format, or writing simple web apps. They're CGI scripts.</li>
+                <li>Scheduled to re-run daily so your data is always up-to-date. See scraper overview page.</li>
+                <li>Email alerts if your scrapers fail, or someone edits them.</li>
+                <li>Autocommits to built in source control, based on Mercurial. See the history tab.</li>
+            </ul>
+            </dd>
+
+
+           <dt id="clear_datastore">I made a column or a table I don't need, how do I remove it?</dt>
+           <dd>
+               <p>The datastore save function automatically makes a schema for you. This means
+               that while you're developing a scraper you sometimes end up with columns or tables that you 
+               don't need later. </p>
+               
+               <p>The easiest fix during development is to clear the datastore,
+               and let your script make it again with exactly the right
+               columns/tables. There is a button on the scraper overview page
+               called "Clear datastore" that does that.
+                </p>
+
+                <p>Alternatively call the "excecute" function  and use
+                "alter table" SQL commands to modify the schema how you like.
+                See the {% doc_link_full 'LANG_datastore_guide' language %}.
+                </p>
+           </dd>
+
+           <dt id="view_parameters">How do I get query parameters in my view?</dt>
+           <dd>
+				<p>Getting the query string is done the same way in each language, via the environment variable, but depending on your chosen language the code required might be different</p>
+				<p>In a <strong>Python view</strong> you can use the GET function in <a href='/docs/python/python_help_documentation/'>scraperwiki.utils</a></p>
+				
+				<p>With a <strong>Ruby view</strong> you can use:
+					<code>require 'cgi'
+param_dict = CGI::parse( ENV['QUERY_STRING'] )
+</code></p>				
+				
+				<p><strong>PHP views</strong> can get access to the query using parse_str
+					<code>parse_str( $_ENV["QUERY_STRING"], $output);
+print_r($output);
+</code></p>								
+           </dd>
+
+           <dt id="cpu_limit">What is the CPU limit, and what do I do if my scraper reaches it?</dt>
+           <dd>
+               <p>Each scraper run has a limit of roughly 80 seconds of processing time. 
+               After that, in Python and Ruby you will get an exception
+               "ScraperWiki CPU time exceeded". In PHP it will end "terminated by SIGXCPU".
+               </p>
+               <p>In many cases this happens when you are first scraping a site, catching
+               up with the backlog of existing data. The best way to handle it is to make
+               your scraper do a chunk at a time using the save_var and get_var functions
+               in the {% doc_link_full 'LANG_help_documentation' language %} to remember your
+               place.
+               </p>
+               <p>That also lets you recover more easily from other parsing errors.
+               </p>
+           </dd>
+
+           <dt id="memory_limit">What is the limit on memory use?</dt>
+           <dd>
+               <p>The sandbox in which the scrapers run gives them at most
+                1Gb of memory. When this is exceeded, you will likely get a SIGKILL.
+               </p>
+           </dd>
+
+           <dt id="https">Can I scrape secure (https://) sites?</dt>
+           <dd>
+               <p>Yes. Here's an example, in Python.</p>
+               <code>url = "https://cia.gov"
+import urllib                                                                                                             
+print urllib.urlopen(url).read() 
+</code>
+           </dd>
+
+           <dt id="editor">Is there an editor other than the <a href="http://codemirror.net/1/index.html">CodeMirror 1</a>?</dt>
+           <dd>
+                <p>At the moment, no.  The editor and pair programming functions have been integrated into the internal 
+                workings of this library.</p>
+                <p>You can, however, disable the editor and use a plain old HTML textarea editor
+                by adding either "?textarea=plain" or "#plain" to the end of the URL while editing the 
+                scraper.</p>
+                <p>This should be enough for you to use it with browser plugins that 
+                spawn vim or emacs for a textarea. It will also work in browsers
+                for which CodeMirror doesn't work.
+                </p>
+                <p>Please give us feedback about this feature so we know if we should make it more available 
+                (for example by adding a setting to your user account so that the editor is always a textarea for you).
+                </p> 
+           </dd>
+
+           <dt id="rollback">How do I revert to an earlier version of my code?</dt>
+           <dd>
+               <p>On the history page for the scraper, view the commit that you 
+               want to go back to.  There's then a link called "rollback".
+               </p>
+           </dd>
+
+           <dt id="viewsbanner">When do views show a "powered by ScraperWiki" banner?</dt>
+           <dd>
+                <p>On views
+                <a href="https://views.scraperwiki.com/run/top_10_receivers_of_cabinet_office_money/">such as this</a>,
+                you will see a banner at the top right saying "powered by ScraperWiki".
+                This appears on all HTML views, and is a link back to the view. It gives us and you credit,
+                and ensures sources are cited.
+                </p>
+                <p>If your view is generating something other than HTML, such as json, csv or an image file you 
+                should set the httpresponseheader to the appropriate MIME type (see {% doc_link_full 'LANG_help_documentation' language %}), 
+                and the banner will no longer appear.  (eg in Python: scraperwiki.utils.httpresponseheader("Content-Type", "text/json"))
+                </p>
+                <p>If you are finding the banners annoying in a particular set of cases, please get in 
+                touch. At some point we'll add ways to vary the banner for different circumstances.</p>
+           </dd>
+
+
+           <dt id="files">Can I save files, and if so where?</dt>
+           <dd>
+               <p>Yes, but all files are temporary. You can save them either in
+               /tmp, or in the user's home directory (/home/scriptrunner). The
+               current directory starts out as the home directory.</p>
+               <p>This only works for temporary downloads, as the scripts run
+               in a clean environment each time so data can't leak between
+               scripts. You must save any permanent data in the datastore, or
+               elsewhere on the web.</p>
+               <p>Feel free to spawn external commands and download arbitary extra
+               binaries or code applications. It'll be slow, so if there is
+               something you use a lot ask us to install it permanently.</p>
+           </dd>
+
+           <dt id="licence">Who owns the code I write on ScraperWiki?</dt>
+
+           <dd>
+               <p>All scraping code hosted on ScraperWiki is licensed under the <a href="http://www.gnu.org/licenses/gpl-3.0.txt">GNU General Public License</a>. By adding your scraper to ScraperWiki you are releasing it under the same licence. For more information please see our <a href="/terms_and_conditions/">terms and conditions</a>.
+               </p>
+           </dd>
+
+           <dt id="data_ownership">Who owns the data in ScraperWiki?</dt>
+
+           <dd>
+              <p>It depends where the data originally came from and how it was derived.</p>
+           </dd>
+
+           <dt id="data_types">What sort of data can/can't I scrape?</dt>
+
+           <dd>
+                <p>The focus of the public version of ScraperWiki is opening up
+                public data. You need to make sure that you conform to our <a
+                    href="/terms_and_conditions/">terms and conditions</a>. In
+                short: play nice, and don't do to someone else's website what
+                you wouldn't like done to your own.  </p>
+           </dd>
+
+           <dt id="source_code">Can I get a copy of the ScraperWiki source code?</dt>
+
+           <dd>
+               <p>Yes, the source code for the ScraperWiki site is available under the GNU Affero General Public License. You can 
+               <a href="https://bitbucket.org/ScraperWiki/scraperwiki">download the source here</a>.</p>
+           </dd>
+
+           <dt id="security">How secure is your system? Can I try to break it?</dt>
+
+           <dd>
+               <p>The code you write runs in a separate sandboxed system with controlled resources. 
+               If you try to write malicious code ... </p>
+               <code>while True:
+    pass</code>
+               <p>... you'll just be breaking your own scraper and annoying people, so please don't.
+               </p>
+           </dd>
+
+           <dt id="contact">How do I get in touch with you?</dt>
+
+           <dd>
+               <p>We'd really like to hear your ideas for improving and adding to ScraperWiki. You can contact us <a href="/contact/">here</a> or ask a question on our <a href="http://groups.google.com/group/scraperwiki">email list</a>.
+               </p>
+           </dd>
+
+       </dl>

@@ -1,0 +1,39 @@
+#!/bin/sh
+
+DESC="Dispatcher"
+NAME=dispatcher
+CONFIG=/var/www/scraperwiki/uml/uml.cfg
+DAEMON=/var/www/scraperwiki/uml/dispatcher/dispatcher.py
+PIDFILE=./var/run/$NAME.pid
+DAEMON_ARGS="--config=$CONFIG --pidfile=$PIDFILE"
+
+do_start()
+{
+	mkdir -p ./var/run
+	mkdir -p ./var/log
+	$DAEMON $DAEMON_ARGS
+}
+
+do_stop()
+{
+	[ -f $PIDFILE ] && {
+		kill -TERM `cat $PIDFILE`
+		rm -f $PIDFILE
+		}
+}
+
+case "$1" in
+  start)
+	do_start
+	;;
+  stop)
+	do_stop
+	;;
+  restart)
+  	do_stop
+  	do_start
+	;;
+  *)
+	echo "Usage: orbited {start|stop|restart}" >&2
+	;;
+esac

@@ -1,0 +1,46 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Tags{% endblock %}
+
+{% block header %}
+	<h2>Browse by tag</h2>
+	<p>Scrapers and requests by tag.</p>
+{% endblock %}
+
+{% block tabs %}
+    <div class="page_tabs">
+        <ul>
+            <li class="selected"> 
+                <a id="tags" href="/tags/">Browse by tag</a> 
+            </li>
+            <li> 
+                <a id="views" href="{% url scraper_list %}views">Views</a> 
+            </li>
+            <li> 
+                <a id="scrapers" href="{% url scraper_list %}scrapers">Scrapers</a> 
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+<div class="content full">
+    
+    <p class="tag_filter">
+    <label for"filter_text">Filter tags:</label>
+    <input type="text" value="" id="filter_text" />
+	<a id="filter" title="Apply filter">Filter</a>
+	<a id="reset" title="Clear filter">Reset</a>
+	</p>
+
+    <ul class="cloud tags">
+        {% for tag in tags %}
+            <li class="c{{tag.font_size}}"><a href="{% url single_tag tag.name|urlencode %}">{{tag.name|lower}}</a></li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+
+{% endblock %}

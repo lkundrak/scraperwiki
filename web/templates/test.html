@@ -1,0 +1,72 @@
+<head>
+<script> 
+document.domain = document.domain;
+</script>
+
+<script src="/media/js/jquery-1.5.2.js"></script>
+<script src="/media/js/json-min.js"></script>
+<script src="http://localhost:8001/static/Orbited.js"></script>
+</head>
+<body>
+
+<textarea id="test">
+import time
+for i in range(10):
+ print i
+ time.sleep(1)
+</textarea>
+
+<button onclick="sendCode()">Test</button>
+<button onclick="killRun();">stop</button>
+<pre>
+<div id="console">
+asd
+</div></pre></body>  
+
+<script>
+// Orbited.settings.port = 8001;
+// Orbited.settings.hostname = "dev.scraperwiki.com";
+
+TCPSocket = Orbited.TCPSocket;
+
+guid = "test"
+
+var conn = new TCPSocket()
+conn.open('localhost', '9010')
+
+
+  
+conn.onread = function(data) { 
+  var container = document.getElementById('console');
+  container.innerHTML += data
+}
+
+conn.onopen = function() {
+  alert('connected')
+}
+
+function send(json_data) {
+  conn.send(
+    JSON.stringify(json_data)
+    );  
+}
+
+function killRun() {
+  data = {
+    "command" : 'kill',
+  }
+  send(data)
+}
+
+function sendCode() {
+  data = {
+    "command" : "run",
+    "guid" : guid,
+    "code" : document.getElementById('test').value
+  }
+  send(data)
+}
+ 
+
+
+</script>

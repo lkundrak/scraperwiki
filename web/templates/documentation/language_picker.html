@@ -1,0 +1,24 @@
+{% load doc_links %}
+
+<p class="language_chooser">
+    {% if not docindex %}
+    <a href="{% url docs language %}" class="back" title="Back to documentation homepage">
+        <img src="{{ MEDIA_URL }}/images/icons/back_arrow.png" width="16" height="16" alt="" />
+        Back to contents</a>
+    {% endif %}
+    {% if lang_shared %}
+    <a href="{% doc_change_lang request language 'shared' %}" class="shared" title="Switch to shared documentation">Shared</a>
+    {% endif %}
+    {% if lang_php %}
+    <a href="{% doc_change_lang request language 'php' %}" class="php" title="Switch to PHP documentation"><img src="{{ MEDIA_URL }}/images/icons/php.png" width="16" height="16" alt="" /> PHP</a>
+    {% endif %}
+    {% if lang_python %}
+    <a href="{% doc_change_lang request language 'python' %}" class="python" title="Switch to Python documentation"><img src="{{ MEDIA_URL }}/images/icons/python.png" width="16" height="16" alt="" /> Python</a>
+    {% endif %}
+    {% if lang_ruby %}
+    <a href="{% doc_change_lang request language 'ruby' %}" class="ruby" title="Switch to Ruby documentation"><img src="{{ MEDIA_URL }}/images/icons/ruby.png" width="16" height="16" alt="" /> Ruby</a>
+    {% endif %}
+    <strong>Choose a language:</strong>
+   <br class="clear"/>
+</p>
+

@@ -1,0 +1,135 @@
+<p>Every scraper comes with its own <a href="http://www.sqlite.org/lang.html">SQLite database</a> 
+which it can store data to. You can also read data from other scrapers.</p>
+
+<h2>Saving data, basic</h2>
+
+<p>Easy save function for most use.</p>
+<code>import scraperwiki
+scraperwiki.sqlite.save(unique_keys=["a"], data={"a":1, "bbb":"Hi there"})
+</code>
+
+<p>If the values for the unique_keys matches a record already there, it will over-write</p>
+<code>scraperwiki.sqlite.save(unique_keys=["a"], data={"a":1, "bbb":"Bye there"})
+</code>
+
+<p>You can add new columns into the database and the table will extend automatically.
+(The print is so you can see the comment.)</p>
+<code>print scraperwiki.sqlite.save(unique_keys=["a"], data={"a":2, "bbb":"Going home", "cccnew":-999.9})
+</code>
+
+<h2>Saving data, advanced</h2>
+
+<p>Each new column is given an <a href="http://www.sqlite.org/datatype3.html#affinity">affinity</a> 
+according to the type of the value it is first given (text, integer, real).  It is okay to save a string 
+in a column that was defined as an integer, but it will sometimes be converted if possible.
+You can define a column with no affinity by giving it the name ending in "_blob".</p>
+<code>scraperwiki.sqlite.save(unique_keys=["a"], data={"a":1, "dddd_blob":"999.999"})
+print scraperwiki.table_info("swdata")
+</code>
+
+<p>Further parameters in the save function are table_name (the default table name is "swdata"), 
+and verbose (which doesn't send messages to the data tab if set to 0</p>
+<code>scraperwiki.sqlite.save(unique_keys, data, table_name="swdata", verbose=2)
+</code>
+
+<p>You can also list a list of dicts in the save for greater speed</p>
+<code>data = [ {"a":x*x}  for x in range(99) ]
+scraperwiki.sqlite.save(["a"], data)
+</code>
+
+<h2>Saving data, variables</h2>
+
+<p>It's often useful to be able to quickly and easily save one metadata
+value. For example, to record which page the last run of the scraper managed to
+get up to. </p>
+
+<code>scraperwiki.sqlite.save_var('last_page', 27)
+print scraperwiki.sqlite.get_var('last_page')
+</code>
+
+<p>It's stored in a simple table called swvariables.</p>
+
+<p>If you want to save anything other than an int, float or string type, use pickle, 
+eg</p>
+
+<code>scraperwiki.sqlite.save_var('timestamp', pickle.dumps(datetime.datetime.now())
+print pickle.loads(scraperwiki.sqlite.get_var('timestamp'))</code>
+
+
+
+<h2>Finding out the schema</h2>
+
+<p>To see the dict of table_names mapping to schemas.</p>
+<code>print scraperwiki.sqlite.show_tables()
+</code>
+
+<p>Info about a particular table (and its elements) can be queried. </p>
+<code>info = scraperwiki.sqlite.table_info(name="swdata")
+for column in info:
+    print column.name, column.type
+</code>
+
+<h2>Direct SQL for saving</h2>
+
+<p>You can execute direct SQL commands.  Back-ticks ` are used to quote column names that are have spaces in them.</p>
+<code>scraperwiki.sqlite.execute("create table ttt (xx int, `yy` string)")
+scraperwiki.sqlite.execute("insert into ttt values (?,?)", (9, 'hello'))
+scraperwiki.sqlite.execute("insert or replace into ttt values (:xx, :yy)", {"xx":10, "yy":"again"})
+</code>
+
+<p>Don't forget after doing your inserts you need to commit the result.  (The save() command always automatically commits.)</p>
+<code>scraperwiki.sqlite.commit()
+</code>
+
+<h2>Direct SQL for selecting</h2>
+
+<p>Selection can be done by execution of a select function.</p>
+<code>print scraperwiki.sqlite.execute("select * from ttt")
+print scraperwiki.sqlite.execute("select min(xx), max(xx), yy from ttt group by yy")
+</code>
+
+<p>The result will be a dict with a list for keys, and a list of rows (which are lists) for the 
+corresponding values.</p>
+<code>{ "keys": ["xx", "yy"], data:[[9, u'hello'], [10, u'again']] }
+</code>
+
+<p>The shorthand select command gives the results in dicts.</p>
+<code>print scraperwiki.sqlite.select("* from ttt")
+[{u'yy': u'hello', u'xx': 9}, {u'yy': u'again', u'xx': 10}]
+</code>
+
+<h2>Direct SQL for modifying schemas</h2>
+
+<p>You can also clean up by deleting rows or dropping tables</p>
+<code>scraperwiki.sqlite.execute("delete from ttt where xx=9")
+scraperwiki.sqlite.execute("drop table if exists ttt")
+</code>
+
+<p>There's also a "clear datastore" button on the scraper page, which is useful
+for starting again during development if the schema is in a mess.</p>
+
+<p>If you like, you can completely ignore the ScraperWiki save command,
+and construct all your schemas explicitly.</p>
+
+<h2>Reading data from other scrapers</h2>
+
+<p>To access data from other scrapers we attach to them.</p>
+<code>scraperwiki.sqlite.attach("new_americ_foundation_drone_strikes")
+print scraperwiki.sqlite.select("* from new_americ_foundation_drone_strikes.swdata limit 2")
+</code>
+
+<p>To make it easy, you can change the name of the database you import it as.</p>
+<code>scraperwiki.sqlite.attach("new_americ_foundation_drone_strikes", "src")
+print scraperwiki.sqlite.table_info("src.swdata")
+</code>
+
+<p>Access to other scrapers data through the attach interface is read-only.</p>
+
+<h2>Trapping errors</h2>
+
+<p>You can detect and handle errors in your sql queries.</p>
+<code>try:
+    scraperwiki.sqlite.execute("select * from table_that_doesnot_exist")
+except scraperwiki.sqlite.SqliteError, e:
+    print str(e)
+</code>

@@ -1,0 +1,11 @@
+{% if form.errors %}
+    <div id="divErrors">
+    	<ul>
+    		{% for field in form %}
+    			{% if field.errors %}
+    				<li>{{ field.name }} {{ field.errors|striptags }}</li>
+    			{% endif %}
+    		{% endfor %}
+    	</ul>
+	</div>	
+{% endif %}

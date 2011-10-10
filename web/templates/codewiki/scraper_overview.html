@@ -1,0 +1,263 @@
+{% extends "codewiki/scraper_base.html" %}
+
+{% load humanize %}
+{% load schedule %}
+{% block tab %}
+{% load markup %}
+{% load screen_shot %}
+
+<fieldset>
+    <input type="hidden" id="hidScheduleOptions" value="{ {% for schedule_option, schedule_text in schedule_options %}'{{schedule_option|safe}}':'{{schedule_text|safe}}', {% endfor %} 'selected': 'PLACEHOLDER' }" />
+    <input type="text" id="id_api_base" value="{{api_base}}" class="hide">
+    {% if scraper.access_apikey %}
+        <input type="text" id="id_apikey" value="{{scraper.access_apikey}}" class="hide">
+    {% else %}
+        <input type="text" id="id_apikey" value="" class="hide">
+    {% endif %}
+</fieldset>
+
+<div class="page_title">
+    <ul class="title_links">
+        <li class="api"><a href="{% url docsexternal %}?name={{scraper.short_name}}#sqlite">Explore with ScraperWiki API</a></li>
+        <li class="sqlite"><a href="{% url export_sqlite scraper.short_name %}" rel="nofollow">Download SQLite3 database</a></li>
+        <li class="fork"><a href="{% url editor scraper.wiki_type scraper.language %}?fork={{scraper.short_name}}">Fork this {{scraper.wiki_type}}</a></li>
+        {% for rssuserfeed in rssuserfeeds %}
+            <li class="rss staff"><a href="{{rssuserfeed}}">RSSfeed_{{forloop.counter}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="content full">
+    {% if scraper.is_sick_and_not_running %}
+        <p class="sick">
+            <strong>Maintenance required!</strong> This {{scraper.wiki_type}} might be broken 
+            (it generated an exception on its 
+                 <a href="{% url scraper_history scraper.wiki_type scraper.short_name %}#run_{{ scraper.last_runevent.id }}">last run</a>).
+            {% ifequal scraper.owner.get_profile user %}
+                <a href="{% url editor_edit scraper.wiki_type scraper.short_name %}">Edit this {{scraper.wiki_type}}</a>.
+            {% else %}
+                Do you know {{scraper.language}}? Could you help <a href="{% url editor_edit scraper.wiki_type scraper.short_name %}">fix this {{scraper.wiki_type}}</a>?
+            {% endifequal %}
+        </p>
+    {% endif %}
+
+    <div class="data_viewer">
+        {% if sqlitedata %}
+          <div class="data_options">
+            <a href="#" class="csv" id="downloadcsvtable" rel="nofollow">Download spreadsheet (CSV)</a>
+          </div>
+
+          <ul class="data_tabs">
+            {% for sqltabledata in sqlitedata %}
+              <li id="data_tab_{{forloop.counter}}" class="data_tab"> 
+                <span class="tablename">{{sqltabledata.tablename}}</span> ({{sqltabledata.count}}  rows)
+              </li>
+            {% endfor %}
+            <li class="clear"></li>
+          </ul>
+
+          {% for sqltabledata in sqlitedata %}
+            <div id="data_content_{{forloop.counter}}" class="data_content">
+            <table class="data">
+              <thead>
+                 <tr>{% for heading in sqltabledata.keys %}<th width="120">{{ heading }}</th>{% endfor %}</tr>
+              </thead>
+              <tbody>
+                 {% for row in sqltabledata.rows %}
+                    <tr class="row">{% for value in row %}<td>{% ifnotequal value None %}{{ value|truncatewords_html:30|urlizetrunc:30 }}{% endifnotequal %}</td>{% endfor %}</tr>
+                 {% endfor %}
+              </tbody>
+            </table>
+            </div>
+          {% endfor %}
+
+          <div class="content_footer">
+             <p>This dataset has a total of {{ total_record_count }} records in {{ sqlitedata|length }} table{{ sqlitedata|length|pluralize }} (<span><a class="sqlite_view_schema" >show schema{{sqlitedata.items|pluralize}}</a><a class="sqlite_view_schema" >hide schema{{sqlitedata.items|pluralize}}</a></span>).
+              </p>
+          </div>
+          <ul id="sqlite_schema" style="display: none">
+            {% for sqltabledata in sqlitedata %}
+              <li>{{sqltabledata.sql}}</li>
+            {% endfor %}
+           </ul>
+        {% endif %}
+
+        {% if not sqlitedata %}
+           <ul class="data_tabs"> 
+                <li class="clear"></li> 
+           </ul> 
+            <div id="data_content_1" class="data_content" style="overflow-x: hidden;">
+                <table class="data" cellspacing="0" cellpadding="0" style="border-collapse: collapse">
+                    <tbody>
+                        <tr class="row"><td width="120">&nbsp;</td><td width="120">&nbsp;</td><td width="120">&nbsp;</td><td width="120">&nbsp;</td><td width="120">&nbsp;</td></tr>
+                        <tr class="row"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr class="row"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr class="row"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr class="row"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr class="row"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr class="row"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr class="row"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr class="row"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr class="row"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr class="row"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="info_unpublished">
+                {% if sqliteconnectionerror %}
+                    Sorry! The datastore isn't working right now.<br/>
+                    {{sqliteconnectionerror}}.
+                {% else %}
+                    This scraper is being worked on <br/>and there is no data to display yet
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="content full" id="scraper_about">
+    <h2>About this scraper 
+        {% if user.is_authenticated %}
+            {% if user_edits_it %}
+                <a href="#" id="aEditAboutScraper" class="edit">[edit description]</a>
+            {% endif %}
+        {% else %}
+            <a href="{% url login %}?next={% url code_overview 'scraper' scraper.short_name %}" class="edit">[sign in to edit description]</a>
+        {% endif %}
+        
+       {%comment%}
+        {% if user.is_staff %}
+          <span class="staff">
+          {% if ckanresource %}
+            <a href="{{ckanresource.ckan_url}}">Go to CKAN page</a>
+          {% endif %}
+          {% if ckansubmit %}
+            <a href="{{ckansubmit}}">Submit to CKAN</a>
+          {% endif %}
+          </span>
+        {% endif %}
+       {%endcomment%}
+    </h2>
+
+    <div class="text_wiki">
+        <div id="divAboutScraper">
+        {% if scraper.description %}
+            {{ scraper.description_ashtml|safe }}
+        {% else %}
+            <p>This scraper has no description. {% if user.is_authenticated %}
+                {% if user_edits_it %}
+                    <a href="#" id="aEditAboutScraperNew">Would you like to add one?</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url login %}?next={% url code_overview 'scraper' scraper.short_name %}">Sign in to add one.</a>
+            {% endif %}</p>
+        {% endif %}</div>
+    </div>
+
+    {%if descriptionfromcode %}
+    <div id="descriptionfromcode" class="staff">
+      <h2>Text derived from the code</h2>
+      {{descriptionfromcode|safe}}
+    </div>
+    {% endif %}
+</div>
+
+{% include 'codewiki/includes/tags.html' %}
+
+<div class="content full" id="scraper_views">
+    <h2>Views using this data from this scraper <a href="{% url choose_template 'view' %}" class="edit editor_view">[create a new view]</a></h2>    
+        {% if related_views %}
+        <ul class="views">
+            {% for related_view in related_views %}
+                <li>
+                    <a href="{% url code_overview related_view.wiki_type related_view.short_name %}" class="screenshot">{% screen_shot related_view %}</a>
+                    <a href="{% url code_overview related_view.wiki_type related_view.short_name %}">{{related_view.title}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No views currently use data from this scraper. <a href="{% url choose_template 'view' %}" class="editor_view">Would you like to create one?</a>
+        {% endif %}
+    <br class="clear"/>
+</div>
+
+<div class="content col left" id="scraper_contributors">
+    <h3>Contributors</h3>
+    {% include 'codewiki/includes/contributors.html' %}
+</div>
+
+
+
+
+<div class="content col right" id="scraper_schedule">
+    <h3>Schedule {% if user.is_authenticated and user_edits_it %}
+        <a href="#" id="aEditSchedule" class="edit">[edit schedule]</a>
+    {% endif %}</h3>
+    <p>
+        This scraper 
+        {% if scraper.last_runevent %}
+          {% ifequal scraper.last_runevent.pid -1 %}
+             <a href="{% url scraper_history scraper.wiki_type scraper.short_name %}#run_{{ scraper.last_runevent.id }}">last ran</a>
+              {{scraper.last_runevent.run_started|timesince}} ago for 
+              {{scraper.last_runevent.getdurationseconds}} second{{scraper.last_runevent.getdurationseconds|pluralize}}.
+          {% else %}
+            is <a href="{% url scraper_history scraper.wiki_type scraper.short_name %}#run_{{ scraper.last_runevent.id }}">currently running</a>.
+          {% endifequal %}
+        {% else %}
+           has not been run yet.
+        {% endif %}
+    </p>
+
+    <div id="spnRunInterval">
+       {% include 'codewiki/includes/run_interval.html' %}
+    </div>
+
+    {% include 'codewiki/includes/admin_controls.html' %}
+
+</div>
+
+{% if user.is_staff %}
+<div class="content col left staff" id="scraper_attachables">
+    <h3>Attachable databases</h3>
+    {% include 'codewiki/includes/database_attachables.html' %}
+</div>
+{% endif %}
+
+{% if user.is_staff and domainscrapes %}
+<div class="content col left staff" id="scraper_domains">
+    <h3>Domains scraped</h3>
+    <ul id="databaseattachfromlist">
+      {% for domainscrape in domainscrapes %}
+        <li><a href="{{domainscrape.domain}}">{{domainscrape.domain}}</a> {{domainscrape.pages_scraped}} pages, {{domainscrape.bytes_scraped}} bytes</li>
+      {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<br class="clear"/>
+
+<p class="report">
+<strong>Important</strong> If you suspect this scraper breaks our <a href="/terms_and_conditions/">Terms &amp; Conditions</a>, please <a href="/contact/">report it</a>
+</p>
+
+{% endblock %}
+
+
+{% block jrun_script %}
+<script>
+{{block.super}}
+$(document).ready(function() 
+{
+    setupCodeOverview('{{scraper.short_name}}');
+    setupScraperOverview('{{scraper.short_name}}');
+    setupChangeEditorStatus();
+    setupChangeAttachables('{{scraper.short_name}}'); 
+{% if user.is_authenticated %}
+//    setupButtonConfirmation("btnClearDatastore", "Are you sure? Clicking 'ok' will delete all SCRAPED DATA.");
+//    setupButtonConfirmation("btnDeleteScraper", "Are you sure? Clicking 'ok' will delete THE ENTIRE SCRAPER and its data.");
+{% endif %}
+});
+</script>
+{% endblock jrun_script %}
+
+

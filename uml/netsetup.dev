@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# netsetup
+#
+# UML boxes run on an private subnet within the machine. This isolates
+# them from the outside world so that it is not possible for an incoming
+# network connection to reach them other that from the host. To allow
+# outgoing connections to the outside world, the host's iptables NAT chain
+# MASQUERADEs packets as they go out.
+#
+# The script also sets up minimal access for the host itself.
+#
+
+test `id -u` = 0 ||
+{
+	echo	netsetup.dev: must be run as root
+	exit	1
+}
+test `ifconfig eth0 | sed -n 's/.*inet addr:\([0-9\.]*\).*/\1/p'` = 212.84.75.28 ||
+{
+	echo	netsetup.dev: can only be run on dev
+	exit	1
+}
+
+iptables	-F
+iptables -t nat	-F
+
+# NAT/Masquerade for the UML
+#
+iptables -t nat -A POSTROUTING	-o eth0						-j MASQUERADE
+
+exit	0

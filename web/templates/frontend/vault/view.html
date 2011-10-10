@@ -1,0 +1,125 @@
+{% extends "frontend/base.html" %}
+{% load gravatar %}
+
+{% block title %}Your vaults{% endblock %}
+
+{% block header %}
+	<h2>Your vaults</h2>
+
+	<p>Information about your vaults and who can access them</p>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="content">
+    <input type="hidden" id="id_api_base" value="{{api_base}}" />
+
+{% if vaults.count %}
+<div id="my_vaults">
+    <h2>You own {{ vaults.count }} vault{{ vaults.count|pluralize }}: <!-- <a id="new_vault">Create another</a> --></h2>
+    {% for vault in vaults.all %}
+    <div class="vault">
+        
+    	<div class="vault_header">
+    	    <span class="shineyshiney"></span>
+	        <!-- <a class="vault_delete"><img src="{{ MEDIA_URL }}images/icons/delete.png" width="16" height="16"> Delete vault</a> -->
+	        <a class="vault_users"><img src="{{ MEDIA_URL }}images/icons/user_purple.png" width="16" height="16"> <span class="x_users">{% if vault.members.count > 0 %}{{ vault.members.count }} user{{ vault.members.count|pluralize }}{% else %}No users{% endif %}</span></a>
+    	    <h3><!-- <a href="{% url profiles_profile_detail vault.user.username %}" title="This vault is owned by {% if vault.user.get_profile.name %}{{vault.user.get_profile.name}}{% else %}{{vault.user.username}}{% endif %}" class="vault_owner">{% show_gravatar vault.user 'medium' %}</a> -->{{ vault.name }}</h3>
+	        <div class="vault_users_popover">
+            {% ifequal vault.user request.user %}
+    		    <h4><span class="x_users">{{ vault.members.count }} user{{ vault.members.count|pluralize }}</span> can access this vault:</h4>
+    		    <ul>
+    			{% for m in vault.members.all %}
+    	        	{% include 'frontend/includes/vault_member.html' %}
+    			{% endfor %}
+                </ul>
+                <a class="add_user" rel="{{ vault.id }}"><img src="{{ MEDIA_URL }}images/icons/add.png" width="16" height="16"> Add another user</a>
+                <span class="arrow"></span>
+            {% endifequal %}
+            </div>
+        </div>
+        
+        <div class="vault_contents{% if vault.code_objects.count == 0 %} empty{% endif %}">
+    	{% if vault.code_objects.count > 0 %}
+            <h4>This vault contains {{ vault.code_objects.count }} item{{ vault.code_objects.count|pluralize }}:</h4>
+    	    <ul class="scraper_list">
+    	    {% for code in vault.code_objects.all %}
+    	        {% include 'frontend/includes/vault_scraper_line.html' %}
+    	    {% endfor %}
+    	    </ul>
+    	{% else %}
+    	    <div class="empty_vault">
+    	        <h4>This vault is empty!</h4>
+    	        <!-- <p>Perhaps you&rsquo;d like to read our <a>Vaults FAQ</a>,<br/>or <a>move some scrapers or views</a> here?</p> -->
+    	        <p>Vaults are a great way to keep scrapers secure, <br/>while sharing them with the people that matter.</p>
+    	        <p>You can <a class="add_to_vault" rel="{{ vault.id }}" href="">create a new scraper in this vault</a>, or move an <br/>existing scraper here by selecting this vault from the <br/>dropdown menu on the scraper&rsquo;s overview page.</p>
+    	    </div>
+    	{% endif %}
+    	</div>
+        
+        <div class="vault_footer">
+            <a class="add_to_vault" rel="{{ vault.id }}"><img src="{{ MEDIA_URL }}images/icons/add.png" width="16" height="16"> Create a new scraper in this vault</a>
+            <!-- <a class="move_to_vault"><img src="{{ MEDIA_URL }}images/icons/cog_go.png" width="16" height="16"/> Move an item here</a> -->
+        </div>
+        
+    </div>
+    
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if vault_membership_count %}
+<div id="shared_vaults">	
+    <h2>You can access {{ vault_membership_count }} shared vault{{ vault_membership_count|pluralize }}:</h2>
+	
+	{% for vault in vault_membership %}
+	<div class="vault">
+        
+    	<div class="vault_header">
+    	    <span class="shineyshiney"></span>
+	        <!-- <a class="vault_leave"><img src="{{ MEDIA_URL }}images/icons/door_exit.png" width="16" height="16"> Leave vault</a> -->
+	        <a class="vault_users"><img src="{{ MEDIA_URL }}images/icons/user_purple.png" width="16" height="16"> <span class="x_users">{% if vault.members.count > 0 %}{{ vault.members.count }} user{{ vault.members.count|pluralize }}{% else %}No users{% endif %}</span></a>
+    	    <h3><!-- <a href="{% url profiles_profile_detail vault.user.username %}" title="This vault is owned by {% if vault.user.get_profile.name %}{{vault.user.get_profile.name}}{% else %}{{vault.user.username}}{% endif %}" class="vault_owner">{% show_gravatar vault.user 'medium' %}</a> -->{{ vault.name }}</h3>
+	        <div class="vault_users_popover">
+    		    <h4><span class="x_users">{{ vault.members.count }} user{{ vault.members.count|pluralize }}</span> can access this vault:</h4>
+    		    <ul>
+    			{% for m in vault.members.all %}
+    	        	{% include 'frontend/includes/vault_member.html' %}
+    			{% endfor %}
+                </ul>
+                <span class="arrow"></span>
+            </div>
+        </div>
+        
+        <div class="vault_contents{% if vault.code_objects.count == 0 %} empty{% endif %}">
+    	{% if vault.code_objects.count > 0 %}
+            <h4>This vault contains {{ vault.code_objects.count }} item{{ vault.code_objects.count|pluralize }}:</h4>
+    	    <ul class="scraper_list">
+    	    {% for code in vault.code_objects.all %}
+    	        {% include 'frontend/includes/vault_scraper_line.html' %}
+    	    {% endfor %}
+    	    </ul>
+    	{% else %}
+    	    <div class="empty_vault">
+    	        <h4>This vault is empty!</h4>
+    	        <!-- <p>Perhaps you&rsquo;d like to read our <a>Vaults FAQ</a>,<br/>or <a>move some scrapers or views</a> here?</p> -->
+    	        <p>Vaults are a great way to keep scrapers secure, <br/>while sharing them with the people that matter.</p>
+    	    </div>
+    	{% endif %}
+    	</div>
+        
+        <div class="vault_footer">
+            <a class="add_to_vault" rel="{{ vault.id }}"><img src="{{ MEDIA_URL }}images/icons/add.png" width="16" height="16"> Create a new scraper in this vault</a>
+            <!-- <a class="move_to_vault"><img src="{{ MEDIA_URL }}images/icons/cog_go.png" width="16" height="16"/> Move an item here</a> -->
+        </div>
+        
+    </div>
+	{% endfor %}
+</div>
+{% endif%}
+
+</div>
+
+
+{% endblock %}

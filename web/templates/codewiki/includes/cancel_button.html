@@ -1,0 +1,7 @@
+<ul>
+  {% if has_draft %}
+  <li><a href="{% url delete_draft %}">Cancel</a></li>
+  {% else %}
+  <li><a href="javascript:javascript:history.go(-1)">Cancel</a></li>
+  {% endif %}
+</ul>

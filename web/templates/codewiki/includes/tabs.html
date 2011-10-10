@@ -1,0 +1,27 @@
+<div class="page_tabs">
+    <ul>
+        {% load comments %}
+        {% get_comment_count for codewiki.code scraper.id as cc %}
+        <li{% ifequal selected_tab "comments" %} class="selected"{% endifequal %}>
+            <a href="{% url scraper_comments scraper.wiki_type scraper.short_name %}">Discussion ({{ cc }})</a>
+        </li>
+        <li{% ifequal selected_tab "history" %} class="selected"{% endifequal %}>
+            <a href="{% url scraper_history scraper.wiki_type scraper.short_name %}">History</a>
+        </li>
+        {% ifequal scraper.wiki_type 'scraper' %}                
+            <li{% ifequal selected_tab "code" %} class="selected"{% endifequal %} id="idtopcodetab">
+                <a href="{% url editor_edit scraper.wiki_type scraper.short_name %}">Edit <small>({{scraper.language}})</small></a>
+            </li>
+            <li{% ifequal selected_tab "overview" %} class="selected"{% endifequal %}>
+                <a href="{% url code_overview scraper.wiki_type scraper.short_name %}">Scraper</a>
+            </li>
+        {% else %}
+            <li{% ifequal selected_tab "code" %} class="selected"{% endifequal %} id="idtopcodetab">
+                <a href="{% url editor_edit scraper.wiki_type scraper.short_name %}">Edit <small>({{scraper.language}})</small></a>
+            </li>
+            <li{% ifequal selected_tab "overview" %} class="selected"{% endifequal %}>
+                <a href="{% url code_overview scraper.wiki_type scraper.short_name %}">View</a>
+            </li>
+        {% endifequal %}
+    </ul>
+</div>

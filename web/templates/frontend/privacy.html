@@ -1,0 +1,96 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Privacy{% endblock %}
+
+{% block header %}
+	<h2>Privacy policy</h2>
+	<p>What data we collect and how it is used.</p>
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <h3>Introduction</h3>
+        <p>
+        This Privacy Policy sets out the ways in which we collect and use personal data using the ScraperWiki site and any associated API. In agreeing to our terms and conditions, which you should read in conjunction with this policy, you  consented to our processing your personal data in accordance with this policy.  
+    </p>
+    <p>
+        This policy does not apply to personal information that may be contained in any scraper code or scraped data which is not collected by us and is the primary responsibility of the user(s) who control the relevant scraper. 
+    </p>
+    <h4>What information do we collect?</h4>
+    <p>When you create an account we collect the following information: 
+            <ul class="bulleted">
+                <li>your name</li>
+                <li>the username you have selected</li>
+                <li>your email address</li>
+            </ul>
+        </p>
+        
+        <p>You may optionally have supplied us with:
+            <ul class="bulleted">
+                <li>a data town</li>
+                <li>web address</li>
+                <li>a biography</li>
+                <li>IM address</li>
+            </ul>
+</p>
+        <p>All the above information forms a part of your 'profile'. We also routinely log:
+            <ul class="bulleted">
+                <li>
+                    access to our websites (including originating IP address and identity of the browser) </li>
+        <li>the running and output of individual scrapers.  
+                </li>
+            </ul>
+        </p>
+        <h3>Personal information</h3>
+        <h4>How do we use personal information?</h4>
+        <p>We will use your email address as follows:</p>
+        <ul class="bulleted">
+           <li>If you have elected to receive them, to send you alerts:
+              <ul>
+                  <li>when a scraper is broken</li>
+                  <li>concerning people you are following</li>
+              </ul>
+            </li>
+            <li>
+                To send you service updates and notices under our terms and conditions, which will ordinarily happen very rarely (perhaps once or twice per annum) 
+            </li>
+         </ul>
+
+        <p>
+            If you have asked to be placed on our mailing list, we will retain your email address so that we can send you occasional emails. We will only do this if you have asked us to do so, and we will remove your address from the list on request.
+        </p>
+        <p>
+            The rest of your profile information will be used in the obvious way to display to others on the ScraperWiki site. 
+        </p>
+        <p>
+            We use all the information we collect on the ScraperWiki site for the administration of the site and ScraperWiki services. 
+        </p>
+        <h4>Do we share personal information?</h4>
+        <p>
+            Your name, and any biography you have supplied, will be displayed on our website and thus it will be available to be read by anyone in the world. 
+        </p>
+        <p>
+            All other personal information you have supplied to us that forms a part of your profile will be available to other signed-in users. 
+        </p>
+        <p>
+            We do not sell or rent any personal information to others. We may, however, disclose personal information if we believe we are required to do so by law. 
+        </p>
+        <p>
+        We may need to share your personal information with any of our subsidiaries or contractors involved in the maintenance or running of ScraperWiki. If we do so, we will ensure that they agree to process your personal information according to this policy. 
+        </p>
+        <h4>How long do you we keep data?</h4>
+
+        <p>
+            We will keep your profile information for as long as your account exists. If your account is terminated for any reason, we will delete all your profile information, except for your username. Your username will be continue to be associated with any code you have edited as part of our version control system.
+        </p>
+        
+        <h3>Changes to this statement</h3>
+        <p>
+        If we change our privacy statement, we will post the revised statement here, with an updated revision date. If we make significant changes to our statement we may also notify you by other means, such as sending an email or posting a notice on our home page. 
+        </p>
+        <h3>Contacting us</h3>
+        <p>We value your opinions. If you have comments or questions about our privacy statement, please use our <a href="{% url contact_form %}">contact form</a>, or send them to feedback(at)scraperwiki.com,  or write to us at the following address: 
+        <address>Attention Privacy Statement Enquiry, ScraperWiki Ltd, 35 Wilson Patter Street, Warrington, Cheshire, WA1 1PG, UK.</address>
+    </p>
+    </div>
+{% endblock %}

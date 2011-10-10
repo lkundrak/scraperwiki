@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: {% url search %}
+Disallow: /scrapers/run_event/
+Disallow: /scrapers/run_event_json/

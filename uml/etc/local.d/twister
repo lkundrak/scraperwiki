@@ -1,0 +1,41 @@
+#!/bin/sh
+
+DESC="Twister"
+NAME=twister
+DAEMON=/bin/sh
+VARDIR=/var/www/scraperwiki/uml/var
+PIDFILE=$VARDIR/run/$NAME.pid
+LOGFILE=$VARDIR/log/$NAME.log
+CONFIG=/var/www/scraperwiki/uml/uml.cfg
+DAEMON_ARGS="/var/www/scraperwiki/uml/twister/twister.sh --pidfile=$PIDFILE --config=$CONFIG --logfile=$LOGFILE"
+
+do_start()
+{
+	mkdir -p ./var/run
+	mkdir -p ./var/log
+	$DAEMON $DAEMON_ARGS
+}
+
+do_stop()
+{
+	[ -f $PIDFILE ] && {
+		kill -TERM `cat $PIDFILE`
+		rm -f $PIDFILE
+		}
+}
+
+case "$1" in
+  start)
+	do_start
+	;;
+  stop)
+	do_stop
+	;;
+  restart)
+  	do_stop
+  	do_start
+	;;
+  *)
+	echo "Usage: orbited {start|stop|restart}" >&2
+	;;
+esac

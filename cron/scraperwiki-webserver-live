@@ -1,0 +1,7 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# m h  dom mon dow   command
+
+# Every minute, get new screenshots of scrapers from screenshot server
+* * * * * scraperdeploy rsync -qazr -e "ssh -i /home/scraperdeploy/screenshooter-key.rsa" screenshooter@kippax.scraperwiki.com:/home/screenshooter/screenshots/ /var/www/scraperwiki/web/media/screenshots/

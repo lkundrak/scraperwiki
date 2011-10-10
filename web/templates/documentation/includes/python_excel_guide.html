@@ -1,0 +1,106 @@
+<p>Microsoft Excel spreadsheet files can contain lots of data in cells, formulae,
+notes and so on.</p>
+
+<p>For more details, read the  <a href="https://secure.simplistix.co.uk/svn/xlrd/trunk/xlrd/doc/xlrd.html">xlrd documentation</a>.</p>
+
+<h2>Opening the file</h2>
+
+<p>Download the Excel file, and load it into the xlrd ("Excel reader"). This example
+is taken from an <a href="http://www.whatdotheyknow.com/request/accident_statistics_2#incoming-208592">FOI request
+for tram accidents</a>.
+
+<code>import scraperwiki
+import xlrd
+xlbin = scraperwiki.scrape("http://www.whatdotheyknow.com/request/82804/response/208592/attach/2/ACCIDENTS%20TRAMS%20Laurderdale.xls")
+book = xlrd.open_workbook(file_contents=xlbin)
+</code>
+
+<p>Directly select the worksheet you want by number or name.</p>
+<code>sheet = book.sheet_by_index(0)
+sheet = book.sheet_by_name('LAUDERDALE AVE')
+</code>
+
+<p>If you're not sure what sheets there are, this prints them out.</p>
+<code>for n, s in enumerate(book.sheets()):
+    print "Sheet %d is called %s and has %d columns and %d rows" % (n, s.name, s.ncols, s.nrows)
+</code>
+
+<h2>Reading values</h2>
+
+<p>Read the values of a row in one go.</p>
+
+<code>print sheet.row_values(4)
+</code>
+
+<p>Dates will come out as floating point numbers by default (e.g. 36649.0), 
+unless you specially convert them. This cellval function does the hard
+work for you.</p>
+
+<code>import datetime
+def cellval(cell, datemode):
+    if cell.ctype == xlrd.XL_CELL_DATE:
+        datetuple = xlrd.xldate_as_tuple(cell.value, datemode)
+        if datetuple[3:] == (0, 0, 0):
+            return datetime.date(datetuple[0], datetuple[1], datetuple[2])
+        return datetime.date(datetuple[0], datetuple[1], datetuple[2], datetuple[3], datetuple[4], datetuple[5])
+    if cell.ctype == xlrd.XL_CELL_EMPTY:    return None
+    if cell.ctype == xlrd.XL_CELL_BOOLEAN:  return cell.value == 1
+    return cell.value
+</code>
+
+<p>Read a whole row, with dates properly converted.</p>
+
+<code>print [ cellval(c, book.datemode) for c in sheet.row(4) ]
+</code>
+
+<p>Read individual cells like this.</p>
+
+<code>print cellval(sheet.cell(0,0))</code>
+
+
+<h2>Saving to the datastore</h2>
+
+<p>Work out sensible heading names. In this case we remove the "." from "FLEET NO.".</p>
+
+<code>keys = sheet.row_values(2)
+keys[1] = keys[1].replace('.', '')
+print keys
+</code>
+
+<p>Make dictionaries from the rows and save them.</p>
+
+<code>for rownumber in range(4, sheet.nrows):
+    # create dictionary of the row values
+    values = [ cellval(c, book.datemode) for c in sheet.row(rownumber) ]
+    data = dict(zip(keys, values))
+    data['rownumber'] = rownumber
+
+    # remove the empty column (which has a blank heading)
+    del data['']
+
+    # only save if it is a full row (rather than a blank line or a note)
+    if data['DATE'] != None and data['FLEET NO'] != None:
+        scraperwiki.sqlite.save(unique_keys=['rownumber'], data=data)
+</code>
+
+<h2>Bad dates</h2>
+
+<p>In some cases there are bad dates. Improve the cellval function to
+catch exceptions.</p>
+
+<code>try:
+    datetuple = xlrd.xldate_as_tuple(cell.value, datemode)
+except Exception, e:
+    print "BAD", cell, e
+    return str(cell)
+try:
+    if datetuple[3:] == (0, 0, 0):
+        return datetime.date(datetuple[0], datetuple[1], datetuple[2])
+    return datetime.date(datetuple[0], datetuple[1], datetuple[2], datetuple[3], datetuple[4], datetuple[5])
+except ValueError, e:
+    print "BAD value", datetuple, cell, e
+    return str(cell)
+</code>
+
+
+

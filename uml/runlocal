@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+#  Run the dispatcher, proxy, firebox and scriptmgr servers locally, .ie.,
+#  without using a real UML
+#
+[ -f uml.cfg ] || {
+	echo	"runlocal: uml.cfg not found"
+	exit	1
+	}
+
+cmp -s uml.cfg uml.cfg-inhg || {
+	echo	"runlocal: warning uml.cfg different to uml.cfg-inhg"
+    diff -u uml.cfg uml.cfg-inhg
+	}
+
+rm	-rf	./var/log
+rm	-rf	./var/run
+mkdir 	-p 	./var/log
+mkdir 	-p 	./var/run
+
+#./etc/local.d/controller	restart
+export NODE_PATH=`cd ../lib/node_modules;pwd`
+echo -n 'Have set NODE_PATH to '
+echo $NODE_PATH
+
+cd ../services/scriptmgr
+node ./scriptmgr.js &
+cd -
+./etc/local.d/dataproxy		restart
+./etc/local.d/ftpproxy		restart
+./etc/local.d/httpproxy		restart
+./etc/local.d/httpsproxy	restart
+./etc/local.d/twister		restart
+./etc/local.d/orbited		restart

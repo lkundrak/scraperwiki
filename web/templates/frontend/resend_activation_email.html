@@ -1,0 +1,13 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Request New Activation Email{% endblock %}
+{% block content %}
+<p>If your activation email has expired or has been lost please use this form to request a new one.</p>
+<form method="post">
+{% csrf_token %}
+<ul class="form">
+{{form.as_ul}}
+<li><input type="submit" value="Request New Activation Email"></li>
+</ul>
+</form>
+{% endblock %}

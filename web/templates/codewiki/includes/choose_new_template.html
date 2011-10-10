@@ -1,0 +1,14 @@
+{% load screen_shot %}
+<h1>Choose a language</h1>
+<ul class="views small">
+  {% for language, display_language in languages %}
+  <li>
+    <a href="{% url editor wiki_type language %}{% if sourcescraper %}?sourcescraper={{sourcescraper}}{% endif %}" class="screenshot">
+      <br/>
+    <img src="{{MEDIA_URL}}/images/icons/{{language}}.png" alt="{{display_language}}"/>
+      <br/>
+    {{display_language}} {{wiki_type}}
+    </a>                
+  </li>
+  {% endfor %}
+</ul>

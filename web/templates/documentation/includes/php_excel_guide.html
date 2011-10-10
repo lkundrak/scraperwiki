@@ -1,0 +1,74 @@
+<p>Microsoft Excel spreadsheet files can contain lots of data in cells, formulae,
+notes and so on.</p>
+
+<p>For more details, read the  <a href="http://code.google.com/p/php-excel-reader/wiki/Documentation">php-excel-reader documentation</a>.</p>
+
+<!-- Example: https://scraperwiki.com/scrapers/advanced_scraping_excel_files/edit/ -->
+
+<h2>Opening the file</h2>
+
+<p>Download the Excel file, and load it into the Excel Reader class. This example
+is taken from an <a href="http://www.whatdotheyknow.com/request/accident_statistics_2#incoming-208592">FOI request
+for tram accidents</a>.
+
+<code>require_once('scraperwiki/excel_reader2.php');
+$url = "http://www.whatdotheyknow.com/request/82804/response/208592/attach/2/ACCIDENTS%20TRAMS%20Laurderdale.xls";
+file_put_contents("/tmp/spreadsheet.xls", scraperWiki::scrape($url));
+$book = new Spreadsheet_Excel_Reader("/tmp/spreadsheet.xls");
+</code>
+
+<p>Find out how big the worksheet is.</p>
+<code>print $book-&gt;rowcount() . "\n";
+print $book-&gt;colcount() . "\n";
+</code>
+
+<p>By default all commands work on the first sheet, number 0. You can pass in a
+$sheet_index parameter to most functions to select a different worksheet.</p>
+
+<h2>Reading values</h2>
+
+<p>Read individual cells, starting with (1, 1) at the top left. You can also use the
+Excel alphabetical column headings.</p>
+
+<code>print $book-&gt;val(3, 1) . "\n";
+print $book-&gt;val(3, 'A') . "\n";</code>
+
+<p>Loop through rows like this.</p>
+
+<code>for ($col = 1; $col &lt;= $book-&gt;colcount(); $col++) {
+    print $book-&gt;val(3, $col) . ",";
+}
+</code>
+
+
+<h2>Saving to the datastore</h2>
+
+<p>Work out sensible heading names. In this case we remove the "." from "FLEET NO.".</p>
+
+<code>$keys = array('dummy');
+for ($col = 1; $col &lt;= $book-&gt;colcount(); $col++) {
+    $keys[] = str_replace(".", "", $book-&gt;val(3, $col));
+}
+print_r($keys);
+
+</code>
+
+<p>Make an associative array from the rows and save them.</p>
+
+<code>for ($row = 1; $row &lt;= $book-&gt;rowcount(); $row++) {
+    for ($col = 1; $col &lt;= $book-&gt;colcount(); $col++) {
+        if ($keys[$col]) {
+            $data[$keys[$col]] = $book-&gt;val($row, $col);
+        }
+    }
+    $data['rownumber'] = $row;
+
+    print_r($data);
+
+    if ($data['DATE'] != 'DATE' &amp;&amp; $data['DATE'] &amp;&amp; $data['FLEET NO']) {
+        $data['DATE'] = DateTime::createFromFormat('d/m/y', $data['DATE'])-&gt;format('Y-m-d');
+        scraperwiki::save(array('rownumber'), $data);
+    }
+}
+</code>
+

@@ -1,0 +1,383 @@
+{% extends "codewiki/scraper_base.html" %}
+{% load humanize %}
+{% load month_name %}
+
+
+{% load gravatar %}
+
+{% block javascript %}
+  {{ block.super }}
+  {% with scraper.language|lower as language %}
+    {% include 'codewiki/includes/codemirror_parsers.html' %}
+  {% endwith %}
+
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/codeviewer.js?{{settings.REVISION}}"></script>  {# highlightCode(code, Parser), highlightOtherCode(greencode, redcode, matcheropcodes, Parser) #}
+{% endblock javascript %}
+
+{% block tab %}
+<input type="hidden" id="rawcodeurl" value="{% url raw scraper.short_name %}"/>
+<input type="hidden" id="diffsequrl" value="{% url diffseq scraper.short_name %}"/>
+<input type="hidden" id="run_event_json" value="{% url run_event_json 'XXX' %}"/>
+
+{% if not itemlog %}
+<div class="history_ran_fail">
+  The history log for this scraper is missing, possibly corrupted
+</div>
+{% endif %}
+
+{% regroup itemlog by datetime.year as itemlogyear_list%}
+{% for itemlogyear in itemlogyear_list %}
+
+  {% regroup itemlogyear.list by datetime.month as itemlogmonth_list %}
+  {% for itemlogmonth in itemlogmonth_list %}
+
+    <div class="history_month">
+    <b>{{itemlogmonth.grouper|month_name}} {{itemlogyear.grouper}}</b>
+  
+    {% regroup itemlogmonth.list by groupkey as itemloggroup_list %}
+    {% for itemloggroup in itemloggroup_list %}
+      {% with itemloggroup.list|first as itemfirst %}   {# could alternatively refer to itemloggroup.list.0 #}
+      {% with itemloggroup.list|last as itemlast %}   
+
+      {% ifequal itemfirst.type 'commit' %}
+      <div class="history_edit">
+          {% if itemfirst.user %}{% show_gravatar itemfirst.user 'small' %}{% endif %}
+          <span class="history_editor_info">
+            Edited by 
+            <a href="{% if itemfirst.user.username %}{% url profiles_profile_detail itemfirst.user.username %}{% endif %}" class="historyuser">
+              {% if itemfirst.user.get_profile.name %}{{itemfirst.user.get_profile.name}}{% else %}{{itemfirst.user.username}}{% endif %}
+            </a>
+            {% ifnotequal itemloggroup.list|length 1 %}
+              {{itemloggroup.list|length}} times
+            {% endifnotequal %}
+            <span class="history_date">{{ itemfirst.datetime|date:"H:i, j F Y" }}</span>
+            {% if user.is_authenticated %}
+                {% ifnotequal itemloggroup_list|first itemloggroup %}
+                <a class="rollbackchanges" title="Revert code to just after this change; to revision {{itemfirst.rev}}" 
+                   href="{% url editor_edit scraper.wiki_type scraper.short_name %}?rollback_rev={{itemfirst.rev}}">rollback</a>
+                {% endifnotequal %}
+            {% endif %}
+          </span>
+
+          <div class="history_view_changes">
+            {% ifnotequal itemfirst.prevrev null %}
+              <a class="hidechanges" title="Revs {{itemlast.rev}}:{{itemfirst.rev}}">Hide changes</a>
+              <a class="showchanges" title="Revs {{itemlast.rev}}:{{itemfirst.rev}}">Show changes</a>
+            {% else %}
+              <a class="hidechanges" title="Revs {{itemlast.rev}}:{{itemfirst.rev}}">Hide first version</a>
+              <a class="showchanges" title="Rev 0">Show first version</a>
+            {% endifnotequal %}
+
+            <span class="revlist hide">
+             {% for item in itemloggroup.list %}
+             <span class="revelem">
+               <span class="rev">{{item.rev}}</span>
+               <span class="ihistory_date">{{item.datetime|date:"H:i, j F Y" }}</span>
+               <span class="prevrev">{{item.prevrev}}</span>
+             </span>
+             {% endfor %}
+            </span>
+          </div>
+
+          <div class="codepreviewer"> 
+            <h3 class="loading">Loading...</h3>
+            <h4 class="cprev">Difference between, revision <span class="shrev"></span> and previous revision <span class="shprevrev"></span></h4>
+            <div class="history_code_border">
+              <div class="otherlinenumbers"></div> 
+              <div class="linenumbers"></div> 
+              <pre class="outputlines"></pre> 
+            </div>
+          </div>
+
+      </div>
+      {% else %} 
+
+      <div class="history_run_event" id="run_{{itemfirst.runevent.id}}">
+        {% ifnotequal itemfirst.runevent.pid -1 %}
+            <div class="history_ran_notfinished">
+              <span class="history_bold">Currently running</span>: -
+              started {{itemfirst.runevent.run_started|timesince}} ago 
+              (so far {{itemfirst.runevent.pages_scraped}} scraped pages, {{itemfirst.runevent.records_produced}} records)
+              <span class="history_date">{{ itemfirst.datetime|date:"H:i, j F Y" }}</span>
+        {% else %}{% if itemfirst.runevent.exception_message %}
+            <div class="history_ran_fail">
+              Run failed:
+              <span class="historyexception">{{itemfirst.runevent.exception_message}}</span> - ran for {{itemfirst.durationseconds}} seconds
+              ({{itemfirst.runevent.pages_scraped}} scraped pages, {{itemfirst.runevent.records_produced}} records)
+              <span class="history_date">{{ itemfirst.datetime|date:"H:i, j F Y" }}</span>
+        {% else %}
+            <div class="history_ran">
+              Run succeeded:
+              - ran {{itemloggroup.list|length}} times, most recently for {{itemfirst.durationseconds}} seconds
+              ({{itemfirst.runevent.pages_scraped}} scraped pages, {{itemfirst.runevent.records_produced}} records)
+              <span class="history_date">{{ itemfirst.datetime|date:"H:i, j F Y" }}</span>
+        {% endif %}{% endifnotequal %}
+          <div class="history_view_changes">
+            <a class="hiderunevent">Hide Details</a>
+            <a class="showrunevent">Show Details</a>
+
+            <span class="runidlist hide">
+              {% for item in itemloggroup.list %}
+              <span class="runidelem">
+                 <span class="runid">{% if item.runevent.run_id %}{{item.runevent.run_id}}{% else %}{{item.runevent.id}}{% endif %}</span>
+                 <span class="history_date">{{ item.datetime|date:"H:i, j F Y" }}</span>
+             </span>
+             {% endfor %}
+           </span>
+          </div>
+
+          <div class="runpreviewer">
+            <h3 class="loading">Loading...</h3>
+            <pre class="runpreview"></pre>
+          </div>
+        </div>
+
+      </div>
+      {% endifequal %}
+
+      {% endwith %}
+      {% endwith %}
+    {% endfor %} {# group #}
+    </div> {# history_month #}
+  {% endfor %} {# month #}
+{% endfor %} {# year #}
+
+
+
+{% endblock %}
+
+
+{% block jrun_script %}
+<script type="text/javascript" defer="defer">
+
+var fetchedcache = { }; // cached code of different versions
+function cachefetch(cid, callback)
+{
+    if (cid && (fetchedcache[cid] == undefined))
+    {
+        var url; 
+        if (cid.substring(0, 4) == "?rev")
+            url = $("#rawcodeurl").val()+cid; 
+        else if (cid.substring(0, 9) == "?otherrev")
+            url = $("#diffsequrl").val()+cid; 
+        else
+            url = $("#run_event_json").val().replace('XXX', cid); 
+
+        $.ajax({url:url, success: function(sdata) 
+        {
+            fetchedcache[cid] = sdata; 
+            callback(); 
+        }}); 
+    }
+    else
+        callback(); 
+}
+
+
+function previewchanges_hideequal(block, curr)
+{
+    var oth = null, currY;  
+    if (curr)
+    {
+        oth = curr; 
+        while (oth && (!oth.hasClass(".fequal") && (oth.attr("display") != "none")))
+            oth = oth.next(); 
+        if (!oth)
+        {
+            oth = curr; 
+            while (oth && (!oth.hasClass(".fequal") && (oth.attr("display") != "none")))
+                oth = oth.prev(); 
+        }
+        currY = curr.offset().top; 
+    }
+
+    block.find('.codepreviewer .fequal').hide(); 
+    block.find('.codepreviewer .expander').show(); 
+
+    if (oth)
+        $(window).scrollTop($(window).scrollTop() + oth.offset().top - currY); 
+}
+
+function previewchanges_showequal(block, curr)
+{
+    var oth = null, currY;  
+    if (curr)
+    {
+        oth = curr.next(); 
+        if (!oth)
+            oth = curr.prev(); 
+        currY = curr.offset().top; 
+    }
+
+    block.find('.codepreviewer .fequal').show(); 
+    block.find('.codepreviewer .expander').hide(); 
+
+    if (oth)
+        $(window).scrollTop($(window).scrollTop() + oth.offset().top - currY); 
+}
+
+
+function previewchanges_showsidecode()
+{
+    var block = $(this).parents(".history_edit"); 
+    var curr = $(this); 
+
+    // allow clicking on the inserted or deleted code
+    if (curr.hasClass("delete"))
+        curr = block.find(".otherlinenumbers"); 
+    if (curr.hasClass("insert"))
+        curr = block.find(".linenumbers"); 
+
+    // allow toggling so you don't need to move the mouse
+    if (curr.hasClass("shcodesel") && curr.hasClass("otherlinenumbers"))
+        curr = block.find(".linenumbers"); 
+    if (curr.hasClass("shcodesel") && curr.hasClass("linenumbers"))
+        curr = block.find(".otherlinenumbers"); 
+
+    block.find(".history_code_border div").removeClass("shcodesel"); 
+    if (curr.hasClass("linenumbers"))
+    {
+        block.find('.codepreviewer .delete').hide(); 
+        block.find('.codepreviewer .insert').show(); 
+        curr.addClass("shcodesel"); 
+    }
+    else if (curr.hasClass("otherlinenumbers"))
+    {
+        block.find('.codepreviewer .insert').hide(); 
+        block.find('.codepreviewer .delete').show(); 
+        curr.addClass("shcodesel"); 
+    }
+}
+
+
+function previewchanges_showbothcode(block)
+{
+    block.find(".history_code_border div").removeClass("shcodesel"); 
+    block.find('.codepreviewer .insert').show(); 
+    block.find('.codepreviewer .delete').show(); 
+}
+
+
+function previewchanges_hide(block)
+{
+    var codepreviewerdiv = block.find(".codepreviewer");
+    codepreviewerdiv.hide(); 
+    block.find(".history_view_changes .hidechanges").hide(); 
+    block.find(".history_view_changes .showchanges").show(); 
+    block.find(".history_editor_info .rollbackchanges").hide(); 
+}
+
+function previewchanges_show(block)
+{
+    hideallshowhistrun(); 
+
+    block.find(".history_view_changes .showchanges").hide(); 
+    block.find(".history_view_changes .hidechanges").show(); 
+    block.find(".history_editor_info .rollbackchanges").show(); 
+
+    var rev = block.find("span.revlist span.revelem:first span.rev").text();  
+    var prevrev = block.find("span.revlist span.revelem:last span.prevrev").text();  
+
+    var cidrev = "?rev="+rev; 
+    var cidprevrev = (prevrev ? "?rev="+prevrev : ""); 
+    var ciddiff = (prevrev ? "?otherrev="+prevrev+"&rev="+rev : ""); 
+
+    var codepreviewerdiv = block.find(".codepreviewer");
+    codepreviewerdiv.find(".history_code_border").hide();
+    codepreviewerdiv.find(".loading").show();
+    codepreviewerdiv.show();
+
+    cachefetch(cidrev, function() { cachefetch(cidprevrev, function() { cachefetch(ciddiff, function()
+    {
+        codepreviewerdiv.find(".cprev span.shrev").text(rev);  // could allow for sub-inspection of series
+        codepreviewerdiv.find(".cprev span.shprevrev").text(prevrev); 
+
+        var fequallines = 0; 
+        if (prevrev)
+        {
+            var matcheropcodes = $.evalJSON(fetchedcache[ciddiff]); // [ ("replace|delete|insert|equal", i1, i2, j1, j2) ]
+            fequallines = highlightOtherCode(fetchedcache[cidrev], fetchedcache[cidprevrev], matcheropcodes, Parser, codepreviewerdiv); 
+        }
+        else
+            highlightCode(fetchedcache[cidrev], Parser, codepreviewerdiv); 
+
+        if (fequallines > 5) 
+            previewchanges_hideequal(block); 
+        else
+            previewchanges_showequal(block); 
+
+        codepreviewerdiv.find(".loading").hide();
+        codepreviewerdiv.find(".history_code_border").show();
+
+        codepreviewerdiv.find(".outputlines .fequal").click(function() { previewchanges_hideequal(block, $(this)); }); 
+        codepreviewerdiv.find(".outputlines .equal").click(function() { previewchanges_showbothcode(block); }); 
+        codepreviewerdiv.find(".outputlines .delete").click(previewchanges_showsidecode); 
+        codepreviewerdiv.find(".outputlines .insert").click(previewchanges_showsidecode); 
+        codepreviewerdiv.find(".expander").click(function() { previewchanges_showequal(block, $(this)); }); 
+
+        codepreviewerdiv.find(".expander").attr("title", "Expand to show all unchanged lines"); 
+
+    })})}); 
+}
+
+
+function previewrunevent_show(block)
+{
+    hideallshowhistrun(); 
+
+    block.find(".showrunevent").hide(); 
+    block.find(".hiderunevent").show(); 
+
+    var runid = block.find("span.runidlist span.runidelem:first span.runid").text();  
+    block.find(".history_code_border").hide();
+
+    block.find(".loading").show();
+    block.find(".runpreviewer").show(); 
+    cachefetch(runid, function() 
+    { 
+        var runevent = $.evalJSON(fetchedcache[runid]); 
+        block.find(".loading").hide();
+        block.find(".runpreview").text(runevent.output).show(); 
+    }); 
+}
+
+function previewrunevent_hide(block)
+{
+    block.find(".runpreviewer").hide(); 
+    block.find(".showrunevent").show(); 
+    block.find(".hiderunevent").hide(); 
+}
+
+function hideallshowhistrun()
+{
+    $(".history_edit").each(function(i, el) { previewchanges_hide($(el)) });
+    $(".history_run_event").each(function(i, el) { previewrunevent_hide($(el)) });
+}
+
+$(document).ready(function() 
+{ 
+    $(".cprev").hide();     // hide these ugly titles for now
+    hideallshowhistrun(); 
+
+    $(".history_edit").each(function(i, el) { previewchanges_hide($(el)) });
+
+    $(".history_edit .showchanges").click(function() { previewchanges_show($(this).parents(".history_edit")); }); 
+    $(".history_edit .hidechanges").click(function() { previewchanges_hide($(this).parents(".history_edit")); }); 
+
+    $(".history_edit .history_code_border .otherlinenumbers").click(previewchanges_showsidecode); 
+    $(".history_edit .history_code_border .linenumbers").click(previewchanges_showsidecode); 
+
+    $(".history_run_event .showrunevent").click(function() { previewrunevent_show($(this).parents(".history_run_event")); }); 
+    $(".history_run_event .hiderunevent").click(function() { previewrunevent_hide($(this).parents(".history_run_event")); }); 
+
+    // if they put # and the run_id in the URL, open up that one
+    if (window.location.hash) {
+        var hash_run_event = $(window.location.hash);
+        if (hash_run_event.length != 0) {
+            previewrunevent_show(hash_run_event);
+        }
+    }
+
+}); 
+</script>
+{% endblock %}

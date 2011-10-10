@@ -1,0 +1,30 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Tour{% endblock %}
+
+{% block header %}
+    <h2>ScraperWiki Tour</h2>
+	<p>Find out what all the fuss is about.</p>
+{% endblock %}
+
+{% block content %}
+    <div id="divWelcome">
+        <img id="imgLogoLarge" src="{{MEDIA_URL}}/images/logo_large.png"/>
+        <h1>ScraperWiki is all the tools you need for Screen Scraping, Data Mining &amp; visualisation.</h1>
+        <div id="divIntroSlideShow">
+            <div class="slide_show">
+                <img src="{{ MEDIA_URL }}images/intro_slides/intro1.png" />
+                <img src="{{ MEDIA_URL }}images/intro_slides/intro2.png" />
+                <img src="{{ MEDIA_URL }}images/intro_slides/intro3.png" />
+                <img src="{{ MEDIA_URL }}images/intro_slides/intro4.png" />  
+                <img src="{{ MEDIA_URL }}images/intro_slides/intro5.png" />                                                
+            </div>
+            <div class="slide_nav"></div>
+        </div>            
+        <h2>Make bad data good, collaborate &amp; discover new datasets.</h2>
+        <br class="clear"/>
+    </div>
+
+
+{% endblock %}
+{% block run_script %}setupIntroSlideshow();{% endblock %}

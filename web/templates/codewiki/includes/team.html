@@ -1,0 +1,32 @@
+<li>
+    <a href="{% url profiles_profile_detail other.username %}">
+    {% load gravatar %} {% show_gravatar other 'medium' %} 
+    {% if other.get_profile.name %}
+        {{other.get_profile.name}}
+    {% else %}
+        {{other.username}}
+    {% endif %}
+    </a> 
+
+    <!-- ({{role}}) -->
+
+    <span class="hide">{{other.username}}</span>
+
+	{% ifequal role 'editor' %}
+		{% ifequal request.user.username other.username %}
+			<input type="button" value="demote" class="detachbutton"/>
+		{% endifequal %}		
+	{% endifequal %}
+	
+<!--    {% if user_owns_it %}
+      {% ifnotequal scraper.privacy_status 'public' %}
+        {% ifequal role 'editor' %}
+          <input type="button" value="demote" class="demotebutton"/>
+        {% endifequal %}
+        {% ifequal role 'follow' %}
+          <input type="button" value="promote" class="promotebutton"/>
+        {% endifequal %}
+      {% endifnotequal %}
+      {% endif %} -->
+</li>
+

@@ -1,0 +1,40 @@
+The FireBox and Twisted subsystem can be run without a UML.
+
+Create a symbolic link /var/www/scraperwiki to the top directory.
+This is needed as the installation path is written into a lot of places.
+For instance on my machine (as root):
+
+ln -s /home/mike/ScraperWiki/scraperwiki /var/www/scraperwiki
+
+Edit settings.py in your web subdirectory to have:
+
+ORBITED_URL = 'http://localhost:8001'
+
+Create a mysql database called "scraperwiki_log" and grant access to user
+"scraperlog" with password "scr4p3rl0g"; best bet is to grant access from 
+everywhere and anywhere, ie:
+
+create database scraperwiki_log ;
+grant all on scraperwiki_log.* to 'scraperlog'@'localhost' identified by 'scr4p3rl0g' ;
+grant all on scraperwiki_log.* to 'scraperlog'@'%' identified by 'scr4p3rl0g' ;
+
+You should now be able to run the pretend UML system:
+
+To start (or restart)	:	./runlocal
+To stop			:	./killlocal
+
+These scripts start (restart) or stop using the scripts in ./etc/local.d; these
+are stand-alone analogues of the init.d scripts. Process identifiers will be
+written to files in ./var/run; log files will appeara in ./var/log
+
+When started, services should be running for
+
+	orbited
+	twisted
+	dispatcher
+	controller
+	httpproxy
+	ftpproxy
+	dataproxy
+
+Run django as normal.

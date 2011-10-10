@@ -1,0 +1,93 @@
+#!/bin/bash
+#
+# netsetup
+#
+# UML boxes run on an private subnet within the machine. This isolates
+# them from the outside world so that it is not possible for an incoming
+# network connection to reach them other that from the host. To allow
+# outgoing connections to the outside world, the host's iptables NAT chain
+# MASQUERADEs packets as they go out.
+#
+# The script also sets up minimal access for the host itself.
+#
+
+test `id -u` = 0 ||
+{
+	echo	netsetup: must be run as root
+	exit	1
+}
+test `ifconfig eth0 | sed -n 's/.*inet addr:\([0-9\.]*\).*/\1/p'` = 89.16.177.195 ||
+{
+	echo	netsetup: can only be run on rush
+	exit	1
+}
+
+iptables	-F
+iptables -t nat	-F
+
+# Allow ssh access which is on port 7822
+#
+iptables 	-A INPUT	-p tcp			--dport 7822		-j ACCEPT
+iptables    -A INPUT    -p tcp          --sport 7822        -j ACCEPT
+
+# Allow outgoing ssh access
+#
+iptables   -A INPUT    -p tcp          --sport 22      -j ACCEPT
+
+# Allow access for any traffic originating locally, ie., on the UML subnet and on
+# the loopback device
+#
+iptables	-A INPUT	-p tcp -s 192.168.254.0/24			-j ACCEPT
+iptables	-A INPUT	-i lo						-j ACCEPT
+
+# Allow access to the UML controller (actually via xinetd on the host) from the
+# web server (for requests from the dispatcher) and from the database server
+# (for ident requests from the data proxy)
+#
+iptables	-A INPUT	-p tcp -s 89.16.177.212 --dport 9001		-j ACCEPT
+iptables	-A INPUT	-p tcp -s 89.16.177.212 --dport 9101:9104	-j ACCEPT
+iptables	-A INPUT	-p tcp -s 89.16.177.176 --dport 9001		-j ACCEPT
+iptables	-A INPUT	-p tcp -s 89.16.177.176 --dport 9101:9104	-j ACCEPT
+
+# Allow access to the HTTP Proxy for getting cached pages
+#
+/sbin/iptables -A INPUT -p tcp -s scraperwiki.com --dport 9005 -j ACCEPT
+
+# Allow incoming replies from nameservers, etc.
+#
+iptables	-A INPUT	-p udp			--sport 53		-j ACCEPT
+iptables	-A INPUT	-p tcp			--sport 80		-j ACCEPT
+iptables	-A INPUT	-p tcp			--sport 21		-j ACCEPT
+iptables	-A INPUT	-p tcp			--sport 443		-j ACCEPT
+
+# Allow incoming replies from the data proxy
+#
+iptables	-A INPUT	-p tcp -s 89.16.177.176	--sport 9003		-j ACCEPT
+
+# While this server is acting as the dataproxy allow 
+/sbin/iptables -A INPUT    -p tcp -s scraperwiki.com --dport 9003 -j ACCEPT
+
+# Allow passive FTP
+#
+iptables	-A INPUT  -p tcp --sport 1024: --dport 1024: -m state --state ESTABLISHED	  -j ACCEPT
+iptables	-A OUTPUT -p tcp --sport 1024: --dport 1024: -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Allow connections from backup machines for rsync and NFS
+#
+iptables   -A INPUT    -s 212.110.161.108  -j ACCEPT
+iptables   -A INPUT    -s 88.211.55.91  -j ACCEPT
+
+# Allow NTP traffic
+#
+iptables -A INPUT -p udp --dport 123 -j ACCEPT 
+iptables -A OUTPUT -p udp --sport 123 -j ACCEPT 
+
+# All other input traffic is rejected
+#
+iptables 	-A INPUT							-j REJECT
+
+# NAT/Masquerade for the UML
+#
+iptables -t nat -A POSTROUTING	-o eth0						-j MASQUERADE
+
+exit	0

@@ -1,0 +1,10 @@
+{% extends "frontend/base.html" %}
+
+{% block header %}
+	<h2>Very New {{wiki_type}}</h2>
+	<p>Please choose a starting point</p>
+{% endblock %}
+
+{% block content %}
+    {% include 'codewiki/includes/choose_new_template.html' %}
+{% endblock %}

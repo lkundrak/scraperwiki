@@ -1,0 +1,46 @@
+<li>
+    <a href="{% url profiles_profile_detail contributor.username %}">
+    {% load gravatar %} {% show_gravatar contributor 'medium' %} 
+    {% if contributor.get_profile.name %}
+        {{contributor.get_profile.name}}
+    {% else %}
+        {{contributor.username}}
+    {% endif %}
+    </a> 
+
+    {% spaceless %}
+      {% ifequal role 'follow' %}
+          (follower)
+      {% else %}
+		  {% ifequal role 'email' %}
+              (is emailed output)
+      	  {% else %}
+              ({{role}})
+          {% endifequal %}
+	  {% endifequal %}
+    {% endspaceless %}
+
+    <span class="hide">{{contributor.username}}</span>
+    
+    {% if scraper.vault %}{% else %}
+
+	{% if role == 'editor' %}
+		{% if request.user.username == contributor.username %}
+			<input type="button" value="demote" class="detachbutton"/>
+		{% endif %}		
+	{% endif %}
+	
+    {% if user_owns_it %}
+      {% ifnotequal scraper.privacy_status 'public' %}
+        {% ifequal role 'editor' %}
+          <input type="button" value="demote" class="demotebutton"/>
+        {% endifequal %}
+        {% ifequal role 'follow' %}
+          <input type="button" value="promote" class="promotebutton"/>
+        {% endifequal %}
+      {% endifnotequal %}
+    {% endif %}
+    
+    {% endif %}
+</li>
+

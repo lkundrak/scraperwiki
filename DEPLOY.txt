@@ -1,0 +1,15 @@
+DEPLOYING
+
+Requirements
+============
+
+fabric (fabfile.org). this should have been installed by the buildout (see INSTALL.txt)
+
+
+Deploying to a server
+=====================
+
+In the root directory of your local install of ScraperWiki run
+
+> $ fab deploy [dev|live|staging]
+

@@ -1,0 +1,49 @@
+{% extends "documentation/docbase.html" %}
+
+{% block title %}Documentation / Live tutorials{% endblock %}
+
+{% block content %}
+	{% include "documentation/language_picker.html" %}
+<div style='clear:both;'></div>
+<br/>
+
+<p>Each of these tutorials has its instructions and example code in one 
+file that you edit, learn and run entirely from your browser. </p>
+
+<div class="content half left">
+  {% for key, value in tutorials.items %}
+  <h2 id="{{ key }}_tutorials">{{ display_language }} scrapers</h2>
+  <dl class="tutoriallist">
+    {% for scraper in value %}
+    <dt style="margin-top:10px">
+      <a href="{% url editor scraper.wiki_type scraper.language|lower %}?template={{scraper.short_name}}" class="scraper-tutorial-link"><b>{{scraper.title}}</b></a>
+      {% if user.is_staff %}
+        <a class="staff" href="{% url editor_edit scraper.wiki_type scraper.short_name %}">edit</a>
+      {% endif %}
+    </dt>
+    <dd>{{scraper.description_ashtml|safe}}</dd>
+    {% endfor %}
+  </dl>
+  {% endfor %}
+</div>
+
+<div class="content half right">
+  {% for key, value in viewtutorials.items %}
+  <h2 id="{{ key }}_tutorials">{{ display_language }} views</h2>
+  <dl class="tutoriallist">
+    {% for scraper in value %}
+    <dt>
+      <a href="{% url editor scraper.wiki_type scraper.language|lower %}?template={{scraper.short_name}}" class="scraper-tutorial-link"><b>{{scraper.title}}</b></a>
+      {% if user.is_staff %}
+        <a class="staff" href="{% url editor_edit scraper.wiki_type scraper.short_name %}">edit</a>
+      {% endif %}
+    </dt>
+    <dd>{{scraper.description}}</dd>
+    {% endfor %}
+  </dl>
+  {% endfor %}
+</div>
+
+<br class="clear"/>
+
+{% endblock %}

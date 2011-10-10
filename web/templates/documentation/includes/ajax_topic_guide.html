@@ -1,0 +1,51 @@
+<h2>AJAX cheat sheet</h2>
+<p>We use jQuery for an easy interface to <a href="http://api.jquery.com/jQuery.ajax/">Ajax</a>.</p>
+
+<p><a href="http://api.jquery.com/jQuery.ajax/">Ajax</a> allows for callbacks to the server. 
+The basic recipe for calling back to the ScraperWiki API is:</p>
+
+<code>var apiurl = "https://api.scraperwiki.com/api/1.0/datastore/sqlite"; 
+var srcname = "new_americ_foundation_drone_strikes"; 
+var sqlselect = "select * from swdata limit 10"; 
+$.ajax({url:apiurl, dataType:"jsonp", data:{name:srcname, query:sqlselect, format:"jsonlist"}, success:function(tdata)
+{
+    alert(tdata);
+}}); 
+</code>
+ 
+<p>If you are calling to the same domain (eg https://views.scraperwiki.com/), a plain ajax call is possible.</p>
+<code>var url = "https://views.scraperwiki.com/run/python_output_stuff/"; 
+$.ajax({url: url, success: function(v){ alert(v); }); 
+</code>
+
+<p>But if you want to call to another domain (eg https://api.scraperwiki.com/), you need to use JSONP to bypass the security requirement.
+jQuery manages your callback function for you.</p>
+<code>var url = "https://api.scraperwiki.com/api/1.0/scraper/getinfo?name=python_output_stuff"; 
+$.ajax({url: url, success: function(v){ alert(v); } })
+</code>
+
+<p>Set the defaults for all your ajax calls at once.</p>
+<code>var apiurl = "https://api.scraperwiki.com/api/1.0/datastore/sqlite"; 
+$.ajaxSetup({type:"GET", dataType: "jsonp", url:apiurl, error:function(jq, status) { alert(status); }}); 
+</code>
+
+<p>Now you can call back to the data API with hardly any code.</p>
+<code>var sqlselect = "select latlng_lat, latlng_lng, date, lowerest, higherest from swdata order by date limit 500";
+var name = "new_americ_foundation_drone_strikes";
+$.ajax({data:{name:name, query:sqlselect}, success:consumedata }); 
+</code>
+
+<p>Data comes back from the datastore/sqlite API call in a single entry list 
+[ { keys:[keys], data:[row1, row1, ...] } ].  
+Put this into a table like so:</p>
+<code>function consumedata(tdata)
+{
+    var keys = tdata[0]["keys"]; 
+    var data = tdata[0]["data"]; 
+    var tab = $("&lt;table>&lt;/table>"); 
+    $(window).append(tab); 
+    tab.append($("&lt;tr>&lt;th>"+keys.join("&lt;/th>&lt;th>")+"&lt;/th>&lt;/tr>")); 
+    for (var i = 0; i &lt; data.length; i++)
+        tab.append($('&lt;tr>&lt;td>'+data[i].join("&lt;/td>&lt;td>")+"&lt;/td>&lt;/tr>")); 
+}
+</code>

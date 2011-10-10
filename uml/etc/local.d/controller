@@ -1,0 +1,49 @@
+#!/bin/sh
+
+DESC="Controller"
+NAME=controller
+DAEMON=/var/www/scraperwiki/uml/controller/controller.py
+VARDIR=/var/www/scraperwiki/uml/var
+CONFIG=/var/www/scraperwiki/uml/uml.cfg
+
+# set up the directory paths for the different exec.py/rb/php scripts
+# PYTHONPATH also applies to controller.py; PHPPATH is nonstandard and implemented within exec.php
+export PYTHONPATH=/var/www/scraperwiki/scraperlibs/
+export RUBYLIB=/var/www/scraperwiki/scraperlibs/
+export PHPPATH=/var/www/scraperwiki/scraperlibs/
+
+export PYTHONUNBUFFERED=True
+
+PIDFILE=$VARDIR/run/$NAME.pid
+DAEMON_ARGS="--pidfile=$PIDFILE --config=$CONFIG"
+
+do_start()
+{
+	mkdir -p ./var/run
+	mkdir -p ./var/log
+	$DAEMON $DAEMON_ARGS
+}
+
+do_stop()
+{
+	[ -f $PIDFILE ] && {
+		kill -TERM `cat $PIDFILE`
+		rm -f $PIDFILE
+		}
+}
+
+case "$1" in
+  start)
+	do_start
+	;;
+  stop)
+	do_stop
+	;;
+  restart)
+  	do_stop
+  	do_start
+	;;
+  *)
+	echo "Usage: orbited {start|stop|restart}" >&2
+	;;
+esac

@@ -1,0 +1,210 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block header %}
+	<h2>About ScraperWiki</h2>
+	<p>All about the company and people behind ScraperWiki</p>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="column-left">
+    <h2 class="inline">What is ScraperWiki?</h2>
+    <p class="first">There&rsquo;s lots of useful data on the internet &ndash; crime
+    statistics, government spending, <a href="http://www.nationalpetregister.org/">missing kittens</a>&hellip;</p>
+    <p>But getting at it isn&rsquo;t always easy. There's a table here, a report
+    there, a few web pages, PDFs, spreadsheets&hellip; And it can be scattered over
+    thousands of different places on the web, making it hard to see the whole
+    picture and the story behind it. It&rsquo;s like trying to build something
+    from Lego when someone has hidden the bricks all over town and you have to
+    find them before you can start building!</p>
+</div>
+<div class="column-right">
+    <p>To get at data, programmers write bits of code called &lsquo;screen
+    scrapers&rsquo;, which extract the useful bits so they can be reused in
+    other apps, or rummaged through by journalists and researchers. But these
+    bits of code tend to break,  get thrown away or forgotten once they have
+    been used, and so the data is lost again. Which is bad.</p> 
+
+    <p>ScraperWiki is an online tool to make that process simpler and more
+    collaborative. Anyone can write a screen scraper using the online editor.
+    In the free version, the code and data are shared with the world. 
+    Because it's a wiki, other programmers can contribute to and improve the
+    code.</p>
+
+    <p>If you're not a programmer, or if you want to tackle a large or complex
+    task, you can ask the ScraperWiki team to 
+    <a href="{% url request_data %}">organise it for you</a>.</p>
+</div>
+
+<br class="clear" />
+
+<a id="help" href="{% url docsroot %}"><img src="{{MEDIA_URL}}/images/icons/question.png" width="16" height="16" /> Need help with technical questions? Click here to visit the <u>help pages</u>.</a>
+
+<div id="scrapbook">
+	<h2><a>A day in the life of ScraperWiki</a></h2>
+	<ul>
+        <li>
+            <a href="http://www.youtube.com/watch?v=3RQ1f6vUMoM&p=12A3B8DEF0A9F401">
+                <img src="{{ MEDIA_URL }}images/scrapbook_bbc.jpg" width="145" height="100" alt="ScraperWiki at the BBC Hack Day" />
+                <h4>Outreach at the BBC</h4>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.channel4.com/news/could-selling-off-britains-assets-cut-the-debt">
+                <img src="{{ MEDIA_URL }}images/scrapbook_channel4.jpg" width="145" height="100" alt="ScraperWiki&rsquo; Government spending chart for Channel4" />
+                <h4>Visualisations for Channel 4</h4>
+            </a>
+        </li>
+        <li>
+            <a href="http://blog.scraperwiki.com/2011/02/25/read-all-about-it-read-all-about-it-%E2%80%9Cscraperwiki-gets-on-the-guardian-front-page-%E2%80%9D/">
+                <img src="{{ MEDIA_URL }}images/scrapbook_guardian.jpg" width="145" height="100" alt="ScraperWiki on the Guardian front page" />
+                <h4>Data discovery in the Guardian</h4>
+            </a>
+        </li>
+        <li>
+            <a href="http://blog.scraperwiki.com/2011/05/11/access-government-in-a-way-that-makes-sense-to-you-surely-not/">
+                <img src="{{ MEDIA_URL }}images/scrapbook_alphagov.jpg" width="145" height="100" alt="Alpha.gov.uk website" />
+                <h4>Data Mining for the Government</h4>
+            </a>
+        </li>
+	    <li class="clear"></li>
+	</ul>
+</div>
+
+<div id="people">
+    <h2><a>Company history and people</a></h2>
+
+    <p>ScraperWiki was started by Julian Todd and Aidan McGuire. The company
+    has seed funding <a href="http://www.4ip.org.uk/2009/12/4ip-invests-in-scraperwiki/">from 4iP</a>,
+    and the founders.  We're based in Liverpool (engineering) and London (sales), UK.
+    </p>
+    
+    <div id="about_images">
+        <span class="about_image">
+            <img src="{{ MEDIA_URL }}images/about_francis.png"> 
+            <span style="display: none"> 
+                Francis Irving (CEO, <a href="http://www.twitter.com/frabcus">@frabcus</a>) 
+                was founding developer at democracy startup <a href="http://www.mysociety.org">mySociety</a>.
+                He founded developer tool <a href="http://www.tortoisecvs.org">TortoiseCVS</a>, 
+                which with its successors is used by tens of millions of people.
+            </span>
+        </span>
+        <span class="about_image">
+            <img src="{{ MEDIA_URL }}images/about_aine.png"> 
+            <span style="display: none"> 
+                Aine McGuire (CMO, <a href="http://www.twitter.com/ainemcguire">@ainemcguire</a>)
+                previously founded <a href="http://www.pygmalion.com/Pages/Home.aspx">Pygmalion</a>,
+                the first UK Microsoft Gold Certified Partner company,
+                which has a major focus on education and partner skills. 
+            </span>
+        </span>
+        <span class="about_image">
+            <img src="{{ MEDIA_URL }}images/about_julian.png"> 
+            <span style="display: none"> 
+                Julian Todd (CTO, <a href="http://www.twitter.com/goatchurch">@goatchurch</a>)
+                created <a href="http://www.theyworkforyou.com">TheyWorkForYou.com</a>, 
+                being first to scrape the UK Parliament back in 2003, inspiring
+                the Sunlight Foundation and others. He dives and caves, but would never cave dive.
+            </span>
+        </span>
+        <span class="about_image">
+            <img src="{{ MEDIA_URL }}images/about_aidan.png">
+            <span style="display: none"> 
+                Aidan McGuire (CFO, <a href="http://www.twitter.com/amcguire62">@amcguire62</a>)
+                founded three software businesses under the
+                <a href="http://www.bluefountain.com/">Blue Fountain</a> brand &mdash;
+                Japanese spreadsheets, supply chain management and content management.  
+                He has a banking background.
+            </span>
+        </span>
+        <br>
+        <span class="about_image">
+            <img src="{{ MEDIA_URL }}images/about_ross.png"> 
+            <span style="display: none"> 
+                Ross Jones (VP of Engineering, <a href="http://www.twitter.com/rossjones">@rossjones</a>)
+                has been described as "the best coder I had ever seen, simple
+                as that".  This is the 4th startup that he's worked for. He's one
+                of the founders of the <a href="http://doesliverpool.com/">DoES Liverpool</a> makerspace.
+            </span>
+        </span>
+        <span class="about_image">
+            <img src="{{ MEDIA_URL }}images/about_nicola.png">
+            <span style="display: none"> 
+                Nicola Hughes (Data Journalism Advocate, <a href="http://www.twitter.com/DataMinerUK">@DataMinerUK</a>)
+                was a digital media producer at CNN. She sifted social media
+                data to get the news before the wires, enabling CNN to be the
+                first to report from the ground on the Abuja bombing. She owns a
+                pet axolotl.
+            </span>
+        </span>
+        <span class="about_image">
+            <img src="{{ MEDIA_URL }}images/about_zarino.png"> 
+            <span style="display: none"> 
+                Zarino Zappia (Designer, <a href="http://www.twitter.com/zarino">@zarino</a>) researches
+                creative participation in open data at Oxford University.
+            </span>
+        </span>
+        <span class="about_image">
+            <img src="{{ MEDIA_URL }}images/about_kinga.png">
+            <span style="display: none"> 
+                Kinga Szczesniak (Sales Support Manager, <a href="http://www.twitter.com/kinga82">@kinga82</a>) 
+                has a background in public administration and spent some of her
+                training at The Chancellery of the President of the Republic of
+                Poland. 
+            </span>
+        </span>
+        <span class="about_image">
+            <img src="{{ MEDIA_URL }}images/about_judith.png">
+            <span style="display: none"> 
+                Judith Townend (Community events, <a href="http://www.twitter.com/jtownend">@jtownend</a>) 
+                is a journalist and researcher, specialising in media law and
+                ethics. She helped co-ordinate ScraperWiki's Hacks and Hackers
+                tour across the UK and Ireland in 2010/11.
+            </span>
+        </span>
+    </div>
+    <div id="about_hover">
+    </div>
+
+    <p>Thanks also to: Richard Pope, product manager for the first version of ScraperWiki.
+        Tom Mortimer-Jones, 
+        Anna Powell-Smith, 
+        Mike Richardson,
+        and Sym Roe
+    who helped to build it.
+    Mark James for the <a href="http://www.famfamfam.com/lab/icons/silk/">Silk Icons</a>.
+    Tom Steinberg and Jamie Arnold for mentoring. Francis Davey for legal advice. 
+    We also offer <a href="http://www.youtube.com/watch?v=HNGc8gKFkDs">bespoke igloos</a>.
+    </p>
+
+</div>
+
+<div id="about_specifics">
+    <div class="logos">
+        <img src="{{ MEDIA_URL }}images/footer_tractor.png" width="140" height="90" alt="" />
+        <p>Since you were probably wondering, the ScraperWiki logo is a "<a href="http://en.wikipedia.org/wiki/Wheel_tractor-scraper">wheel tractor-scraper</a>". It&rsquo;s like a huge cheese slice for moving soil. The logo itself was designed by <a href="http://unicorncreative.com/">James Weiner.</a></p>
+    </div>
+    <br class="clear" />
+</div>
+
+
+{% endblock %}
+
+{% block run_script %}
+    {{block.super}}
+
+    $('.about_image').mouseover( function()
+    {
+        var h = $(this).find("span").html();
+        if ($('#about_hover').html() != h) {
+            $('#about_hover').html(h);
+            $('#about_hover').show();
+        }
+    });
+
+{% endblock %}
+
+

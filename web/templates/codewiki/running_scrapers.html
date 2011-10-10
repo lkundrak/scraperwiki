@@ -1,0 +1,602 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Status{% endblock %}
+
+{% block css %}
+
+<style type="text/css">
+
+div#monitorvisible { width:90%; margin-left:none; margin-right:auto; border: 4px blue solid; margin-top:5px; -webkit-border-radius: 4px; }
+div#monitoradmin { display: none; font-family: monospace; overflow: auto; background: #f4e3e8; margin: 5px 0; padding: 5px 5px 5px 5px; }
+
+div#monitoringusers { border: thin #1030ff solid; overflow:auto; text-align:left }
+div#draftscraperusers { border: thin  #1030ff solid; overflow:auto; text-align:left }
+div#connectionstatusdiv { overflow:auto;  text-align:left }
+div#rpcrunningclients { border: thin  #1030ff solid; overflow:auto; text-align:left }
+
+div#monitoringusers ul {  display:inline;   }
+div#monitoringusers li {  border: thin blue solid; display:inline;  }
+
+div#monitoroutput div#draftscraperusers ul {  display:inline;   }
+div#monitoroutput div#draftscraperusers li {  border: thin blue solid; display:inline;   }
+
+div#rpcrunningclients ul {  display:inline;   }
+div#rpcrunningclients li {  border: thin purple solid; display:inline;  }
+
+ul#scraperentries {  display:block; text-align:left }
+li.scraper {  border: thin  #1030ff solid; display:block; }
+
+a.killrunning { display:none }
+li.bkrunning a.killrunning, a#killallscheduled { display:inline; background-color: #f08a38; color: #000; border-radius: 2px; -moz-border-radius: 2px; border: solid 1px #bf6312; cursor: pointer; }
+
+
+li.scraper a.scrapername { width:100px; background-color:blue; color:white; display:inline-block; }
+ul.scraperusers {  display:inline; vertical-align:top; height:100%; border:0; padding:0; margin:0 }
+li.luser {  border: thin black solid; display:inline;  }
+
+li.lscraper {  border: thin green solid; display:inline;  }
+
+span.desc { background-color:black; color:white; width:100px; display:inline-block; } 
+
+.lasttouchdiff { color: green; font-size:75%; }
+.lasttouchdiff .lasttouch { display:none; }
+
+#monitoroutput ul#scraperentries li.bkrunning, #monitoroutput div#draftscraperusers li.bkrunning {  background-color:#aff; border:thick  #1030ff solid;}
+#monitoroutput ul#scraperentries ul.scraperusers li.bksaving {  background-color:#f99; border:thick green solid;}
+#monitoroutput ul#scraperentries ul.scraperusers li.bktyping {  background-color:#000; }
+
+#jdatareceived { font-size:75%; overflow-x: auto; white-space:nowrap; height:10em; } 
+
+#page_inner h2 { margin-top: 1em; }
+#page_inner h3 { margin-top: 0.5em; }
+#page_inner table { width:auto; margin-right:auto; margin-top: 0.9em; }
+#page_inner table td { padding: 0.3em 0; }
+#page_inner table th { padding: 0.3em 0; }
+
+</style>
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.json-2.2.min.js"></script>
+    <script src="{{ settings.ORBITED_URL }}/static/Orbited.js"></script>
+    <script>Orbited.settings.streaming = false</script>
+
+    {# Needed for orbited, dont remove #}
+    <script>document.domain = document.domain;</script>
+    <script>Orbited.settings.streaming = false</script>
+
+<script type="text/javascript">
+$(document).ready(function() 
+{
+    var bConnected = false; 
+    var username = $('#username').val(); 
+    var userrealname = $('#userrealname').val(); 
+    var isstaff = $('#isstaff').val(); 
+    var servernowtime = new Date(); // set by the server
+
+    TCPSocket = Orbited.TCPSocket;
+    var conn = new TCPSocket(); 
+    var buffer = ""; 
+    var receiverecordqueue = [ ]; 
+    
+    // Doesn't work; receives a ServerClosedConnection without the server actually getting the message and before unload is invoked
+    // $(window).unload( function ()  { sendjson({"command":'loseconnection'}); });  
+    // poss could utilize $(window).bind('beforeunload', function ()) which works for IE
+    // As a consequence, the connections only disappear by timing out
+    // Maybe there is a new version of Orbited at some point fixing this.
+
+    conn.open('localhost', '9010'); 
+
+    conn.onopen = function(code)
+    {
+        if (conn.readyState == conn.READY_STATE_OPEN)
+            mreadystate = 'Ready'; 
+        else
+            mreadystate = 'readystate=' + conn.readyState;
+        $("#monitoroutput #connectionstatus").html('<strong>Connection opened:</strong> ' + mreadystate); 
+        bConnected = true; 
+        jdata = { "command":'connection_open', 
+                  "umlmonitoring":"yes",
+                  "username":username, 
+                  "userrealname":userrealname, 
+                  "isstaff":isstaff };
+        sendjson(jdata);
+    }
+
+    conn.onclose = function(code)
+    {
+        if (code == Orbited.Statuses.ServerClosedConnection)
+            mcode = 'ServerClosedConnection'; 
+        else if (code == Orbited.Errors.ConnectionTimeout)
+            mcode = 'ConnectionTimeout'; 
+        else  
+            mcode = 'code=' + code;
+        $("#monitoroutput #connectionstatus").html('<span style="background-color:black; color:white">Connection closed: ' + mcode+"</span>"); 
+    }
+
+    // should post up status in a little box
+    conn.onread = function(ldata) 
+    {
+        //alert(ldata); 
+        buffer = buffer+ldata;
+        while (true) 
+        {
+            var linefeed = buffer.indexOf("\n"); 
+            if (linefeed == -1)
+                break; 
+            sdata = buffer.substring(0, linefeed); 
+            buffer = buffer.substring(linefeed+1); 
+            sdata = sdata.replace(/[\s,]+$/g, '');  // trailing commas cannot be evaluated in IE
+            if (sdata.length == 0)
+                continue; 
+            var jdata = undefined; 
+            try {
+                jdata = $.evalJSON(sdata);
+            } catch(err) {
+//                alert("Malformed json: '''" + sdata + "'''"); 
+				
+            }
+
+            if (jdata != undefined) 
+            {
+                receiverecordqueue.push(jdata); 
+                if (receiverecordqueue.length == 1)
+                    window.setTimeout(function() { receiveRecordFromQueue(); }, 1);  
+            }
+        }
+    }
+
+
+    function receiveRecordFromQueue() 
+    {
+        var jdata = undefined; 
+        if (receiverecordqueue.length > 0) 
+        {
+            jdata = receiverecordqueue.shift(); 
+            receiveRecord(jdata);
+            if (receiverecordqueue.length >= 1)
+                window.setTimeout(function() { receiveRecordFromQueue(); }, 1); 
+        }
+    }
+
+    function getIDfromCChatname(cchatname)
+    {
+        vv = cchatname.replace(/\*/g, "STAR").split("|"); 
+        if (vv[0])
+            return vv[0]; 
+        return vv[1]; // anonymous type
+    }
+
+    function getUserfromCChatname(cchatname)
+    {
+        vv = cchatname.split("|"); 
+        if (vv[0])
+            return "<a href=\"/profiles/"+vv[0]+"/\">"+vv[1]+"</a>"; 
+        return vv[1]; // anonymous type
+    }
+
+    function getScraperfromScrapername(scrapername)
+    {
+        return "<a href=\"/scrapers/"+scrapername+"/edit/\" class=\"scrapername\">"+scrapername+"</a>"
+    }
+
+    function getNewDatetimeSpan(datetime)
+    {
+        return "<span class=\"lasttouchdiff\"><span class=\"lasttouch\">"+datetime.getTime()+"</span><span></span></span>"; 
+    }
+    function parseISOdate(sdatetime)
+    {
+        return new Date(parseInt(sdatetime)); 
+    }
+
+
+    //read data back from twisted
+    function receiveRecord(jdata) 
+    {
+        $("#monitoroutput #jdatareceived").append('<div>'+$.toJSON(jdata)+'</div>'); 
+        while ($('#monitoroutput #jdatareceived').children().size() >= 10) 
+            $('#monitoroutput #jdatareceived').children(':first').remove();
+
+        servernowtime = parseISOdate(jdata.nowtime); 
+        $("#monitoroutput #servernowtime").html(servernowtime.toUTCString()); 
+
+        if (jdata.umlmonitoringusers)
+        {
+            if (jdata.message_type == "umlstatus")
+                $("#monitoroutput #monitoringusers ul").html(""); 
+            for (i = 0; i < jdata.umlmonitoringusers.length; i++)
+            {
+                var umlmonitoringuser = jdata.umlmonitoringusers[i]; 
+                var chatname = umlmonitoringuser.chatname; 
+                var idchatname = "MON_" + getIDfromCChatname(chatname); 
+                var present = umlmonitoringuser.present; 
+                var lasttouch = parseISOdate(umlmonitoringuser.lasttouch); 
+                var ele = "#monitoroutput #monitoringusers ul li#"+idchatname; 
+                if (present)
+                {
+                    if (!$(ele).attr("id"))
+                        $("#monitoroutput #monitoringusers ul").append("<li id=\""+idchatname+"\" class=\"luser\">"+getUserfromCChatname(chatname)+" " + getNewDatetimeSpan(lasttouch)+"</li>"); 
+                    else
+                        $(ele + " .lasttouchdiff .lasttouch").text(String(lasttouch.getTime())); 
+                }
+                else
+                    $(ele).remove(); 
+            }
+        }
+
+        if (jdata.rpcrunningclients)
+        {
+            if (jdata.message_type == "umlstatus")
+                $("#monitoroutput #rpcrunningclients ul").html(""); 
+            for (i = 0; i < jdata.rpcrunningclients.length; i++)
+            {
+                var rpcrunningclient = jdata.rpcrunningclients[i]; 
+                var clientnumber = rpcrunningclient.clientnumber; 
+                var chatname = rpcrunningclient.chatname; 
+                var scrapername = rpcrunningclient.scrapername; 
+                var idclientnumber = "RPC_" + clientnumber; 
+                var present = rpcrunningclient.present; 
+                var lasttouch = parseISOdate(rpcrunningclient.lasttouch); 
+                var ele = "#monitoroutput #rpcrunningclients ul li#"+idclientnumber; 
+                if (present)
+                {
+                    if (!$(ele).attr("id"))
+                    {
+                        var lli = [ '<li id="', idclientnumber, '" class="lscraper">', getScraperfromScrapername(scrapername), ' ' ]; 
+                        lli.push(getNewDatetimeSpan(lasttouch), '</li>'); 
+                        $("#monitoroutput #rpcrunningclients ul").append(lli.join("")); 
+                    }
+                    else
+                        $(ele + " .lasttouchdiff .lasttouch").text(String(lasttouch.getTime())); 
+                }
+                else
+                    $(ele).remove(); 
+            }
+        }
+
+        if (jdata.draftscraperusers)
+        {
+            if (jdata.message_type == "umlstatus")
+                $("#monitoroutput #draftscraperusers ul").html(""); 
+            for (i = 0; i < jdata.draftscraperusers.length; i++)
+            {
+                var chatname = jdata.draftscraperusers[i].chatname; 
+                var idchatname = "DRA_" + getIDfromCChatname(chatname); 
+                var present = jdata.draftscraperusers[i].present; 
+                var running = jdata.draftscraperusers[i].running; 
+                var ele = "#monitoroutput #draftscraperusers ul li#"+idchatname; 
+                if (present)
+                {
+                    if (!$(ele).attr("id"))
+                        $("#monitoroutput #draftscraperusers ul").append("<li id=\""+idchatname+"\">"+getUserfromCChatname(chatname)+"</li>"); 
+                    if (running)
+                        $(ele).addClass("bkrunning"); 
+                    else
+                        $(ele).removeClass("bkrunning"); 
+                }
+                else
+                    $(ele).remove(); 
+            }
+        }
+
+        if (jdata.scraperentries)
+        {
+            if (jdata.message_type == "umlstatus")
+                $("#monitoroutput ul#scraperentries").html(""); 
+            for (i = 0; i < jdata.scraperentries.length; i++)
+            {
+                var scraperentry = jdata.scraperentries[i]; 
+                var scrapername = scraperentry.scrapername; 
+                var scraperpresent = scraperentry.present; 
+                var running = scraperentry.running; 
+                var scraperusers = scraperentry.scraperusers; 
+
+                var idscrapername = "SCR_" + scrapername.replace(".", "--"); 
+                var ele = "#monitoroutput ul#scraperentries li#"+idscrapername; 
+                if (scraperpresent)
+                {
+                    if (!$(ele).attr("id"))
+                    {
+                        var lil = ['<li id="', idscrapername, '" class="scraper">' ]; 
+                        if (isstaff)
+                            lil.push('<a class="killrunning" title="Kill running scraper">X</a>'); 
+                        lil.push(getScraperfromScrapername(scrapername), ' <ul class="scraperusers"></ul></li>'); 
+                        if ((scraperusers.length != 0) && (scraperusers[0].chatname.substring(0, 11) == "*SCHEDULED*"))
+                            $("#monitoroutput ul#scraperentries").append(lil.join("")); 
+                        else
+                            $("#monitoroutput ul#scraperentries").prepend(lil.join("")); 
+
+                        $("#monitoroutput ul#scraperentries a.killrunning").click(function() 
+                        {
+                            var scrapername = $(this).parent().find("a.scrapername").text(); 
+                            sendjson({command:'umlcontrol', subcommand:'killscraper', scrapername:scrapername}); 
+                            $(this).css("background-color", "blue"); 
+                        }); 
+                    }
+                    if (running)
+                        $(ele).addClass("bkrunning"); 
+                    else
+                        $(ele).removeClass("bkrunning"); 
+
+                    for (j = 0; j < scraperusers.length; j++)
+                    {
+                        var scraperuser = scraperusers[j]; 
+                        var chatname = scraperuser.chatname; 
+                        var idcchatname = idscrapername + "_CHA_" + getIDfromCChatname(chatname); 
+                        var cpresent = scraperuser.present; 
+                        var userlasttouch = parseISOdate(scraperuser.userlasttouch); 
+                        var cele = ele + " ul li#"+idcchatname; 
+                        if (cpresent)
+                        {
+                            var uclientlist = [ ];
+                            for (var k = 0; k < scraperuser.uclients.length; k++)
+                                uclientlist.push(String(scraperuser.uclients[k])); 
+                            if (!$(cele).attr("id"))
+                            {
+                                $(ele+" ul").append("<li id=\""+idcchatname+"\" class=\"luser\">"
+                                                    +getUserfromCChatname(chatname)+" "
+                                                    +getNewDatetimeSpan(userlasttouch)
+                                                    +' (<span class="nondraftcount">'+uclientlist.join(", ")+"</span>)</li>"); 
+                            }
+                            else
+                            {
+                                $(cele + " .lasttouchdiff .lasttouch").text(String(userlasttouch.getTime())); 
+                                $(cele + " .nondraftcount").text(uclientlist.join(", ")); 
+                            }
+                        }
+                        else
+                            $(cele).remove(); 
+                    }
+                }
+                else
+                    $(ele).remove(); 
+            }
+        }
+
+        if (jdata.message_type == "savenote")
+        {
+            hidcchatname = "#SCR_" + jdata.scrapername.replace(".", "--") + "_CHA_" + getIDfromCChatname(jdata.cchatname); 
+            $(hidcchatname).addClass("bksaving"); 
+            window.setTimeout(function() { $(hidcchatname).removeClass("bksaving") }, 2500);
+            $(hidcchatname + " .lasttouchdiff .lasttouch").text(String(servernowtime.getTime())); 
+        }
+        if (jdata.message_type == "typingnote")
+        {
+            hidcchatname = "#SCR_" + jdata.scrapername.replace(".", "--") + "_CHA_" + getIDfromCChatname(jdata.cchatname); 
+            $(hidcchatname).addClass("bktyping"); 
+            window.setTimeout(function() { $(hidcchatname).removeClass("bktyping") }, 250);
+            $(hidcchatname + " .lasttouchdiff .lasttouch").text(String(servernowtime.getTime())); 
+        }
+        if (jdata.maxscheduledscrapers)
+            $("#maxscheduledscrapers input").val(jdata.maxscheduledscrapers); 
+
+        // update all the timeagos
+        $(".lasttouchdiff .lasttouch").each( function(index) 
+        { 
+            var seconds = (servernowtime.getTime() - parseInt($(this).text()))/1000; 
+            var mess = (seconds < 120 ? seconds.toFixed(0) + "s ago" : (seconds/60).toFixed(1) + "min ago"); 
+            $(this).next().text(mess); 
+        }); 
+    }
+
+    //send a message to the server
+    function sendjson(jdata) 
+    {
+        try 
+        {
+            conn.send($.toJSON(jdata));  
+        }
+        catch(err) 
+        { alert("Send error: " + $.toJSON(err)); }
+    }
+
+
+    var imgrefresharr = [ ]; 
+    function refreshImages()
+    {
+        q = (new Date())
+        $("#murefsh").html(q.toUTCString()); 
+        for (i = 0; i < imgrefresharr.length; i++)
+            $(imgrefresharr[i][0]).attr("src", imgrefresharr[i][1]+"?"+q.getTime()); 
+        window.setTimeout(refreshImages, 2*60*1000);  
+    }
+
+    function refreshImagesInit()
+    {
+        $("img.irefresh").each(function(i) { 
+            sidr = "ImgIR_"+i; 
+            $(this).attr("id", sidr)
+            imgrefresharr[i] = [ "#"+sidr, $(this).attr("src") ] 
+        }); 
+        window.setTimeout(refreshImages, 4000);  
+    }
+    refreshImagesInit(); 
+
+    $("#showmonitoradmin").click(function(i) 
+    { 
+        $("#monitoradmin").toggle(500);
+    });
+    
+    if (isstaff)
+    {
+        $("a#killallscheduled").click(function()
+        {
+            sendjson({command:'umlcontrol', subcommand:'killallscheduled'}); 
+            $(this).css("background-color", "blue"); 
+        }); 
+        $("#maxscheduledscrapers input").bind('keypress', function(eventObject) 
+        {
+            var key = (eventObject.charCode ? eventObject.charCode : eventObject.keyCode ? eventObject.keyCode : 0);
+            var target = eventObject.target.tagName.toLowerCase();
+            if (key === 13 && target === 'input') 
+            {
+                eventObject.preventDefault();
+                sendjson({command:'umlcontrol', maxscheduledscrapers:parseInt($("#maxscheduledscrapers input").val()) }); 
+                return false; 
+            }
+            return true; 
+        });
+    }
+}); 
+</script>
+{% endblock %}
+
+
+{% block header %}
+<h2>Status</h2>
+<p>What's going on in twister, the LXCs and related places</p>
+{% endblock %}
+
+{% block content_outer  %}
+
+    <div id="page_outer">
+                <div id="page_inner">
+
+
+<form>
+<fieldset>
+    {# Hidden inputs for passing to js #}
+    <input type="hidden" id="username" value="{{ user.username }}"/>
+    <input type="hidden" id="userrealname" value="{{ user.get_profile.name }}"/>
+    <input type="hidden" id="isstaff" value="{% if user.is_staff %}yes{% endif %}"/>
+</fieldset>
+</form>
+
+<h2>Users currently editing code (from twister)</h2>
+<div id="monitoroutput">
+    <div id="monitorvisible">
+        <div id="draftscraperusers"><span class="desc">Drafts:</span> <ul></ul></div>
+        <ul id="scraperentries"></ul>
+        <div id="rpcrunningclients"><span class="desc">RPCrunning:</span> <ul></ul></div>
+        <div id="monitoringusers"><span class="desc">Monitoring:</span> <ul></ul></div>
+        <div id="maxscheduledscrapers">
+            {% if user.is_staff %}<a id="killallscheduled" title="Kill all scheduled runs">XX</a>{% endif %}
+            <label>Max scheduled scrapers</label>
+            <input type="text" value="0">
+        </div>
+    </div>
+
+    <div id="connectionstatusdiv"><span id="connectionstatus">...</span> <strong>Server time:</strong> <span id="servernowtime"></span></div>
+    <div id="monitoradmin">
+        <div id="jdatareceived"></div>
+    </div>
+    <a id="showmonitoradmin" href="#">toggle connection admin...</a>
+</div>
+
+<h2>Scheduler backlog</h2>
+<p>Number of overdue scrapers: <b>{{overdue_count}}</b></p>
+
+
+<h2 id="umlstatus">Status <small>(reload page to update)</small> <a href="#umlstatus">#</a></h2>
+
+<h3>Current runs (from each controller)</h3>
+<table class="data">
+{% for umlname, umlstatus in activeumls.items %}
+  <tr><th>{{umlname}}</th>
+    <td>
+    {% if umlstatus.error %}
+      <b>{{umlstatus.error}}</b>
+    {% else %}
+      {% if umlstatus.runidnames %}
+        {% for runid, scrapername in umlstatus.runidnames %}<a href="{% url run_event runid %}">{{scrapername}}</a> {% endfor %}
+      {% else %}
+        no running processes
+      {% endif %}
+    {% endif %}
+    </td>
+  </tr>
+{% endfor %}
+</table>
+
+
+<h3>Current runs</h3>
+<table class="data">
+<tr><th>UML</th><th>Scraper</th><th>Time</th><th>Kill button</th><th>Run id</th></tr>
+{% for status in statusscrapers %}
+  <tr>
+    <td>{{status.uname}}</td>
+    <td>
+    {% if status.scraper %}
+      <a href="{% url code_overview status.scraper.wiki_type status.scraper.short_name %}">{{status.scraper.short_name}}</a>
+    {% else %}
+      {{status.scraperID}}--
+    {% endif %}
+    </td>
+
+    <td>
+    {% if status.scraperrunevent %}
+      <a href="{% url scraper_history status.scraperrunevent.scraper.wiki_type status.scraperrunevent.scraper.short_name %}#run_{{ status.scraperrunevent.id }}">{{status.runtime|floatformat}} secs</a>
+    {% else %}
+      {{status.runtime|floatformat}} secs
+    {% endif %}
+    </td>
+
+    <td>
+    {% if status.killable %}
+      {% if status.scraperrunevent %}
+        <form action="{% url scraper_killrunning status.runID status.scraperrunevent.id %}" method="post">
+      {% else %}
+        <form action="{% url scraper_killrunning status.runID %}" method="post">
+      {% endif %}
+          {% csrf_token %}
+          <input type="hidden" id="hidKillRun" name="killrun" value="1" />
+          <input type="submit" id="btnKillRun" class="danger" value="Kill running scraper" />
+        </form>
+    {% endif %}
+    </td>
+
+    <td><small>{{status.runID}}</small></td>
+  </tr>
+{% endfor %}
+</table>
+
+
+
+<h3>Recent runs (from django, max {{ eventsmax }})</h3>
+<table class="data">
+  <tr>
+    <th>Scraper</th>
+    <th>Started</th>
+    <th>Duration</th>
+    <th>Output summary</th>
+  </tr>
+{% for run_event in events %}
+  <tr>
+    <td {% ifnotequal run_event.pid -1 %}style="color:white; background:black"{% endifnotequal %}><a href="{% url code_overview run_event.scraper.wiki_type run_event.scraper.short_name %}">{{run_event.scraper.title}}</a></td> 
+    <td>{{run_event.run_started|timesince}} ago (<small>{{run_event.run_started}}</small>)</td> 
+    <td>{{run_event.getduration}} secs</td> 
+    <td><a href="{% url scraper_history run_event.scraper.wiki_type run_event.scraper.short_name %}#run_{{ run_event.id }}">{{run_event.outputsummary}}</a></td>
+    
+  </tr>
+{% endfor %}
+</table>
+
+{% comment %}
+<h2><a href="http://munin.scraperwiki.com/">Munin dashboard</a></h2>
+<small>refreshed: <span id="murefsh"></span></small>
+<table>
+<tr>
+  <th><a href="http://munin.scraperwiki.com/scraperwiki/rush.scraperwiki.html">Django server (horsell)</a></th>
+  <th><a href="http://munin.scraperwiki.com/scraperwiki/burbage.scraperwiki.html">Datastore server (burbage)</a></th>
+</tr>
+
+<tr>
+  <td><img class="irefresh" src="http://munin.scraperwiki.com/scraperwiki/rush.scraperwiki-cpu-day.png"></td>
+  <td><img class="irefresh" src="http://munin.scraperwiki.com/scraperwiki/burbage.scraperwiki-cpu-day.png"></td>
+</tr>
+
+
+<tr><th colspan="2"><a href="http://munin.scraperwiki.com/scraperwiki/burbage.scraperwiki.html">UML server (rush)</a></th></tr>
+<tr>
+  <td><img class="irefresh" src="http://munin.scraperwiki.com/scraperwiki/burbage.scraperwiki-cpu-day.png"></td>
+  <td><img class="irefresh" src="http://munin.scraperwiki.com/scraperwiki/burbage.scraperwiki-load-day.png"></td>
+</tr>
+
+</table>
+{% endcomment %}
+
+</div></div>
+
+{% endblock %}
+

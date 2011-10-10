@@ -1,0 +1,15 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# Backup database, and scraper mercurial repositories
+0 5 * * * root mysqldump -u backup --single-transaction --quick scraperwiki_live | gzip > /root/backup/mysql-backup.sql.gz
+0 5 * * * root cd /var/www/scraperwiki/ && source bin/activate && dir=$(mktemp -d) && for s in $(ls splitscrapers/); do hg clone splitscrapers/$s $dir/$s > /dev/null; done && tar zcfP /root/backup/mercurial.tar.gz $dir && rm -rf $dir
+0 7 * * * root rsync -qazr /root/backup umi.backup.bytemark.co.uk::scraperwiki-web/
+
+# Remove dummy users, scrapers etc. that the Selenium test script can make
+0 0 * * * scraperdeploy cd /var/www/scraperwiki/ && source bin/activate && cd web && python manage.py clear_selenium_byproducts
+
+# Every morning update KPIs
+0 4 * * * scraperdeploy cd /var/www/scraperwiki/ && source bin/activate && cd web && python manage.py update_kpis
+
+

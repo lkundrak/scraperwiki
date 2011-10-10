@@ -1,0 +1,38 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Scrapers and requests tagged &lsquo;{{tag.name}}&rsquo;{% endblock %}
+
+{% block header %}
+	<h2><a href="/tags/">Browse by tag</a>{%if tag%} / <a href="{% url single_tag tag.name %}">{{tag.name}}{% endif %}</a></h2>
+		<p>Showing all scrapers and requests tagged with &lsquo;{{tag_string}}&rsquo;</p>
+{% endblock %}
+
+{% block tabs %}
+    <div class="page_tabs">
+        <ul>
+            <li class="selected"> 
+                <a id="tags" href="/tags/" class="selected">Browse by tag</a> 
+            </li>
+            <li> 
+                <a id="views" href="{% url scraper_list %}views">Views</a> 
+            </li>
+            <li> 
+                <a id="scrapers" href="{% url scraper_list %}scrapers">Scrapers</a> 
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="content full">
+    {% if scrapers %}
+        <ul class="scraper_list">    
+            {% for code in scrapers %}
+                {% include 'frontend/includes/code_object_line.html' %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no scrapers for this tag yet</p>
+    {% endif %}
+</div>
+{% endblock %}

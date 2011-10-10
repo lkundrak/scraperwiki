@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title>{% block title %}{% endblock %} | ScraperWiki</title>
+
+    {% block meta %}{% endblock %}
+
+	{% load compress %}
+	
+	{% compress js %}
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.5.2.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-ui-1.8.12.custom.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.easing.compatibility.js"></script>		
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.cycle.all.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jeditable.js"></script>		
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.simplemodal.1.4.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/json-min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/scraperwiki.js?{{settings.REVISION}}"></script>		
+	{% endcompress %}
+
+	{% block javascript %}{% endblock %}
+
+	{% compress css %}
+	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/jquery-ui-1.8.12.css" />
+	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/main.css?{{settings.REVISION}}" />
+	{% endcompress %}
+	
+	{% block css %}{% endblock %}
+	{% block rss %}{% endblock %}
+
+	{% if not debug %}
+	    <script type="text/javascript">
+
+	      var _gaq = _gaq || [];
+	      _gaq.push(['_setAccount', 'UA-21451224-1']);
+          _gaq.push(['_setDomainName', 'none']);
+	      _gaq.push(['_trackPageview']);
+
+	      (function() {
+	        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	      })();
+
+	    </script>
+	{% endif %}
+</head>
+
+{% load body_class %}
+<body {%  body_class request %}>
+
+{% if messages %}
+	{% for message in messages %}
+		{{ message|safe }}
+	{% endfor %}
+{% endif %}
+	
+	{% block nav_outer %}
+	<div id="nav_outer">
+		<div id="nav_inner">
+			{% block nav %}
+			<h1><a href="{% url frontpage %}">ScraperWiki</a></h1>
+			<ul>
+				<li class="frontpage"><a href="{% url frontpage %}">Home</a></li>
+				<li class="about"><a href="{% url about %}">About</a></li>
+				<li class="about"><a href="{% url scraper_list %}scrapers">Browse</a></li>
+				<li class="blog"><a href="http://blog.scraperwiki.com">Blog</a></li>
+				{% if user.is_authenticated %}
+				<li class="user loggedin">
+					<a href="{% url profiles_profile_detail user.username %}"><span>{% if user.get_profile.name %}{{user.get_profile.name}}{% else %}{{user.username}}{% endif %}</span></a>
+					<ul>
+						<li class="dashboard"><a href="{% url dashboard %}">Your dashboard</a></li>
+						{% if user.vaults.count > 0 or request.user.vault_membership.count %}
+						<li class="vaults"><a href="{% url vault %}">Your vaults</a></li>
+						{% endif %}
+						
+						<li class="profile"><a href="{% url profiles_profile_detail user.username %}">Your profile</a></li>
+						<li class="feedback"><a href="{% url contact_form %}">Give feedback</a></li>
+						<li class="signout"><a href="{% url logout %}?next_page=/">Sign out</a></li>
+					</ul>
+				</li>
+				{% else %}
+				<li class="user login">
+                <a href="{% url login %}?next={% ifequal request.get_full_path '/' %}/dashboard/{% else %}{{ request.get_full_path }}{% endifequal %}">Log in</a>
+				    <ul>
+						<li class="login_form">
+						    <form method="post" action="{% url login %}" id="nav_login_form">
+                                {% csrf_token %}
+                                <label for="id_nav_user_or_email">Username or email:</label>
+                                <input type="text" id="id_nav_user_or_email" name="user_or_email" />
+                                <label for="id_nav_password">Password:</label>
+                                <input type="password" id="id_nav_password" name="password" />
+                                <a id="forgotten" href="/accounts/password/reset/">Forgotten?</a>
+                                <input type="hidden" name="redirect" value="{% ifequal request.get_full_path '/' %}/dashboard/{% else %}{{ request.get_full_path }}{% endifequal %}"/>
+                                <input type="submit" class="submit" id="nav_login_submit" name="login" value="Log in" />
+                                <span class="clear"></span>
+                            </form>
+						</li>
+						<li class="signup"><a href="{% url login %}">Create an account</a></li>
+					</ul>
+				</li>
+				{% endif %}
+				<li class="search">
+					<form id="navSearch" action="/search/" method="post">
+                        {% csrf_token %}
+		            	<input type="text" id="nav_search_q" name="q"/>
+		            	<input type="submit" id="nav_search_go" value="Go" />
+					</form>
+				</li>
+			</ul>
+			{% endblock %}
+		</div>
+	</div>
+	{% endblock %}
+
+
+	{% block header_outer %}
+	<div id="header_outer">
+		<div id="header_inner">
+{% block header %}
+			<h2>Page header</h2>
+{% endblock %}
+		</div>
+	</div>
+	{% endblock %}
+
+	{% block content_outer %}
+	<div id="page_outer">
+		<div id="page_inner">
+		
+		{% block menu %}
+		
+		<div id="divMenu">
+              <ul class="main_menu">
+				{% if user.is_authenticated %}
+                <li><a href="{% url dashboard %}" title="Manage your scrapers" class="dashboard">Your dashboard</a></li>
+                {% endif %}
+                <li><a href="{% url scraper_list %}scrapers" title="Browse all scrapers">Browse</a></li>
+                <li>
+                    <a href="{% url choose_template 'scraper' %}" title="Create a new screen scraper" class="editor_scraper">New scraper</a> /
+                    <a href="{% url choose_template 'view' %}" title="Create a new view" class="editor_view">view</a>
+                </li>
+                <li><a href="{% url get_involved %}" title="Get involved">Get involved!</a></li>
+                <li><a href="{% url request_data %}">Request data</a></li>
+                <li><a href="{% url docsroot %}">Documentation</a></li>
+              </ul>
+
+              <ul class="sub_menu"> 
+                 <li><a href="http://blog.scraperwiki.com" title="ScraperWiki Data Blog"><span class="unimportant">Read our</span> blog</a></li>
+                 <li><a href="http://groups.google.com/group/scraperwiki" title="Google groups"><span class="unimportant">Join our</span> email list</a></li>
+                 <li><a href="{% url contact_form %}" title="Feedback form"><span class="unimportant">Send us</span> Feedback</a></li>
+                 <li><a href="http://twitter.com/scraperwiki" title="Follow us on Twitter"><span class="unimportant">Follow us on</span> Twitter</a></li>
+                 <li><a href="https://www.facebook.com/pages/ScraperWiki/195413557138197" title="Like us on Facebook"><span class="unimportant">Find on</span> Facebook</a></li>
+              </ul>
+
+              {% if user.is_staff %}
+              <ul class="sub_menu staff"> 
+                  {% if scraper.pk %}
+                    <li><a href="/admin/codewiki/{{scraper.wiki_type}}/{{scraper.pk}}">Django admin (this scraper)</a></li>
+                  {% else %}
+                      {% if profile.user.pk %}
+                        <li><a href="/admin/auth/user/{{profile.user.pk}}">Django admin (this user)</a></li>
+                      {% else %}
+                        <li><a href="/admin/">Django admin</a></li>
+                      {% endif %}
+                  {% endif %}
+                  <li><a href="{% url running_scrapers %}" title="Interact with current sandbox status">LXC status</a></li>
+                  <li><a href="/munin/" title="Server usage monitoring">Munin</a></li>
+                  <li><a href="{% url kpi %}" title="Key performance indicators">KPIs</a></li>
+              </ul>
+              {% endif %}
+            </div>
+		
+		{% endblock %}
+		
+		{% block above_page %}{% endblock %}		    
+
+		<div id="divPage">
+    		{% block tabs %}{% endblock %}
+		    <div id="divContent">
+
+  		        {% block content %}{% endblock %}
+  		        <br class="clear"/>
+		    </div>
+		</div>
+		<br class="clear" />
+	</div>
+	{% endblock %}
+
+	{% block footer_outer %}
+	<div id="footer_outer">
+		<div id="footer_inner">
+			{% block footer %}
+            {% load site_stats %}
+            <!-- <p class="stats">has gathered <strong>{% num_data_rows %} rows of data</strong> and counting&hellip;</p>-->
+			<dl>
+				<dt>About</dt>
+				<dd>
+					<ul>
+						<li><a href="{% url about %}">About ScraperWiki</a></li>
+						<li><a href="http://blog.scraperwiki.com">Blog</a></li>
+						<li><a href="http://twitter.com/scraperwiki">Twitter</a></li>
+                        <li><a href="https://www.facebook.com/pages/ScraperWiki/195413557138197" title="Like us on Facebook">Facebook</a></li>
+						<li><a href="{% url terms %}">Terms &amp; conditions</a></li>
+						<li><a href="{% url privacy %}">Privacy policy</a></li>
+					</ul>
+				</dd>
+				<dt>Data</dt>
+				<dd>
+					<ul>
+                        <li><a href="{% url request_data %}">Business</a></li>
+						<li><a href="{% url scraper_list %}scrapers">Browse data</a></li>
+						<li><a href="{% url request_data %}">Request data</a></li>
+						<li><a href="#" class="editor_scraper">Create new scraper</a> / <a href="#" class="editor_view">view</a></li>		                 
+						<li><a href="{% url get_involved %}" title="Get involved">Get involved!</a></li>
+						<li><a href="{% url docsexternal %}">API</a></li>
+					</ul>
+				</dd>
+				<dt>Help &amp; support</dt>
+				<dd>
+					<ul>
+						<li><a href="{% url contact_form %}">Contact us</a></li>
+						<li><a href="{% url docsroot %}">Docs &amp; tutorials</a></li>	
+						<li><a href="{% url docs 'faq' %}">FAQ</a></li>							
+						<li><a href="http://groups.google.com/group/scraperwiki">Developers&rsquo; discussion group</a></li>			                   			                 
+					</ul>
+				</dd>
+			</dl>
+			<div id="divCopyright">&copy; ScraperWiki Ltd</div>
+			<img src="{{ MEDIA_URL }}images/footer_tractor.png" width="140" height="90" alt="" />
+			{% endblock %}
+		</div>
+	</div>
+	{% endblock %}
+
+    <script type="text/javascript" defer="defer">
+        {% block run_script %}
+        {% endblock %}
+    </script>
+    
+        {# use this one if you want your editor to syntax highlight the javascript #}
+    {% block jrun_script %}
+    {% endblock %}  
+
+{% if sqldebug %}
+<div id="debug">
+  <p>
+    {{ sqldebug.queries.count }} Quer{{ sqldebug.queries|pluralize:"y,ies" }}, {{ sqldebug.time }} seconds
+    {% ifnotequal sql_queries|length 0 %}
+    (<span style="cursor: pointer;" onclick="var s=document.getElementById('debugQueryTable').style;s.display=s.display=='none'?'':'none';this.innerHTML=this.innerHTML=='Show'?'Hide':'Show';">Show</span>)
+    {% endifnotequal %}
+  </p>
+  <table id="debugQueryTable" style="display: none;">
+    <col width="1"></col>
+    <col></col>
+    <col width="1"></col>
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">SQL</th>
+      <th scope="col">Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for query in sqldebug.queries %}<tr class="{% cycle odd,even %}">
+      <td>{{ forloop.counter }}</td>
+      <td>{{ query|safe }}</td>
+      <td>{{ query.time }}</td>
+    </tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+	
+</body>
+
+</html>

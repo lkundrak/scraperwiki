@@ -1,0 +1,13 @@
+#  This file created by cloneuml, do not edit.
+#
+service %{unm}
+{
+        type            = UNLISTED
+        flags           = NODELAY KEEPALIVE
+        socket_type     = stream
+        protocol        = tcp
+        redirect        = %{eth} %{port}
+        port            = %{via}
+        user            = nobody
+        wait            = no
+}

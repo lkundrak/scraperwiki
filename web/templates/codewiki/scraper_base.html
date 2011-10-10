@@ -1,0 +1,71 @@
+{% extends "frontend/base.html" %}
+
+{% block meta %}
+    <meta property="og:title" content="{{ scraper.title }}" />
+    <meta property="og:description" content="SCRAPER DESCRIPTION" />
+    <meta property="og:image" content="SCRAPER IMAGE URL" />
+    <meta property="og:site_name" content="ScraperWiki" />
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/codeoverview.js?{{settings.REVISION}}"></script>
+
+    {% if user.is_authenticated %}
+        <script type='text/javascript'>
+        $(document).ready(function() {
+            setupCodeOverview('{{scraper.short_name}}');
+        });
+        </script>
+    {% endif %}
+
+{% endblock %}
+
+{% block title %}{% if scraper.owner.get_profile.name %}{{scraper.owner.get_profile.name}}{% else %}{{scraper.owner.username}}{% endif %} / {{ scraper.title }}{% endblock %}
+{% block rss %}<link rel="alternate" type="application/rss+xml" title="RSS" href="/feeds/code_object_comments/{{ scraper.short_name }}" />{% endblock %}
+
+{% block header %}
+	<h2>
+      <a href="{% if scraper.owner.username %}{% url profiles_profile_detail scraper.owner.username %}{% endif %}">{% if scraper.owner %}{% if scraper.owner.get_profile.name %}{{scraper.owner.get_profile.name}}{% else %}{{scraper.owner.username}}{% endif %}{% endif %}</a> / 
+       {% if user.is_authenticated %}
+         <span id="hCodeTitle" title="Click to edit&hellip;">{{ scraper.title }}</span> 
+         <a id="aEditTitle" title="Edit title">Edit title</a>
+       {% else %}
+         {{ scraper.title }}
+       {% endif %}
+    </h2>
+	<p>{{scraper.language|lower}} &bull;
+	    
+        {% if scraper.privacy_status == 'public' %}
+	    <abbr title="This {{scraper.wiki_type|lower}} can be viewed and edited by anyone">public {{scraper.wiki_type|lower}}</abbr>
+        {% endif %}
+	    {% if scraper.privacy_status == 'visible' %}
+	    <abbr title="This {{scraper.wiki_type|lower}} can be viewed by anyone, but edited only by its owner and listed contributors">protected {{scraper.wiki_type|lower}}</abbr>
+        {% endif %}
+        {% if scraper.vault %}
+        <abbr title="This {{scraper.wiki_type|lower}} can only be viewed or edited by members of &lsquo;{{ scraper.vault.name }}&rsquo;">This {{scraper.wiki_type|lower}} is in {% if scraper.vault.user.username == user.username %}your vault{% else %}{{scraper.vault.user.get_profile.name}}&rsquo;s vault{% endif %} &lsquo;<a href="/vaults/">{{ scraper.vault.name }}</a>&rsquo;</abbr>
+        {% else %}
+            {% if scraper.privacy_status == 'private' %}
+	    <abbr title="This {{scraper.wiki_type|lower}} can only be viewed or edited by its owner or listed contributors">private {{scraper.wiki_type|lower}}</abbr>
+	        {% endif %}
+        {% endif %}
+	{% if scraper.forked_from %}
+        &bull; Fork of <a href="{% url code_overview scraper.forked_from.wiki_type scraper.forked_from.short_name %}">{{scraper.forked_from.short_name}}</a>
+    {% endif %}
+</p>
+{% endblock %}
+
+{% block tabs %}
+    {% include 'codewiki/includes/tabs.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="content full">
+        <div class="page_tab_body">
+            {% block tab %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock content %}
+
+
+

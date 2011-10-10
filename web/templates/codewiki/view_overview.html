@@ -1,0 +1,155 @@
+{% extends "codewiki/scraper_base.html" %}
+
+{% block javascript %}
+    {{block.super}}
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/ZeroClipboard.js?"></script>
+{% endblock %}
+
+{% load humanize %}
+{% load markup %}
+{% block tab %}
+{% load screen_shot %}
+
+<fieldset>
+    <input type="text" id="id_api_base" value="{{api_base}}" class="hide">
+</fieldset>
+
+<div class="page_title">
+    <ul class="title_links">
+        <li class="embed"><a href="#embed">Add to your site</a></li>
+        <li class="fork"><a href="{% url editor scraper.wiki_type scraper.language %}?fork={{scraper.short_name}}">Fork this {{scraper.wiki_type}}</a></li>
+        <li class="view"><a href="{{settings.VIEW_URL}}{% url rpcexecute scraper.short_name %}">View as full page</a></li>
+    </ul>
+</div>
+
+<div class="content full">
+{% if htmlcode %}
+    {{htmlcode|safe}}
+{% else %}
+    <div class="screenshot_large">
+      <a href="{{settings.VIEW_URL}}{% url rpcexecute scraper.short_name %}">
+          <span>Click to open this view</span>
+      </a>
+      {% screen_shot scraper 'large' %}
+   </div>
+{% endif %}
+</div>
+
+<div class="content full" id="scraper_about">
+    <h2>About this view {% if user.is_authenticated %}
+        {% if user_edits_it %}
+            <a href="#" id="aEditAboutScraper" class="edit">[edit description]</a>
+        {% endif %}
+    {% else %}
+        <a href="{% url login %}?next={% url code_overview 'view' scraper.short_name %}" class="edit">[sign in to edit description]</a>
+    {% endif %}</h2>        
+    <div class="text_wiki">
+        <div id="divAboutScraper">
+        {% if scraper.description %}
+            {{ scraper.description_ashtml|safe }}
+        {% else %}
+            <p>This view has no description. {% if user.is_authenticated %}
+                {% if user_edits_it %}
+                    <a href="#" id="aEditAboutScraperNew">Would you like to add one?</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url login %}?next={% url code_overview 'view' scraper.short_name %}">Sign in to add one.</a>
+            {% endif %}</p>
+        {% endif %}
+        </div>
+    </div>
+
+    {%if descriptionfromcode %}
+    <div id="descriptionfromcode" class="staff">
+      <h2>Text derived from the code</h2>
+      {{descriptionfromcode|safe}}
+    </div>
+    {% endif %}
+</div>
+
+{% include 'codewiki/includes/tags.html' %}
+
+<div class="content full" id="scraper_views">
+{% if related_scrapers %}            
+    <h3>Scrapers used in the making of this view</h3>
+    <ul>
+        {% for related_scraper in related_scrapers %}
+            <a href="{% url profiles_profile_detail related_scraper.owner.username %}">{% if related_scraper.owner.get_profile.name %}{{ related_scraper.owner.get_profile.name }}{% else %}{{related_scraper.owner.username}}{% endif %}</a> /
+            <a href="{% url code_overview related_scraper.wiki_type related_scraper.short_name %}">{{related_scraper.title}}</a>
+        {% endfor %}
+    </ul>
+{% endif %}
+</div>
+
+<div class="content col right" id="scraper_schedule">
+    {% include 'codewiki/includes/admin_controls.html' %}
+</div>
+
+<div class="content col left" id="scraper_contributors">
+    <h3>Contributors</h3>
+    {% include 'codewiki/includes/contributors.html' %}
+</div>
+
+<div class="content col left staff" id="scraper_attachables">
+    <h3>Attachable databases</h3>
+    {% include 'codewiki/includes/database_attachables.html' %}
+</div>
+
+<br class="clear"/>    
+<div class="content full" id="add_view_to_site">
+    <a name="embed"></a>
+    <h3>Add this view to your site <span id="copy"></span></h3>
+    <code>{% filter force_escape|linebreaksbr %}<div>
+            <iframe width="100%" height="400px" src="{{settings.VIEW_URL}}{% url rpcexecute scraper.short_name %}"></iframe>
+            <img src="https://scraperwiki.com/media/images/powered.png" alt="Powered by ScraperWiki.com" />
+        </div>{% endfilter %}
+    </code>
+</div>
+
+<br class="clear"/>  
+
+{% endblock %}
+{% block jrun_script %}
+<script>
+{{block.super}}
+$(document).ready(function() 
+{
+    setupCodeOverview('{{scraper.short_name}}');
+    setupChangeEditorStatus();
+    setupChangeAttachables('{{scraper.short_name}}'); 
+    {% if user.is_authenticated %}
+    //    setupButtonConfirmation("btnDeleteScraper", "Are you absolutely sure? THERE IS NO UNDO, clicking 'ok' will delete this view.");
+    {% endif %}
+
+    $("#add_view_to_site h3").append('<a href="#" class="copy_to_clipboard" title="Click to copy this snippet to your clipboard">Copy</a>');
+
+    // Make the copy button work
+    ZeroClipboard.setMoviePath( '{{ MEDIA_URL }}js/ZeroClipboard.swf' );
+    $(".copy_to_clipboard").each(function(i) {
+        
+        var el = $(this);
+        var parent = el.parent();
+        var code = parent.siblings('code');
+            
+        clip = new ZeroClipboard.Client();
+        clip.setText(code.text());
+        clip.setHandCursor( true );
+
+        clip.addEventListener( 'complete', function(client, text) {
+            //  alert("Copied text to clipboard: " + text );
+            el.text('Copied').addClass('copied');
+            el.focus(); // so flash doesn't have keyboard focus afterwards
+        });
+        
+        clip.addEventListener( 'onMouseOver', function(client, text) {
+            if(el.is('.copied')){
+                el.text('Copy').removeClass('copied');
+            }
+        });
+        
+        clip.glue(el[0], parent[0]);
+        
+    });
+});
+</script>
+{% endblock %}

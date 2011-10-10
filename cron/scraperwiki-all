@@ -1,0 +1,7 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+0 3 * * * root tar zcfP /root/backup/scraperwiki.tar.gz /var/www/scraperwiki --exclude "/var/www/scraperwiki/resourcedir"
+0 5 * * * root tar zcfP /root/backup/etc.tar.gz /etc
+
+0 23 * * * root rsync -qazr -e 'ssh -i /root/backup-key.rsa' /root/backup/ swbackup@kippax.scraperwiki.com:/home/swbackup/burbage/ -b --suffix=.`date +\%A | tr '[A-Z]' '[a-z]'`

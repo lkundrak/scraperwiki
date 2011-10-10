@@ -1,0 +1,8 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# m h  dom mon dow   command
+
+# Run screenshooters locally
+0 */8 * * * scraperdeploy cd /var/www/scraperwiki/ && source bin/activate && cd web &&  xvfb-run --auto-servernum --server-args="-screen 0, 1440x900x24" python manage.py take_screenshot --verbose --url_prefix=https://devviews.scraperwiki.com --run_scrapers
+0 */8 * * * scraperdeploy cd /var/www/scraperwiki/ && source bin/activate && cd web &&  xvfb-run --auto-servernum --server-args="-screen 0, 1440x900x24" python manage.py take_screenshot --verbose --url_prefix=https://devviews.scraperwiki.com --run_views

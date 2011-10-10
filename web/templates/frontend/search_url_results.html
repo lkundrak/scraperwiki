@@ -1,0 +1,28 @@
+{% extends "frontend/base.html" %}
+{% block title %}Find datasets{% endblock %}
+{% block rss %}<link rel="alternate" type="application/rss+xml" title="RSS" href="/feeds/latest_code_objects_by_search_term/{{ query }}" />{% endblock %}
+
+{% block header %}
+	<h2>Search results by url for <form id="frmSearchResults" class="inline_form" action="/search/" method="POST">
+        {{ form.q }}
+        <input type="submit" value="Go" />
+    </form></h2>
+    <p>
+      {{ scrapers_num_results }} result{{scrapers_num_results|pluralize}} found &bull; 
+      <a href="/feeds/latest_code_objects_by_search_term/{{ query }}">Create RSS feed for this search term</a>
+    </p>
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        {% if scrapers %}
+            <ul class="scraper_list">
+                {% for code in scrapers %}
+                    {% include 'frontend/includes/code_object_line.html' %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No scrapers found</p>
+        {% endif %}
+    </div>
+{% endblock %}

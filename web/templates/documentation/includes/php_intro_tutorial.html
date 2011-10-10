@@ -1,0 +1,126 @@
+<p>Write a real scraper by copying and pasting code, for programmers or
+non-programmers (30 minutes).
+</p>
+
+<h2>1. Make a new scraper</h2>
+
+<p>We're going to scrape the averge number of years children spend
+in school in different countries from 
+<a href="http://unstats.un.org/unsd/demographic/products/socind/education.htm">this page</a> on a UN site.
+</p>
+
+<p>Pick "new scraper" from the main menu on the right, and choose PHP.
+(If you're more comfortable with Python or Ruby, choose a different language
+above). You'll get a web based code editor.
+</p>
+
+<p>Put in a few lines of code to show it runs, and click the "Run" button or
+type Ctrl+R.
+</p>
+
+<code>print "Hello, coding in the cloud!";
+</code>
+
+<p>(As we go through this tutorial, you can copy and paste each 
+block of code onto the end of your growing scraper, and run it each time.)</p>
+
+<p>The code runs on ScraperWiki's servers. You can see any output you
+printed in the Console tab at the bottom of the editor.
+</p>
+
+<h2>2. Download HTML from the web</h2>
+
+<p>You can use any normal PHP function to crawl the web, such as cURL.
+There is also a simple built in ScraperWiki function which may be easier to use.
+</p>
+
+<code>$html = scraperWiki::scrape("http://unstats.un.org/unsd/demographic/products/socind/education.htm");
+print $html . "\n";
+</code>
+
+<p>When you print something quite large, click "more" in the console
+to view it all. Alternatively, go to the Sources tab in the editor to see
+everything that has been downloaded.</p>
+
+<h2>3. Parsing the HTML to get your content</h2>
+
+<p>To help your parse the HTML we provide a Simple HTML DOM script that you can use as follows.
+</p>
+
+<code>require 'scraperwiki/simple_html_dom.php';
+$dom = new simple_html_dom();
+$dom->load($html);
+foreach($dom->find("div[@align='left'] tr.tcont") as $data){
+    $tds = $data->find("td");
+    $record = array(
+        'country' => $tds[0]->plaintext, 
+        'years_in_school' => intval($tds[4]->plaintext)
+    );
+    print_r($record);
+}
+</code>
+
+<p>The bits of code like 'tr.tcont' are CSS selectors, just like 
+those used to style HTML.
+</p>
+
+<h2>4. Saving to the ScraperWiki datastore</h2>
+
+<p>The datastore is a magic SQL store, one where you don't need to make
+a schema up front.</p>
+
+<p>Replace "print_r($record);" in the loop with this save command:</p>
+
+<code>    scraperwiki::save(array('country'), $record);
+</code>
+
+<p>The unique keys (just country in this case) identify each piece of data.
+When the scraper runs again, existing data with the same values for the
+unique keys is replaced.</p>
+
+<p>Go to the Data tab in the editor to see the data loading in. 
+Wait until it has finished.</p>
+
+<h2>5. Getting the data out again</h2>
+
+<p>If you haven't done so yet, press "save scraper" at the bottom
+right of the editor. You'll need to give your scraper a title, and to make a
+ScraperWiki account if you don't have one already.</p>
+
+<p>Now, click on the Scraper tab at the top right to see a preview of your
+data.  The easiest way to get it all out is to "Download spreadsheet (CSV)".
+</p>
+
+<p>For more complex queries "Explore with ScraperWiki API". Try this
+query in the SQL query box.</p>
+
+<code>select * from swdata order by years_in_school desc limit 10
+</code>
+
+<p>It gives you the records for the ten countries where children spend
+the most years at school. </p>
+
+<p>Notice that as well as JSON, you can also get custom CSV files using 
+the SQL query in the URL.</p>
+
+<h2>What next?</h2>
+
+<p>If you have a scraper you want to write, and feel ready, then get going. Otherwise...
+
+{% load doc_links %}
+<ul>
+    <li>
+        <a href="{% url docs language %}">More documentation</a> on ScraperWiki
+        and common PHP scraping libraries.
+    </li>
+    <li>
+        <a href="{% url get_involved %}" title="Get involved">Get involved!</a>
+        Fix, tag or document our shared public data scrapers.
+    </li>
+</ul>
+
+
+
+
+
+

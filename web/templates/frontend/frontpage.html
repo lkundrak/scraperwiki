@@ -1,0 +1,124 @@
+{% extends "frontend/base.html" %}
+{% load gravatar %}
+{% load sw_user_filters %}
+
+{% block title %}Refine, reuse and request data{% endblock %}
+{% block meta %}<meta name="description" content="Scrape and link data using Ruby, Python and PHP scripts that run maintenance-free in the cloud. Request data for scoops and better decisions."/>{% endblock %}
+
+{% block header %}
+			<div id="frontpage_intro">
+			<a class="create editor_scraper" href="{% url choose_template 'scraper' %}">Create a scraper</a>
+            <a class="tour" href="{% url request_data %}">Request data</a>
+				<p>A community of programmers sifting <br/>information to give you the edge.</p>
+			</div>
+			<div id="frontpage_slider">
+				<div id="intro_developer">
+					<h3>Data Developer?</h3>
+					<p>Refine and reuse data with Ruby,<br/>Python and PHP scripts that run <br/>maintenance-free in the cloud.</p>
+					<a id="more_developer" href="#more_developer_div">&laquo; Find out more</a>
+				</div>
+				<div id="intro_requester">
+					<h3>Data Requester?</h3>
+					<p>Get data for predictability, scoops <br/>and better decisions. Find your <br/>surprises before they surprise you!</p>
+					<a id="more_requester" href="#more_requester_div">Find out more &raquo;</a>
+				</div>
+				<img id="blob_developer" src="{{ MEDIA_URL }}images/blob_developer.png" width="200" height="310" alt="A developer with a hard hat and pick axe" />
+				<img id="blob_requester" src="{{ MEDIA_URL }}images/blob_requester.png" width="190" height="260" alt="A businessperson with a ruby and gold ingot" />
+				<div id="more_developer_div">
+					<h3>Why developers love ScraperWiki</h3>
+					<table cellpadding="0" cellspacing="0">
+						<tr class="icons">
+							<td><img src="{{ MEDIA_URL }}images/icon_languages.gif" width="100" height="64" alt=""/></td>
+							<td><img src="{{ MEDIA_URL }}images/icon_vault.gif" width="100" height="64" alt=""/></td>
+							<td><img src="{{ MEDIA_URL }}images/icon_globe.gif" width="100" height="64" alt=""/></td>
+						</tr>
+						<tr class="usps">
+                            <td>SQL. Cron. JSON.<br/>No boring sysadmin.</td>
+							<td>Somewhere to keep all<br/>your dirty little scripts</td>
+							<td>Real-time coding, with a<br/> community of geeks</td>
+						</tr>
+					</table>
+					<p class="last"><a class="back" href="#intro_developer">&laquo; Go Back</a> or <a class="forward" href="{% url docs 'ruby' %}">Get started!</a></p>
+				</div>
+				<div id="more_requester_div">
+					<h3>Why people who need data love ScraperWiki</h3>
+					<table cellpadding="0" cellspacing="0">
+						<tr class="icons">
+							<td><img src="{{ MEDIA_URL }}images/icon_quickly.gif" width="100" height="64" alt=""/></td>
+							<td><img src="{{ MEDIA_URL }}images/icon_1000s.gif" width="100" height="64" alt=""/></td>
+							<td><img src="{{ MEDIA_URL }}images/icon_visualise.gif" width="100" height="64" alt=""/></td>
+						</tr>
+						<tr class="usps">
+							<td>We make the data available<br/>quickly and easily</td>
+							<td>1000s of developers<br/>at your fingertips!</td>
+							<td>Simply analyse, aggregate<br/>and visualise data.</td>
+						</tr>
+					</table>
+					<p class="last"><a class="back" href="#intro_requester">&laquo; Go Back</a> or <a class="forward" href="{% url request_data %}">Request data!</a></p>
+				</div>
+			</div>
+{% endblock %}
+{% block content_outer  %}
+    <div id="page_outer">
+		<div id="page_inner">
+
+			<div class="featured">
+        		<h2><a href="{% url scraper_list_wiki_type 'scraper' %}" title="Browse all scrapers">Featured Scrapers & Views</a></h2>
+				<ul>
+				{% load markup %}
+                {% load screen_shot %}
+	    		{% for code in featured_both %}<li><a href="{% url code_overview code.wiki_type code.short_name %}">
+                            {% screen_shot code 'medium' %}
+                            <h4>{% if code.owner.get_profile.name %}{{ code.owner.get_profile.name }}{% else %}{{code.owner.username}}{% endif %} / {% if code.title %}{{ code.title }}{% else %}{{ code.short_name }}{% endif %}</h4>
+                            <span class="about">{{code.language}}&nbsp;&nbsp;{{code.wiki_type}}</span>
+                            <span class="when">Created {{code.created_at|timesince}} ago</span>
+                        </a></li>{% endfor %}
+	    		    <li class="clear"></li>
+				</ul>
+			</div>
+			
+			<div class="involved">
+			    <h2>Get involved</h2>
+			    <a id="new_scraper"class="editor_scraper" href="{% url choose_template 'scraper' %}"><strong>Create a new scraper</strong> <span>Start using our collaborative coding environment right now for free.</span></a>
+			    <a id="new_request" href="{% url request_data %}"><strong>Request a new scraper</strong> <span>Not a developer? No problem! Tell us what you want and we&rsquo;ll build it</span></a>
+			    <a id="fix_scraper" href="{% url get_involved %}#technical"><strong>Fix a broken scraper</strong> <span>Fancy a challenge? Try getting a broken scraper back onto its feet.</span></a>
+			    <a id="tag_scraper" href="{% url get_involved %}#nontechnical"><strong>Spring cleaning</strong> <span>Help us organise our scrapers and views by describing and tagging them.</span></a>
+			</div>
+			
+			<div class="tags">
+			    <h2><a href="{% url all_tags %}" title="Browse by tag">Popular tags</a></h2>
+    			<ul class="tags">
+                {% for tag in tags %}
+    				<li><a href="{% url single_tag tag.name %}">{{tag.name}}</a></li>
+                {% endfor %}
+    			</ul>
+			</div>
+			
+			<script type="text/javascript">
+			    $(function(){
+                    var num = $('ul.tags li').length;
+                    $('ul.tags li').each(function(){
+                        var i = $(this).prevAll().length;
+                        $(this).children('a').css('opacity', (1 - (i * (1/num)) )).hover(function(){ $(this).css('opacity','1'); }, function(){ $(this).css('opacity', (1 - (i * (1/num)))); });
+                    });
+                });
+			</script>
+			
+			{% comment %}
+			<div class="activity">
+			    <h2><a>Recent Activity </a></h2>
+			</div>
+			{% endcomment %}
+			
+			<div class="activity">
+			    <h2><a>From the Blog</a></h2>
+			    {% load blog_latest %}
+                {% blog_latest %}
+            </div>
+			
+			<br class="clear"/>
+			
+		</div>
+	</div>
+			
+{% endblock %}

@@ -1,0 +1,30 @@
+<h3>Delete &amp; reset</h3>
+{% if user_owns_it or user.is_staff %}    
+  {% if user.is_staff and not user_owns_it %}
+    <div class="staff delete_and_reset">
+  {% else %}
+    <div class="delete_and_reset">
+  {% endif %}
+
+    {% ifequal scraper.wiki_type 'scraper' %}
+      <form action="{% url scraper_delete_data scraper.short_name %}" method="post">
+        {% csrf_token %}        
+        <input type="hidden" name="delete_data" value="1" />
+        <input type="submit" id="btnClearDatastore" class="danger" value="Clear the datastore?" />
+        <a href="#" class="submit_link"><img src="{{ MEDIA_URL }}images/icons/clean.png" width="16" height="16" alt="" /> Clear the datastore</a>
+        <p>Removes all the data this <br/>scraper has collected.</p>
+      </form>
+    {% endifequal %}
+
+  <form action="{% url scraper_delete_scraper scraper.wiki_type scraper.short_name %}" method="post">
+    {% csrf_token %}    
+    <input type="hidden" name="delete_scraper" value="1" />
+    <input type="submit" id="btnDeleteScraper" class="danger" value="Delete this {{scraper.wiki_type}}?" />
+    <a href="#" class="submit_link"><img src="{{ MEDIA_URL }}images/icons/cross.png" width="16" height="16" alt="" /> Delete this {{scraper.wiki_type}}</a>
+  </form>
+  </div>
+{% else %}
+  <p class="infobox">Only the creator of a {{scraper.wiki_type}} can delete it.</p>
+{% endif %}
+
+

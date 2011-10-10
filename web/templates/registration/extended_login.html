@@ -1,0 +1,125 @@
+{% extends "frontend/base.html" %}
+
+{% load formhelper %}
+
+{% block title %}Sign in or create an account{% endblock %}
+
+{% block header %}
+	<h2>Sign in or create an account</h2>
+	<p>If you are an existing user please sign in, if not create a new account</a>.</p>
+{% endblock %}
+
+{% block errors %}
+    {% if login_form.errors %}
+        <ul>
+            {% form_errors login_form %}
+        </ul>
+    {% endif %}
+
+    {% if registration_form.errors %}
+        <ul>
+            {% form_errors registration_form %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
+
+
+
+{% block content %}
+<div class="login">
+    <form method="post" action="." id="login_form">
+        {% csrf_token %}
+        {% if login_form.non_field_errors %}
+            <div id="main_error">
+                {% for error in login_form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+	    <fieldset>
+	        <input type="hidden" name="redirect" value="{{redirect}}"/>
+	    </fieldset>
+	    <ul class="form">
+	        <li{% if login_form.username.errors %} class="error"{% endif %}>
+        	    {{ login_form.user_or_email.label_tag }}
+        	    {{ login_form.user_or_email }}
+    	        {% field_errors login_form.user_or_email %}
+	        </li>
+	        <li{% if login_form.password.errors %} class="error"{% endif %}>
+    	        {{ login_form.password.label_tag }}
+    	        {{ login_form.password }}
+    	        {% field_errors login_form.password %}
+                <a class="forgotten" href="/accounts/password/reset/">Forgotten your password?</a> 	        
+    	    </li>
+        </ul>
+        <div class="last">
+        <p class="remember_me">
+            {{ login_form.remember_me }}&nbsp;{{ login_form.remember_me.label_tag }}
+        </p>
+        <p class="last">
+		    <input type="submit" id="login_submit" name="login" value="Log in" />
+		</p>
+		</div>
+		<br class="clear" />
+	</form>
+</div>
+
+<div class="signup">
+
+	<form method="post" action="." id="registration_form">
+        {% csrf_token %}
+        <h3>Create a free account</h3>
+        {% if registration_form.non_field_errors %}
+            <div id="main_error">
+                {% for error in registration_form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+	    <fieldset>
+	       <input type="hidden" name="redirect" value="{{redirect}}"/>
+	    </fieldset>
+       	<div id="divSignupTerms">
+           	<h4>Terms and conditions <a href="{% url terms %}" target="_new">Open in a new window</a></h4>
+            <div class="scroll">
+               {% include 'shared/terms_and_conditions.html' %}
+            </div>
+            <ul>
+               <li>
+            	    {{ registration_form.tos }}
+            	    {{ registration_form.tos.label_tag }}        	    
+            	    {% field_errors registration_form.tos %}
+            	</li>
+            </ul>
+       </div>
+	    <ul class="form">	    
+	        <li{% if registration_form.name.errors %} class="error"{% endif %}>
+    	    {{ registration_form.name.label_tag }}
+    	    {{ registration_form.name }}
+    	    {% field_errors registration_form.name %}        	        
+    	    </li>
+	        <li{% if registration_form.username.errors %} class="error"{% endif %}>
+    	    {{ registration_form.username.label_tag }}
+    	    {{ registration_form.username }}
+    	    {% field_errors registration_form.username %}        	        
+    	    </li>
+	        <li{% if registration_form.email.errors %} class="error"{% endif %}>
+    	    {{ registration_form.email.label_tag }}
+    	    {{ registration_form.email }}
+                {% field_errors registration_form.email %}        	    
+	        </li>
+	        <li{% if registration_form.password1.errors %} class="error"{% endif %}>
+        	    {{ registration_form.password1.label_tag }}
+        	    {{ registration_form.password1 }}
+                {% field_errors registration_form.password1 %}            	    
+        	</li>
+	        <li{% if registration_form.password2.errors %} class="error"{% endif %}>
+        	    {{ registration_form.password2.label_tag }}
+        	    {{ registration_form.password2 }}
+                {% field_errors registration_form.password2 %}            	    
+        	</li>
+    	</ul>
+        <p class="last">
+		    <input type="submit" name="register" value="Create your account" />
+		</p>
+	</form>
+	
+</div>
+{% endblock %}

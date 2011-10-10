@@ -1,0 +1,41 @@
+#!/bin/sh
+
+DESC="DataProxy"
+NAME=dataproxy
+DAEMON=/var/www/scraperwiki/uml/dataproxy/dataproxy.py
+VARDIR=/var/www/scraperwiki/uml/var
+export PYTHONPATH=/var/www/scraperwiki/uml
+LOGFILE=$VARDIR/log/$NAME.log
+PIDFILE=$VARDIR/run/$NAME.pid
+DAEMON_ARGS="--pidfile=$PIDFILE --logfile=$LOGFILE"
+
+do_start()
+{
+	mkdir -p ./var/run
+	mkdir -p ./var/log
+	$DAEMON $DAEMON_ARGS
+}
+
+do_stop()
+{
+	[ -f $PIDFILE ] && {
+		kill -TERM `cat $PIDFILE`
+		rm -f $PIDFILE
+		}
+}
+
+case "$1" in
+  start)
+	do_start
+	;;
+  stop)
+	do_stop
+	;;
+  restart)
+  	do_stop
+  	do_start
+	;;
+  *)
+	echo "Usage: orbited {start|stop|restart}" >&2
+	;;
+esac

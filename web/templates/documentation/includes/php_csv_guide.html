@@ -1,0 +1,57 @@
+<p>Comma-separated value files are a quite commonly used text form of
+spreadsheet. To process them often requires special cases, such as
+parsing dates or removing bad rows.</p>
+
+<p>For more details, read PHP's <a href="http://php.net/manual/en/function.str-getcsv.php">
+str_getcsv documentation</a>. 
+</p>
+
+<h2>Reading rows</h2>
+
+<p>Download the CSV file first. (If there are quirks in the input file, you
+might at this point want to preprocess the data using, for example, the
+str_replace function)
+</p>
+
+
+<code>$data = scraperWiki::scrape('http://s3-eu-west-1.amazonaws.com/ukhmgdata-cabinetoffice/Spend-data-2010-11-01/Spend-Transactions-with-descriptions-HMT-09-Sep-2010.csv');
+</code>
+
+<p>Split it into a array of lines.</p>
+
+<code>$lines = explode("\n", $data);
+</code>
+
+<p>You can then loop through the lines, and use the PHP str_getcsv function to
+make an array.</p>
+
+<code>foreach($lines as $row) {
+    $row = str_getcsv($row);
+    printf("£%s spent on %s\n", $row[7], $row[3]);
+}
+</code>
+
+<h2>Saving to the datastore</h2>
+
+<p>Conventionally the first line gives the names for the columns.
+Extract it separately first.</p>
+
+<code>$header = str_getcsv(array_shift($lines));
+</code>
+
+<p>To save the data, you need to convert everything to an associative array.
+We also convert the 'Amount' row to a number type, so that it can then be added
+and sorted.</p>
+
+<code>foreach($lines as $row) {
+    $row = str_getcsv($row);
+    if ($row[0]) {
+        $record = array_combine($header, $row);
+        $record['Amount'] = (float)$record['Amount'];
+        scraperwiki::save(array('Transaction Number', 'Expense Type', 'Expense Area'), $record);
+    }
+}
+</code>
+
+
+

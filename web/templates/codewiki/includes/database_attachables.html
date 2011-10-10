@@ -1,0 +1,38 @@
+<input type="hidden" id="admincontrolattachables" value="{% url scraper_admin_controlattachables scraper.short_name %}"/>
+
+<ul id="databaseattachablelist">
+  {% for attachablescraper in scraper.attachable_scraperdatabases %}
+    <li class="{% ifequal attachablescraper.privacy_status 'visible' %}status protected{% endifequal %}{% ifequal attachablescraper.privacy_status 'private' %}status private{% endifequal %}">
+      [Attaches to] <a href="{% url code_overview attachablescraper.wiki_type attachablescraper.short_name %}">{{attachablescraper.title}}</a>
+      <span class="hide">{{attachablescraper.short_name}}</span>
+      {% if user_edits_it %}
+        <input type="button" value="remove" class="removebutton"/>
+      {% endif %}        
+    </li>
+  {% endfor %}
+</ul>
+
+<ul id="databaseattachfromlist">
+  {% for attachfromscraper in scraper.attachfrom_scrapers %}
+    <li class="{% ifequal attachfromscraper.privacy_status 'visible' %}status protected{% endifequal %}{% ifequal attachfromscraper.privacy_status 'private' %}status private{% endifequal %}">
+      <a href="{% url code_overview attachfromscraper.wiki_type attachfromscraper.short_name %}">{{attachfromscraper.title}}</a> [Attaches to here] 
+    </li>
+  {% endfor %}
+</ul>
+
+{% if user_edits_it %}
+    <div id="addnewattachable">
+      <span class="hide">
+        Attachable scraper:
+        <input type="text" class="text">
+        <input type="button" value="Cancel" class="cancelbutton">
+        <input type="button" value="Add" class="addbutton">
+      </span>
+      <a><img src="{{ MEDIA_URL }}images/icons/add.png" width="16" height="16" /> Add a new attachable database
+        <img id="attachables_loading" src="{{ MEDIA_URL }}images/load.gif" style="display: none">
+      </a>
+    </div> 
+    <div id="attachableserror" style="display: none">
+        None
+    </div>
+{% endif %}

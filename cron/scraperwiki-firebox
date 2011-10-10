@@ -1,0 +1,6 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# Clean up the temporary pivot directories this leaves
+0,20,40 * * * * root /bin/rm -rf /tmp/lxc-*
+

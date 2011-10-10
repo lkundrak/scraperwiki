@@ -1,0 +1,95 @@
+{% load markup %}
+{% load screen_shot %}
+{% load humanize %}
+
+<li class="code_object_line">
+
+    <table class="code_about" cellspacing="0" cellpadding="0">
+        {% ifequal code.wiki_type 'view' %}
+          <tr class="codewiki_type {{code.wiki_type|lower}}">
+            <td class="label">Type</td>
+            <td class="link"><a href="{{settings.VIEW_URL}}{% url rpcexecute code.short_name %}">{{code.wiki_type|lower}}</a></td>
+          </tr>
+        {% else %}
+          <tr class="codewiki_type {{code.wiki_type|lower}}">
+            <td class="label">Type</td>
+            <td class="link">{{code.wiki_type|lower}}</td>
+          </tr>
+        {% endifequal %}
+
+        <tr class="language {{code.language|lower}}">
+          <td class="label">Language</td>
+          <td class="link"><a href="{% url editor_edit code.wiki_type code.short_name %}" title="Edit this {{code.wiki_type|lower}}">{{code.language|lower}}</a></td>
+        </tr>
+        
+        {% ifequal code.privacy_status 'visible' %}
+	    <tr class="status protected">
+          <td class="label">Status</td>
+          <td class="link">Protected</td>
+        </tr>
+        {% endifequal %}
+        {% if code.vault %}
+            <tr class="status private">
+                <td class="label">Status</td>
+                <td class="link">In a vault</td>
+            </tr>
+        {% else %}
+	        {% if code.privacy_status == 'private' %}
+    	    <tr class="status private">
+              <td class="label">Status</td>
+              <td class="link">Private</td>
+            </tr>
+            {% endif %}
+        {% endif %}
+
+        {% if code.is_sick_and_not_running %}
+          <tr class="notes">
+            <td class="label">Notes</td>
+            <td class="link about_sick"><a href="{% url code_overview code.wiki_type code.short_name %}">Maintenance<br/>required</a>
+          </tr>
+        {% endif %}
+        
+    </table>
+    
+    <a href="{% url code_overview code.wiki_type code.short_name %}" class="screenshot">{% screen_shot code 'small' %}</a>
+    
+    <h3>
+      <a class="owner" href="{% if code.owner.username %}{% url profiles_profile_detail code.owner.username %}{% endif %}">{% if code.owner.get_profile.name %}{{ code.owner.get_profile.name }}{% else %}{{code.owner.username}}{% endif %}</a> / <a href="{% url code_overview code.wiki_type code.short_name %}">{% if code.title %}{{ code.title }}{% else %}{{ code.short_name }}{% endif %}</a>
+    </h3>
+    
+    <p class="context">
+        {% if code.line_count %}
+            {{code.line_count|intcomma}} line{{code.line_count|pluralize}} of code.
+        {% else %}
+            No lines of code yet.
+        {% endif %}
+        {% if code.scraper %}
+            {% if code.scraper.record_count %}
+                {{code.scraper.record_count|intcomma}} row{{code.scraper.record_count|pluralize}} of data.
+            {% else %}
+                No rows of data yet.
+            {% endif %}
+        {% endif %} 
+    </p>
+    <p class="context">
+        {% if on_dashboard and code.scraper %}
+              {% ifnotequal code.scraper.next_run.year 9999 %}
+                {% ifequal code.scraper.next_run|timeuntil '0 minutes' %}
+                  Scheduled next run ASAP.
+                {% else %}
+                  Scheduled next run in {{code.scraper.next_run|timeuntil}}.
+                {% endifequal %}
+              {% else %}
+                No future run scheduled.
+              {% endifnotequal %}
+        {% else %}
+            Created {{code.created_at|timesince}} ago.
+        {% endif %}
+    </p>
+    
+    <p class="description">{{ code.description_ashtml|striptags|truncatewords:75 }}</p>
+    
+    <span class="clear"></span>
+    
+</li>
+

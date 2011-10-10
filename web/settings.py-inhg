@@ -1,0 +1,108 @@
+"""
+This file imports all gobal settings and defined new ones.
+
+Anything imported in global_settings can be overwriten for a local install.
+
+"""
+from global_settings import *
+
+import os
+import sys
+
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
+ADMINS = (
+    # ('Your Name', 'your_email@domain.com'),
+)
+
+MANAGERS = ADMINS
+DATABASES = {
+    'default': {
+        'ENGINE'     : '',
+        'NAME'       : '',
+        'USER'       : '',
+        'PASSWORD'   : '',
+    }
+
+}
+URL_ROOT            = '/'           # prefix for URLs to run not at top level of domain
+
+# Ways of speeding up tests.
+# See: http://stackoverflow.com/questions/3096148/how-to-run-djangos-test-database-only-in-memory
+if 'test' in sys.argv:
+    DATABASES['default']['TEST_NAME'] = ':memory:'
+    DATABASES['default']['ENGINE'] = 'sqlite3'
+    SOUTH_TESTS_MIGRATE = False
+    OVERDUE_SQL = "julianday(strftime(?,last_run) + run_interval,'unixepoch') < julianday('now', 'localtime') or last_run is null"
+    OVERDUE_SQL_PARAMS = ['%s']
+
+HOME_DIR = '' # the parent directory of SCRAPERWIKI_DIR
+SCRAPERWIKI_DIR     = HOME_DIR + '/web/'      # top level directory of the installation
+
+SCRAPERWIKI_DIR     = os.path.dirname(os.path.realpath(__file__)) # top level directory of the installation
+HOME_DIR            = os.path.dirname(SCRAPERWIKI_DIR) # the parent directory of SCRAPERWIKI_DIR
+CROPPER_SOURCE_DIR  = HOME_DIR + '/croppercache/source/'          # directory of cached PDF files
+CROPPER_IMG_DIR     = HOME_DIR + '/croppercache/img/'             # directory of rendered and cropped pdfs
+
+SPLITSCRAPERS_DIR   = HOME_DIR + '/splitscrapers/'
+
+DATAPROXY_HOST  = 'localhost'	# Host running data proxy - see uml.cfg
+DATAPROXY_PORT  = 9003	# Dataproxy port - see uml.cfg
+
+FEEDBACK_EMAIL = 'feedback@somedomain.com'
+FEEDBACK_EMAIL_TITLE = '[ScraperWiki Feedback]'
+
+DEFAULT_FROM_EMAIL = 'bugs@scraperwiki.com'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = '1025'
+EMAIL_SUBJECT_PREFIX = "[ScraperWiki Bugs] "
+
+SESSION_TIMEOUT = 1209600
+
+QUICKCACHE_DIR      = HOME_DIR + '/quickcache/'   # leave blank to disable caching
+
+EMAIL_FROM = 'noreply@localhost'
+
+ORBITED_URL = 'http://localhost:8001'
+
+# TEST_RUNNER = 'django-test-coverage.runner.run_tests'
+
+API_URL = 'http://localhost:8010'
+MEDIA_URL = '/media/'
+MAIN_URL  = 'http://scraperwiki.com'  # aka Site.objects.get_current().domain (though as we have put 3 other domains here, why not this one too unless making things gratuitously awkward)
+VIEW_URL = 'http://localhost:8000'
+
+USE_DUMMY_VIEWS = False # use a dummy when running views in iframes
+
+SCREENSHOT_DIR = '/tmp/'
+
+if DEBUG:
+    TEMPLATE_CONTEXT_PROCESSORS += (
+        'frontend.context_processors.sqldebug',
+    )
+    TEMPLATE_LOADERS = [
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.load_template_source',
+    ]
+    SQL_DEBUG = False
+
+# enable Django toolbar logging tab.
+if DEBUG:
+    MIDDLEWARE_CLASSES += ['debug_toolbar.middleware.DebugToolbarMiddleware']
+    INTERNAL_IPS = ('127.0.0.1',)
+    INSTALLED_APPS += ['debug_toolbar','devserver']
+    DEBUG_TOOLBAR_PANELS = (
+        'debug_toolbar.panels.timer.TimerDebugPanel',
+        'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+        'debug_toolbar.panels.headers.HeaderDebugPanel',
+        'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+        'debug_toolbar.panels.template.TemplateDebugPanel',
+        'debug_toolbar.panels.sql.SQLDebugPanel',
+        'debug_toolbar.panels.signals.SignalDebugPanel',
+        'debug_toolbar.panels.logger.LoggingPanel',
+    )
+    DEBUG_TOOLBAR_CONFIG = {'INTERCEPT_REDIRECTS' : False }
+
+HIGHRISE_ENABLED = False
+SHOW_APIKEY_UI = True

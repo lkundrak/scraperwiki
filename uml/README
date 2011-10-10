@@ -1,0 +1,99 @@
+The FireBox system comprises four main components, plus an additional hack
+
+	* FireStarter
+	* Dispatcher
+	* Controller
+	* Proxy
+	* Runner
+	* run_server
+
+
+FireStarter
+-----------
+
+FireStarter is a Python module which implements a single class "FireStarter".
+This provides an interface to execute scripts and commands inside the FireBox.
+For instance, to execute the command "id -u" and retrieve the output:
+
+        import FireStarter        
+        fs  = FireStarter.FireStarter()
+        res = fs.command ('id -u')
+
+Various configuration settings can be applied before the script or command is
+executed, for instance to run as user 'nobody':
+
+        import FireStarter        
+        fs  = FireStarter.FireStarter()
+        fs.setUser ('nobody')
+        res = fs.command ('id -u')
+
+
+Dispatcher
+----------
+
+The FireStarter code sends assembled requests, packaged using HTTP, to the
+Dispatcher process, which runs on the host. This is essentially a special
+purpose proxy, which will forward the request on to a suitable UML instance,
+possibly queueing the request if no UML instance is currently available.
+
+
+Controller
+----------
+
+The Controller is a process that runs inside a UML instance, and receives
+requests from the Dispatcher. It decodes the configuration settings that
+were applied in the FireStarter code, then executes the command or script.
+Standard output and error are passed back.
+
+
+Proxy
+-----
+
+Typically, the UML instances are firewalled so that code cannot directly
+access any web servers. All such access must be reouted via the Proxy
+process, which runs on the host. Amongst the configuration settings
+applied in FireStarter are allowable websites; these are stored before the
+request is sent to a UML instance such that the Proxy can filter as
+required.
+
+
+Runner
+-------
+Runner reads code from stdin, imports FireStarter, sets it up as per the 
+settings in runner_config.py and executes the code.  It print and output to 
+stdout.
+
+
+run_server
+----------
+run_server connects to the twisted server and listens for data sent to it 
+from any twisted client.  Commands are JSON objects with a 'command' key.  
+When a command is received, it does one of the following depending on the 
+command:
+
+* 'run',  check for a valid 'code' key, spawns a Runner instance in a new 
+          process and writes anything Runner writes to stdin back to the 
+          client that requested the run.
+
+* 'kill', if there is a Runner process running, it will send SIGKILL to it.
+
+
+Logging
+-------
+
+Every event (eg start and end of an http request or a script) is logged into the 
+database table scraperwiki_log.  
+
+You can watch this log live by running the command:
+  /home/mike/ScraperWiki/UML/ttail
+on the server.  
+
+
+Whitelisting and Blacklisting
+-----------------------------
+
+These are set by the functions addAllowedSites() and addBlockedSites() in 
+  /home/scraperwiki/UML/Server/scripts/runner_config.py
+
+The quickest way to make it happen is by editing the script on the live server.  
+It is not necessary to restart anything to get the settings applied.  

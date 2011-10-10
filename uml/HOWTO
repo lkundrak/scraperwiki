@@ -1,0 +1,100 @@
+Note: Commands need to be run as root, log in as root or use sudo.
+
+1. Set up masquerading on the host. Eventually this should be added to the
+   init.d scripts.
+
+   sudo ./netsetup
+
+2. Create a root image
+   The loadroot command will build a root disc image called jaunty.img
+   from a bzip2'd tarball.
+
+   sudo ./loadroot data/jaunty.19-Apr-10.bz2
+
+3. Create home and swap images.
+   These images are shared between all UML instances using copy-on-write
+   files, so this command is only needed once.
+
+   sudo ./mkimages
+
+4. Link a UML linux kernel
+   Kernels are stored in the "kernels" directory. The current kernel is
+   linux-2.6.30.5.
+
+   ln -s data/kernels/linux-2.6.30.5 linux
+
+5. Assembling a scraper disc image.
+   UML instances run with the scraper.img disc image mounted read-only on
+   /scraper. This should contain all scraper-specific files. To assemble
+   this image, when no UML instances are running, use:
+
+   sudo ./mkscraper
+
+   This script will need extending as changes are made to the scraper
+   system.
+
+6. Configure the UML system
+   There are a number of uml.cfg.xxx files, use an appropriate one or
+   create your own.
+
+   ln -s uml.cfg.sw uml.cfg
+
+7. Create a UML instance. The argument is the name of a UML from the
+   uml.cfg file.
+
+   sudo ./cloneuml uml001
+
+7. Boot the UML instance
+   The UML instance is run inside a screen session, so control will return
+   to the shell. Use the screen command to connect to the session.
+
+   sudo ./bootuml uml001
+   sudo screen -r
+
+   If there are multiple UML instances running, they can be identified using
+   the screen -ls command:
+
+   sudo screen -ls
+
+   Instances will appear with names PID.ZZZ where PID is the process
+   identifier of the top-level UML process. To connect to a specific UML:
+
+   sudo screen -r PID.ZZZ               or
+   sudo screen -r ZZZ
+
+   The root user on the UML instance has no password. To exit from screen
+   type ctrl-A. To shutdown a UML instance use the halt command and wait
+   for the instance to halt, whence the screen will terminate and control
+   returns to the shell.
+
+   NOTE: If the UML does not run the "./rawuml" will start uml001 without
+   using screen so that output is immediately visible.
+
+8. Boot all UML instances
+   All non-running UML instance can be booted with the bootall command. There
+   will be a 10-second pause between each in order to avoid resource
+   contention problems.
+
+   sudo ./bootall
+
+9. Halting all UML instances
+   Providing that the UML images are correctly running the controller process,
+   the haltall command can be used. This does not need to be run as root.
+
+   ./haltall
+
+   If the UML instance is not running the controller, then either connect to
+   it and issue the "halt" command (make sure this is not the host!) or kill
+   it stone dead.
+
+10.Altering the root image
+   The UML instances run with a root image plus a copy-on-write file, so
+   that changes to the root image can be undone by deleting the COW file.
+   To make changes to the root image (eg., to install a new package), use
+   the rawuml command.
+
+   sudo ./rawuml
+
+   This runs UML instance 1 (ie, from uml001). All COW files on all images
+   are deleted, and the root image is run without a COW file. The instance
+   is not run inside a screen session.

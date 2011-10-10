@@ -1,0 +1,40 @@
+<div id="divScraperTags" class="content full">
+  <input type="hidden" id="adminsettagurl" value="{% url scraper_admin_settags scraper.short_name %}"/>
+
+  <h2>Tags
+  {% ifequal scraper.privacy_status 'public' %}
+    {% if user.is_authenticated %}
+        {% if user_edits_it %}
+            <a href="#" id="aEditTags" class="edit">[edit tags]</a>
+        {% endif %}
+    {% else %}
+      <a href="{% url login %}?next={% url code_overview 'scraper' scraper.short_name %}" class="edit">[sign in to add tags]</a>
+    {% endif %}
+  {% else %}
+    {# version1.2 problem if user in scraper.userrolemap.editor #}
+    {% if user_edits_it %}
+      <a href="#" id="aEditTags" class="edit">[edit tags]</a>
+    {% endif %}
+  {% endifequal %}
+  </h2>
+
+  <ul class="tags">
+    {% include 'codewiki/includes/tagslist.html' %}
+  </ul>
+
+  <p id="addtagmessage">Adding tags helps makes sense of all the datasets on ScraperWiki. 
+      {% if user.is_authenticated %}
+          {% if user_edits_it %}
+              <a href="#" id="aEditTagsFromEmpty">Would you like to add some?</a>
+          {% endif %}
+      {% else %}
+          <a href="{% url login %}?next={% url code_overview 'scraper' scraper.short_name %}">Sign in to add some.</a>
+      {% endif %}
+  </p>
+  
+  <div id="divEditTagsControls">
+    <label id="labelEditTags" for="divEditTags">Comma separated list of tags:</label>
+    <div id="divEditTags"></div>
+  </div>
+  
+</div>

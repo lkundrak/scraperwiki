@@ -1,0 +1,51 @@
+{% extends "codewiki/scraper_base.html" %}
+{% load humanize %}
+
+{% block tab %}
+{% load comments %}
+{% load gravatar %}
+
+<div class="page_title">
+    <ul class="title_links">
+        <li class="rss"><a href="/feeds/code_object_comments/{{ scraper.short_name }}">RSS feed of discussion</a></li>
+    </ul>
+</div>
+
+{% if user.is_authenticated %}
+ 
+    {% get_comment_form for scraper as form %}
+<p>Add a comment or question about this scraper or the data it produces</p>
+<form action="{% comment_form_target %}" method="post" class="add_comment">
+    <input type="hidden" name="next" value="{% url scraper_comments scraper.wiki_type scraper.short_name %}" />    
+   {% show_gravatar user 'medium' %}
+   <div>
+    	<textarea name="comment" id="id_comment" rows="3"></textarea>
+        {% csrf_token %}
+    	{{ form.content_type }} 
+    	{{ form.object_pk }} 
+    	{{ form.timestamp }} 
+    	{{ form.security_hash }} 
+    	<input type="submit" class="button" value="Add" id="id_submit" /> 
+    </div>
+</form>
+{% else %}
+    <p>Please <a href="/login/?next={{ request.get_full_path }}">log in</a> to add a comment.</p>
+{% endif %}
+
+{% get_comment_list for scraper as comment_list %}
+
+{% if comment_list %}
+  {% for comment in comment_list reversed %} 
+    <div class="user_comment">  
+        
+        <p id="{{ comment.id }}">
+            {% show_gravatar comment.user 'small' %} 
+            {{ comment.comment|escape|urlizetrunc:"100"|linebreaks }}
+        </p>
+        <small>
+            Added by <a href="{% url profiles_profile_detail comment.user.username %}">{{ comment.name|escape }}</a> at {{ comment.submit_date|timesince }} ago
+        </small>
+    </div>
+ {% endfor %} 
+{% endif %}
+{% endblock %}
