@@ -73,6 +73,7 @@ var exts = {
     'python' : 'py', 
     'ruby'   : 'rb',    
     'php'   : 'php',        
+    'perl'   : 'pl',        
     'javascript' : 'js',
 }
 
@@ -100,6 +101,9 @@ exports.env_for_language = function( lang, extra_path ) {
         return { RUBYLIB: ep + ":" + process.env.RUBYLIB };     
     } else if ( lang == 'php') {
         return { PHPPATH: ep};      
+    } else if ( lang == 'perl') {
+        ep = path.join(ep, "lib");
+        return { PERL5LIB: ep + ":" + process.env.PERL5LIB };
     } else if ( lang == 'javascript' ) {
         return { NODE_PATH: process.env.NODE_PATH + ":" + ep + ":/usr/local/lib/node_modules" };
     }   
