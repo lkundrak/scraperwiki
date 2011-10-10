@@ -1,0 +1,54 @@
+<p>Comma-separated value files are a quite commonly used text form of
+spreadsheet. To process them often requires special cases, such as
+parsing dates or removing bad rows.</p>
+
+<p>For more details, read the <a href="http://search.cpan.org/perldoc?Text::CSV_XS/">full
+    Text::CSV_XS documentation</a>.</p>
+
+<h2>Reading rows</h2>
+
+<p>Download the CSV file first and split it into rows. If there are quirks in the input file, you
+might at this point want to preprocess the data using, for example, the
+map with chomp or s/// regexes.
+</p>
+
+
+<code>my @data =
+        map { s/\r$//; $_ } # Get rid of CR/LF
+        split /\n/, # Split into lines
+        Scraperwiki::scrape('http://s3-eu-west-1.amazonaws.com/ukhmgdata-cabinetoffice/Spend-data-2010-11-01/Spend-Transactions-with-descriptions-HMT-09-Sep-2010.csv');
+</code>
+
+<p>Create an instance of Text::CSV_XS.</p>
+
+<code>use Text::CSV_XS;
+
+my $csv = new Text::CSV_XS;
+</code>
+
+<p>You can then loop through the input data and parse a row after row, getting arrays of the fields. We can save the first row for later use.</p>
+
+<code>
+my @header;
+foreach (@data) {
+        $csv-&gt;parse($_) or die $csv-&gt;error_input;
+        my @row = $csv-&gt;fields;
+
+        # First line
+        unless (@header) {
+                @header = @row;
+                next;
+        }
+
+        printf "£%s spent on %s\n", $row[7], $row[3];
+}
+$csv-&gt;eof or $csv-&gt;error_diag;
+</code>
+
+<h2>Saving to the datastore</h2>
+
+<p>We can now use the fields from the first row as keys for fields for the data rows.</p>
+
+<code>Scraperwiki::save_sqlite(unique_keys =&gt; ['Transaction Number', 'Expense Type', 'Expense Area'],
+	data =&gt; { map { $header[$_] =&gt; @row[$_] } 0..$#row });
+</code>
