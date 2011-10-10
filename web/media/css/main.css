@@ -2769,12 +2769,14 @@ p.language_chooser a:hover {
 p.language_chooser a:hover img,
 body.python p.language_chooser a.python img,
 body.ruby p.language_chooser a.ruby img,
+body.perl p.language_chooser a.perl img,
 body.php p.language_chooser a.php img {
 	opacity: 1;
 }
 
 body.python p.language_chooser a.python,
 body.ruby p.language_chooser a.ruby,
+body.perl p.language_chooser a.perl,
 body.php p.language_chooser a.php,
 body.shared p.language_chooser a.shared {
 	background-color: #EBF5D3;
@@ -3417,6 +3419,10 @@ div.pagination a.current {
 
 .code_about .language.ruby td.link,   strong.language.ruby {
 	background-image: url(../images/icons/ruby.png);
+}
+
+.code_about .language.perl td.link,   strong.language.perl {
+	background-image: url(../images/icons/perl.png);
 }
 
 .code_about .language.html td.link,   strong.language.html {
