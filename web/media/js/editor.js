@@ -257,30 +257,35 @@ $(document).ready(function() {
         parsers['python'] = ['../contrib/python/js/parsepython.js'];
         parsers['php'] = ['../contrib/php/js/tokenizephp.js', '../contrib/php/js/parsephp.js', '../contrib/php/js/parsephphtmlmixed.js' ];
         parsers['ruby'] = ['../../ruby-in-codemirror/js/tokenizeruby.js', '../../ruby-in-codemirror/js/parseruby.js'];
+        parsers['perl'] = ['../../ruby-in-codemirror/js/tokenizeruby.js', '../../ruby-in-codemirror/js/parseruby.js'];
         parsers['html'] = ['parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', 'parsehtmlmixed.js']; 
         parsers['javascript'] = ['tokenizejavascript.js', 'parsejavascript.js']; 
 
         stylesheets['python'] = [codemirror_url+'contrib/python/css/pythoncolors.css', '/media/css/codemirrorcolours.css'];
         stylesheets['php'] = [codemirror_url+'contrib/php/css/phpcolors.css', '/media/css/codemirrorcolours.css'];
         stylesheets['ruby'] = ['/media/ruby-in-codemirror/css/rubycolors.css', '/media/css/codemirrorcolours.css'];
+        stylesheets['perl'] = ['/media/ruby-in-codemirror/css/rubycolors.css', '/media/css/codemirrorcolours.css'];
         stylesheets['html'] = [codemirror_url+'/css/xmlcolors.css', codemirror_url+'/css/jscolors.css', codemirror_url+'/css/csscolors.css', '/media/css/codemirrorcolours.css']; 
         stylesheets['javascript'] = [codemirror_url+'/css/jscolors.css', '/media/css/codemirrorcolours.css']; 
 
         indentUnits['python'] = 4;
         indentUnits['php'] = 4;
         indentUnits['ruby'] = 2;
+        indentUnits['perl'] = 4;
         indentUnits['html'] = 4;
         indentUnits['javascript'] = 4;
 
         parserConfig['python'] = {'pythonVersion': 2, 'strictErrors': true}; 
         parserConfig['php'] = {'strictErrors': true}; 
         parserConfig['ruby'] = {'strictErrors': true}; 
+        parserConfig['perl'] = {'strictErrors': true};
         parserConfig['html'] = {'strictErrors': true}; 
         parserConfig['javascript'] = {'strictErrors': true}; 
 
         parserName['python'] = 'PythonParser';
         parserName['php'] = 'PHPHTMLMixedParser'; // 'PHPParser';
         parserName['ruby'] = 'RubyParser';
+        parserName['perl'] = 'RubyParser';
         parserName['html'] = 'HTMLMixedParser';
         parserName['javascript'] = 'JSParser';
 
