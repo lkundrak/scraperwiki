@@ -1,0 +1,23 @@
+#!/bin/sh
+# resourcedir-backup
+# David Jones, ScraperWiki Limited
+#
+# Script to backup the useful content of resourcedir, that is, the sqlite
+# databases associated with each data script.  We expect this script to be run
+# from cron (daily).
+
+# So that errors cause the script to exit early.
+set -e
+
+dir=$(mktemp -d /tmp/resourcedir-XXXXXX)
+
+for s in $(find /var/www/scraperwiki/resourcedir -name defaultdb.sqlite -print | sort)
+do
+    scrapername=$(basename $(dirname "$s"))
+    sqlite3 "$s" .dump |
+      gzip --rsyncable > "${dir}/${scrapername}.sql.gz"
+done
+
+cd $(dirname "$dir")
+tar cf /root/backup/sqlite.tar $(basename "$dir")
+rm -rf "$dir"

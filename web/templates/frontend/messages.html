@@ -1,0 +1,8 @@
+<div id="alert_outer" class="{{ level }}">
+	<div id="alert_inner">
+	    {{ message }} 
+        {% for text,url,secondary in actions %}
+        	<a href="{{ url }}"{% if secondary %} class="secondary"{% endif %}>{{ text }}</a>
+        {% endfor %}
+    </div>
+</div>

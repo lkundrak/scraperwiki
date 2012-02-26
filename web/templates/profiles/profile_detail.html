@@ -1,0 +1,72 @@
+{% extends "frontend/base.html" %}
+{% load pagination_tags %}
+{% load gravatar %}
+{% block css %}{% endblock %}
+{% block title %}Profile Details: {{profile.display_name}}
+{% endblock %}
+
+{% block header %}
+	<h2>{{profile.display_name}}&rsquo;s profile</h2>
+	<p>{{profile.user.username}}{% ifequal profile.user.username user.username %} {% if owned_code_objects %}
+	    &bull;
+	    {{ owned_code_objects.count }}
+	    {% ifequal paginator.count 1 %}scraper or view{% else %}scrapers and views{% endifequal %}
+	{% endif %}{% endifequal %}</p>
+{% endblock %}
+
+{% block content %}
+
+    <div class="content first">
+    
+        {% ifequal profile.user user %}
+        <div class="profilesettings">
+            <p class="email"><span class="label">Registered email: </span> {{user.email}}</p>
+            <p class="edit"><a href="{% url profiles_edit_profile %}" onClick="if(typeof _gaq !== 'undefined'){ _gaq.push(['_trackEvent', 'Profile buttons', 'Edit profile']); }"><img src="{{ MEDIA_URL }}images/icons/edit.png" width="16" height="16" alt="" /> Edit&nbsp;your&nbsp;profile</a></p>
+            <p class="password"><a href="{% url auth_password_change %}" onClick="if(typeof _gaq !== 'undefined'){ _gaq.push(['_trackEvent', 'Profile buttons', 'Change password']); }"><img src="{{ MEDIA_URL }}images/icons/key.png" width="16" height="16" alt="" /> Change&nbsp;your&nbsp;password</a></p>
+        </div>
+        {% else %}
+            {% if request.user.is_authenticated and profile.messages and request.user.get_profile.messages %}
+                <div class="profilesettings">
+                    <p class="message"><a href="{% url user_message profile.user.username %}" id="compose_user_message" onClick="if(typeof _gaq !== 'undefined'){ _gaq.push(['_trackEvent', 'Profile buttons', 'Send message']); }"><img src="{{ MEDIA_URL }}images/icons/email.png" width="16" height="16" alt="" /> Send a message</a></p>
+                </div>
+            {% endif %}
+        {% endifequal %}
+        
+        <div class="profilepic">{% show_gravatar profile.user 'large' %}</div>
+        
+        <div class="profilebio">
+            <h3>{{profile.display_name}}</h3>
+            <p>{{ profile.bio }}</p>
+            {% if emailer_code_objects %}
+              <p class="emailers">Emailers: 
+                {% for code in emailer_code_objects %}
+                  <a href="{% url code_overview code.wiki_type code.short_name %}">
+                     {% if code.title %}{{ code.title }}{% else %}{{ code.short_name }}{% endif %}
+                  </a>
+                {% endfor %}
+              </p>
+            {% endif %}
+        </div>
+
+            
+        <br class="clear" />
+	</div>
+
+    <div class="content">
+
+     {% if owned_code_objects %}
+	  {% autopaginate owned_code_objects 20 %}	
+      <h2 class="scrapersandviews">Scrapers and views ({{ paginator.count }})</h2>    	
+      <ul class="scraper_list">
+        {% for code in owned_code_objects %}
+          {% include 'frontend/includes/code_object_line.html' %}
+        {% endfor %}
+      </ul>
+
+		{% paginate %}
+    {% endif %}
+
+    </div>
+
+ 
+    {% endblock %}

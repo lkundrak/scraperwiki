@@ -1,0 +1,31 @@
+ScraperWiki
+___________
+
+Hi! Just letting you know that ScraperWiki's T&Cs are changing. 
+The main updates are:
+
+ 1. New terms for "vaults." Vaults are a way to host a group of
+    scrapers in private, so you can choose who can access them
+    and their data. The terms also now make it clear that you own
+    your private scrapers.
+
+ 2. General terms to do with charging for services. This is
+    because we'll soon be offering premium features like vaults
+    on a self-service basis. (If you'd like a vault in the
+    meantime, visit https://scraperwiki.com/pricing/)
+
+You can view the new T&Cs, and a diff against the old ones, here:
+https://scraperwiki.com/terms_and_conditions/
+
+The new T&Cs will come into force for existing users in a 
+week's time, at 6PM (GMT) on Friday, 18th November.
+
+Best wishes,
+Francis & the ScraperWiki team
+
+
+___________
+
+This email has been sent to all activated ScraperWiki user
+accounts, in accordance with the notice requirement of our T&Cs.
+You can edit your preferences for *other* ScraperWiki emails at https://scraperwiki.com/profiles/edit

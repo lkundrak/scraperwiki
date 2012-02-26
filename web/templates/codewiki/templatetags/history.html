@@ -1,0 +1,131 @@
+
+{% load month_name %}
+{% load gravatar %}
+
+
+<input type="hidden" id="rawcodeurl" value="{% url raw scraper.short_name %}"/>
+<input type="hidden" id="diffsequrl" value="{% url diffseq scraper.short_name %}"/>
+<input type="hidden" id="run_event_json" value="{% url run_event_json 'XXX' %}"/>
+
+{% if not itemlog %}
+<div class="history_ran_fail">
+  The history log for this scraper is missing, possibly corrupted
+</div>
+{% endif %}
+
+{% regroup itemlog by datetime.year as itemlogyear_list%}
+{% for itemlogyear in itemlogyear_list %}
+
+  {% regroup itemlogyear.list by datetime.month as itemlogmonth_list %}
+  {% for itemlogmonth in itemlogmonth_list %}
+
+    <div class="history_month">
+    <b>{{itemlogmonth.grouper|month_name}} {{itemlogyear.grouper}}</b>
+
+    {% regroup itemlogmonth.list by groupkey as itemloggroup_list %}
+    {% for itemloggroup in itemloggroup_list %}
+      {% with itemloggroup.list|first as itemfirst %}   {# could alternatively refer to itemloggroup.list.0 #}
+      {% with itemloggroup.list|last as itemlast %}   
+
+      {% ifequal itemfirst.type 'commit' %}
+      <div class="history_edit">
+
+        <div class="history_view_changes">
+          {% ifnotequal itemfirst.prevrev null %}
+            <a class="hidechanges" title="Revs {{itemlast.rev}}:{{itemfirst.rev}}">Hide changes</a>
+            <a class="showchanges" title="Revs {{itemlast.rev}}:{{itemfirst.rev}}">Show changes</a>
+          {% else %}
+            <a class="hidechanges" title="Revs {{itemlast.rev}}:{{itemfirst.rev}}">Hide first version</a>
+            <a class="showchanges" title="Rev 0">Show first version</a>
+          {% endifnotequal %}
+
+          <span class="revlist hide">
+           {% for item in itemloggroup.list %}
+           <span class="revelem">
+             <span class="rev">{{item.rev}}</span>
+             <span class="ihistory_date">{{item.datetime|date:"H:i, j F Y" }}</span>
+             <span class="prevrev">{{item.prevrev}}</span>
+           </span>
+           {% endfor %}
+          </span>
+        </div>
+          {% if itemfirst.user %}{% show_gravatar itemfirst.user 'small' %}{% endif %}
+          <span class="history_editor_info">
+            Edited by 
+            <a href="{% if itemfirst.user.username %}{% url profiles_profile_detail itemfirst.user.username %}{% endif %}" class="historyuser">
+              {% if itemfirst.user.get_profile.name %}{{itemfirst.user.get_profile.name}}{% else %}{{itemfirst.user.username}}{% endif %}
+            </a>
+            {% ifnotequal itemloggroup.list|length 1 %}
+              {{itemloggroup.list|length}} times
+            {% endifnotequal %}
+            <span class="history_date">{{ itemfirst.datetime|date:"H:i, j F Y" }}</span>
+            {% if user.is_authenticated %}
+                {% ifnotequal itemloggroup_list|first itemloggroup %}
+                <a class="rollbackchanges" title="Revert code to just after this change; to revision {{itemfirst.rev}}" 
+                   href="{% url editor_edit scraper.wiki_type scraper.short_name %}?rollback_rev={{itemfirst.rev}}">Rollback</a>
+                {% endifnotequal %}
+            {% endif %}
+          </span>
+
+          <div class="codepreviewer"> 
+            <h3 class="loading">Loading...</h3>
+            <h4 class="cprev">Difference between, revision <span class="shrev"></span> and previous revision <span class="shprevrev"></span></h4>
+            <div class="history_code_border">
+              <div class="otherlinenumbers"></div> 
+              <div class="linenumbers"></div> 
+              <pre class="outputlines"></pre> 
+            </div>
+          </div>
+
+      </div>
+      {% else %} 
+
+      <div class="history_run_event" id="run_{{itemfirst.runevent.id}}">
+        <div class="history_view_changes">
+            <a class="runpermalink" href="{% url editor_edit scraper.wiki_type scraper.short_name %}#run_{{itemfirst.runevent.id}}">Permalink</a>
+          <a class="hiderunevent">Hide details</a>
+          <a class="showrunevent">Show details</a>
+          <span class="runidlist hide">
+            {% for item in itemloggroup.list %}
+            <span class="runidelem">
+               <span class="runid">{% if item.runevent.run_id %}{{item.runevent.run_id}}{% else %}{{item.runevent.id}}{% endif %}</span>
+               <span class="history_date">{{ item.datetime|date:"H:i, j F Y" }}</span>
+           </span>
+           {% endfor %}
+         </span>
+        </div>
+        {% ifnotequal itemfirst.runevent.pid -1 %}
+            <div class="history_ran_notfinished">
+              <span class="history_bold">Currently running</span>: -
+              started {{itemfirst.runevent.run_started|timesince}} ago 
+              (so far {{itemfirst.runevent.pages_scraped}} scraped pages, {{itemfirst.runevent.records_produced}} records)
+              <span class="history_date">{{ itemfirst.datetime|date:"H:i, j F Y" }}</span>
+        {% else %}{% if itemfirst.runevent.exception_message %}
+            <div class="history_ran_fail">
+              Run failed:
+              <span class="historyexception">{{itemfirst.runevent.exception_message}}</span> - ran for {{itemfirst.durationseconds}} seconds
+              ({{itemfirst.runevent.pages_scraped}} scraped pages, {{itemfirst.runevent.records_produced}} records)
+              <span class="history_date">{{ itemfirst.datetime|date:"H:i, j F Y" }}</span>
+        {% else %}
+            <div class="history_ran">
+              Run succeeded:
+              - ran {{itemloggroup.list|length}} times, most recently for {{itemfirst.durationseconds}} seconds
+              ({{itemfirst.runevent.pages_scraped}} scraped pages, {{itemfirst.runevent.records_produced}} records)
+              <span class="history_date">{{ itemfirst.datetime|date:"H:i, j F Y" }}</span>
+        {% endif %}{% endifnotequal %}
+
+          <div class="runpreviewer">
+            <h3 class="loading">Loading...</h3>
+            <pre class="runpreview"></pre>
+          </div>
+        </div>
+
+      </div>
+      {% endifequal %}
+
+      {% endwith %}
+      {% endwith %}
+    {% endfor %} {# group #}
+    </div> {# history_month #}
+  {% endfor %} {# month #}
+{% endfor %} {# year #}

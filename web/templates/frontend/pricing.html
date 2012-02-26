@@ -1,0 +1,158 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Pricing{% endblock %}
+
+{% block header %}
+	{% if self_service_vaults %}
+	    <h2>ScraperWiki Premium Accounts</h2>
+    	<p>Upgrade your account for privacy, flexibility and more</p>
+	{% else %}
+	    <h2>ScraperWiki pricing</h2>
+    	<p>One great product, four simple price points</p>
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="column-left">
+    <p class="first">ScraperWiki is an online tool for data analysts, researchers and journalists. It makes the whole process of gathering information from diverse web sources and saving it into a uniform format, simple and collaborative.</p>
+</div>
+<div class="column-right">
+    <p>By default, the code and data you scrape are shared with the world. But now, with {% if self_service_vaults %}<strong>premium accounts</strong>{% else %}<strong>Vaults</strong>{% endif %}, you can benefit from increased security and privacy while also making the most of ScraperWiki’s collaborative model.</p>
+</div>
+<br class="clear" />
+{% if self_service_vaults %}
+<div id="pricing_chart" class="selfservice">
+    
+    <div class="col" id="free">
+        <h3>Free account</h3>
+        <p class="price">(Free forever)</p>
+        <ul>
+            <li>No private vaults</li>
+            <li>No vault members</li>
+            <li>Schedule code daily</li>
+        </ul>
+        {% if not current_plan or current_plan = 'free' %}
+            <p class="current"><a>Current plan</a></p>
+        {% endif %}
+    </div>
+    <div class="col" id="individual">
+        <h3>Individual</h3>
+        <p class="price">$9 a month</p>
+        <ul>
+            <li>1 private vault</li>
+            <li>1 vault member</li>
+            <li>Schedule code daily</li>
+        </ul>
+        {% if current_plan = 'individual' %}
+            <p class="current"><a>Current plan</a></p>
+        {% else %}
+            <p class="buy"><a href="/subscribe/individual/">Buy now</a></p>
+        {% endif %}
+    </div>
+    <div class="col" id="business">
+        <h3>Business</h3>
+        <p class="price">$29 a month</p>
+        <ul>
+            <li>5 private vaults</li>
+            <li>Unlimited vault members</li>
+            <li>Schedule code hourly</li>
+        </ul>
+        {% if current_plan = 'business' %}
+            <p class="current"><a>Current plan</a></p>
+        {% else %}
+            <p class="buy"><a href="/subscribe/business/">Buy now</a></p>
+        {% endif %}
+    </div>
+    <div class="col" id="corporate">
+        <h3>Corporate</h3>
+        <p class="price">$299 a month</p>
+        <ul>
+            <li>Unlimited vaults</li>
+            <li>Unlimited vault members</li>
+            <li>Schedule code hourly</li>
+            <li>Service level agreement</li>
+            </ul>
+        {% if current_plan = 'corporate' %}
+            <p class="current"><a>Current plan</a></p>
+        {% else %}
+            <p class="buy"><a href="/subscribe/corporate/">Buy now</a></p>
+        {% endif %}
+    </div>
+    <br class="clear" />
+    <p class="footnote">
+        Corporate users can also <a href="/contact/#corporate">contact&nbsp;us</a> to pay with a purchase&nbsp;order.
+    </p>
+</div>
+
+{% else %}
+
+<div id="pricing_chart">
+    
+    <div class="col" id="free">
+        <h3>No Vaults</h3>
+        <p class="price">(Free)</p>
+        <ul>
+            <li><em>No</em> private scrapers</li>
+            <li><em>No</em> schedule control</li>
+            <li>Unlimited collaborators</li>
+        </ul>
+    </div>
+    <div class="col" id="individual">
+        <h3>Individual</h3>
+        <p class="price">$9 a month</p>
+        <ul>
+            <li>Private scrapers</li>
+            <li>Schedule control</li>
+            <li>Unlimited collaborators</li>
+        </ul>
+        <h4>You can scrape</h4>
+        <p class="limit">20,000 pages/month</p>
+    </div>
+    <div class="col" id="business">
+        <h3>Business</h3>
+        <p class="price">$29 a month</p>
+        <ul>
+            <li>Private scrapers</li>
+            <li>Schedule control</li>
+            <li>Unlimited collaborators</li>
+        </ul>
+        <h4>You can scrape</h4>
+        <p class="limit">100,000 pages/month</p>
+    </div>
+    <div class="col" id="corporate">
+        <h3>Corporate</h3>
+        <p class="price">from $299 a month</p>
+        <ul>
+            <li>Private scrapers</li>
+            <li>Schedule control</li>
+            <li>Unlimited collaborators</li>
+        </ul>
+        <h4>You can scrape</h4>
+        <p class="limit">2,000,000+ pages/month*</p>
+    </div>
+    <br class="clear" />
+    <p class="footnote">
+        Corporate users can also <a href="/contact/#corporate">contact&nbsp;us</a> to pay with a purchase&nbsp;order.
+    </p>
+    
+</div>
+
+{% if anonymous %}
+<a id="buy" href="{% url login %}?next={% url pricing %}">Please <em>log in</em> or <em>sign up</em> to buy a Premium Account</a>
+{% else %}
+<a id="buy" href="/contact/#vault">To buy a Premium Account or find out more, <em>contact us here</em></a>
+{% endif %}
+
+{% endif %}
+
+{% endblock %}
+
+{% block run_script %}
+    {{block.super}}
+
+    $('#free').css('height',$('#individual').height());
+
+{% endblock %}
+
+

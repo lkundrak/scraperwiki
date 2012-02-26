@@ -1,0 +1,16 @@
+/* 992.css
+   Builds on top of 320/480/768.css.
+   Everything here should look good 
+   on a +992px screen.
+*/
+
+
+/* HORS D'OUVRE */
+
+body:after {
+	content: '992px';
+}
+
+.content {
+	width: 992px;
+}

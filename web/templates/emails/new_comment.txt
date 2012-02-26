@@ -1,0 +1,16 @@
+ScraperWiki
+___________
+
+{{ request.user.username }} has left a comment on your scraper '{{ scraper.title }}':
+
+"{{ message }}"
+
+To reply, visit: {{ scraper.get_absolute_url }}#chat
+
+__________
+
+Don't care? You can edit your email preferences here:
+https://scraperwiki.com/profiles/edit
+
+
+

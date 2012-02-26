@@ -1,0 +1,186 @@
+{% extends "frontend/base.html" %}
+{% load number_stuff %}
+{% load humanize %}
+
+{% block title %}Key performance indicators{% endblock %}
+
+<title>Key performance indicators</title>
+
+{% block javascript %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.flot.js"></script>
+<script>
+$(function(){
+  var monthly_ticks = new Array();
+  var total_scrapers = new Array();
+  var total_views = new Array();
+  var total_users = new Array();
+  var months_scrapers = new Array();
+  var months_views = new Array();
+  var months_users = new Array();
+  var active_coders = new Array();
+  var longtime_active_coders = new Array();
+  var datastore_record_count = new Array();
+
+  {% for year in data %}
+    {% for month in year.months %}
+      {% if not month.current_month %}
+          monthly_ticks.push([{{forloop.counter0|add:year.offset}}, '{{month.month}} {{year.year}}']);
+          total_scrapers.push([{{forloop.counter0|add:year.offset}}, {{month.total_scrapers}}]);
+          total_views.push([{{forloop.counter0|add:year.offset}}, {{month.total_views}}]);
+          total_users.push([{{forloop.counter0|add:year.offset}}, {{month.total_users}}]);
+          months_scrapers.push([{{forloop.counter0|add:year.offset}}, {{month.this_months_scrapers}}]);
+          months_views.push([{{forloop.counter0|add:year.offset}}, {{month.this_months_views}}]);
+          months_users.push([{{forloop.counter0|add:year.offset}}, {{month.this_months_users}}]);
+          active_coders.push([{{forloop.counter0|add:year.offset}}, {{month.active_coders}}]);
+          longtime_active_coders.push([{{forloop.counter0|add:year.offset}}, {{month.longtime_active_coders}}]);
+          datastore_record_count.push([{{forloop.counter0|add:year.offset}}, {{month.datastore_record_count}}]);
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+
+  $("#totals_graph").width(monthly_ticks.length * 50);
+  $("#new_graph").width(monthly_ticks.length * 50);
+  $("#active_graph").width(monthly_ticks.length * 50);
+
+  function numberWithCommas(x) { return x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ","); }
+
+/*  $.plot($("#totals_graph"), [
+        {
+            data: total_scrapers, 
+            label: 'Total Scrapers',
+            lines: { show: true },
+            points: { show: true }
+        },
+        {
+            data: total_views, 
+            label: 'Total Views',
+            lines: { show: true },
+            points: { show: true }
+        },
+        {
+            data: total_users,
+            label: 'Total Users',
+            lines: { show: true },
+            points: { show: true }
+        }],
+        {
+          xaxis: { ticks: monthly_ticks },
+          yaxis: { tickFormatter: numberWithCommas },
+          legend: { position: "nw" }
+        });
+
+  $.plot($("#new_graph"), [
+        {
+            data: months_scrapers,
+            label: 'New Scrapers',
+            lines: { show: true },
+            points: { show: true }
+        },
+        {
+            data: months_views,
+            label: 'New Views',
+            lines: { show: true },
+            points: { show: true }
+        },
+        {
+            data: months_users,
+            label: 'New Users',
+            lines: { show: true },
+            points: { show: true }
+        }],
+        {
+          xaxis: { ticks: monthly_ticks },
+          yaxis: { tickFormatter: numberWithCommas },
+          legend: { position: "nw" }
+        });
+        */
+
+  $.plot($("#active_graph"), [
+        {
+            data: active_coders,
+            label: 'Active Coders (committed at least once in month)',
+            lines: { show: true },
+            points: { show: true }
+        },
+        {
+            data: longtime_active_coders,
+            label: 'Longtime Active Coders (active coders that joined in an earlier month)',
+            lines: { show: true },
+            points: { show: true }
+        },
+        ],
+        {
+          xaxis: { ticks: monthly_ticks },
+          yaxis: { tickFormatter: numberWithCommas },
+          legend: { position: "nw" }
+        });
+
+/*  $.plot($("#datastore_graph"), [
+        {
+            data: datastore_record_count,
+            label: 'Datastore Record Count',
+            lines: { show: true },
+            points: { show: true }
+        },
+        ],
+        {
+          xaxis: { ticks: monthly_ticks },
+          yaxis: { tickFormatter: numberWithCommas },
+          legend: { position: "nw" }
+        });
+
+  $('.legend').css('left', '30px'); */
+
+});
+</script>
+{% endblock %}
+
+{% block header %}
+<h2>Key performance indicators</h2>
+<p>How we measure how well we're doing</p>
+{% endblock %}
+
+{% block content_outer  %}
+    <div id="page_outer">
+                <div id="page_inner">
+
+<!-- <p id="totals_graph" style="height:200px"></p>
+<p id="new_graph" style="height:200px"></p> -->
+<p id="active_graph" style="height:200px"></p>
+<!-- <p id="datastore_graph" style="height:200px"></p> -->
+
+<table class="data">
+    <tr>
+       <th>Month</th>
+       <!-- <th>Scrapers</th>
+       <th>Views</th>
+       <th>Users</th> -->
+       <th>Active Coders</th>
+       <th>Longtime<br>Active Coders</th>
+       <!-- <th>Datastore<br>Record Count</th> -->
+    </tr>
+
+    {% for year in data reversed %}
+        {% for month in year.months reversed %}
+           {% if month.current_month %}
+               <tr class="this_month">
+           {% else %}
+               <tr>
+           {% endif %}
+               <td>{{ year.year }}, {{month.month}} </td>
+
+               <!-- <td> {{month.total_scrapers|intcomma}} ({{ month.this_months_scrapers|plusminus_int|intcomma }}) </td>
+               <td> {{month.total_views|intcomma}} ({{ month.this_months_views|plusminus_int|intcomma }}) </td>
+               <td> {{month.total_users|intcomma}} ({{ month.this_months_users|plusminus_int|intcomma }}) </td> -->
+               <td> {{month.active_coders|intcomma}} ({{ month.delta_active_coders|plusminus_int|intcomma }}) </td>
+               <td> {{month.longtime_active_coders|intcomma}} ({{ month.delta_longtime_active_coders|plusminus_int|intcomma }}) </td>
+               <!--               <td> {{month.datastore_record_count|intcomma}} ({{ month.delta_datastore_record_count|plusminus_int|intcomma }}) </td> -->
+           </tr>
+        {% endfor %}
+    {% endfor %}
+</table>
+
+</div></div>
+{% endblock %}
+
+

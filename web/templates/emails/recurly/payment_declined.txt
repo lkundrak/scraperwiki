@@ -1,0 +1,33 @@
+{{{header}}}
+
+We regret to inform your most recent subscription payment
+was declined. Please check to see if your billing
+information correctly matches your credit card. Here are
+the details of your declined payment:
+
+Invoice {{invoice_number}}
+{{invoice_date}}
+
+{{#invoice_line_items}}
+{{{line_amount}}} --  {{line_description}}
+           {{{line_date}}}
+{{/invoice_line_items}}
+
+Subtotal:  {{{invoice_subtotal}}}
+{{#invoice_show_vat?}}
+VAT:       {{{invoice_vat_amount}}}
+{{/invoice_show_vat?}}
+Paid:      {{{invoice_total_paid}}}
+Total Due: {{{invoice_total_due}}} ****
+
+Billed To:
+{{billing_full_name}}
+{{{billing_full_address}}}
+
+
+Please update your billing information to ensure the
+continuation of your subscription:
+
+{{account_hosted_maintenance_url}}
+
+{{{footer}}}

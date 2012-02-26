@@ -1,0 +1,19 @@
+{% extends "frontend/base.html" %}
+{% load tagging_tags %}
+
+{% block title %}All tags{% endblock %}
+
+{% block content %}
+    <div class="page_title">
+        <h1>All tags</h1>
+        <p>
+            Browsing by tag
+        </p>
+    </div>
+    <div class="content">
+        {% tag_cloud_for_model scraper.Scraper as tags with steps=2 min_count=1 distribution=log %}
+        {% for tag in tags %}
+        <a href="{% url tag tag.name %}" style="font-size:{{tag.font_size}}em">{{tag.name}}</a>
+        {% endfor %}
+    </div>
+{% endblock %}

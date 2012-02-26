@@ -1,0 +1,6 @@
+{% if has_field_errors %}
+    <li>Please review the form and try again.</li>
+{% endif %}
+{% for error in form.non_field_errors %}            
+    <li>{{ error|escape }}</li>            
+{% endfor %}

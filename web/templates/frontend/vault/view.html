@@ -1,0 +1,242 @@
+{% extends "frontend/base.html" %}
+{% load gravatar %}
+{% load humanize %}
+
+{% block title %}Your vaults{% endblock %}
+
+{% block header %}
+	<h2>Your vaults</h2>
+
+	<p>Information about your vaults and who can access them</p>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="content">
+    <input type="hidden" id="id_api_base" value="{{api_base}}" />
+    
+    {% if has_upgraded %}
+    <div id="welcome_to_premium">
+        <h3>Thanks for upgrading your account!</h3>
+        <p class="first">You can now schedule scrapers to run more often than daily<br/>and keep scrapers and views private by putting them in Vaults.</p>
+        <p class="last">To get you started, we’ve created a new Vault for you.<br/>You can always access all your Vaults by selecting<br/>&ldquo;Your Vaults&rdquo; from the ScraperWiki user menu.</p>
+        <img src="{{ MEDIA_URL }}images/vaults_menu_introduction.gif" width="136" height="95" alt="" />
+    </div>
+    {% endif %}
+
+{% if vaults.count %}
+<div id="my_vaults">
+    <h2>You own {{ vaults.count }} vault{{ vaults.count|pluralize }}: {% if self_service_vaults and vaults_remaining_in_plan %}<a id="new_vault" href="/vaults/new/">Create a new vault</a>{% else %}{%if self_service_vaults %}<a id="upgrade_plan" href="/pricing/">Upgrade to create more vaults</a>{% endif %}{% endif %}</h2>
+    {% for vault in vaults.all %}
+    <div class="vault">
+        
+    	<div class="vault_header">
+    	    <span class="shineyshiney"></span>
+	        <!-- <a class="vault_delete"><img src="{{ MEDIA_URL }}images/icons/delete.png" width="16" height="16"> Delete vault</a> -->
+	        <a class="vault_users"><img src="{{ MEDIA_URL }}images/icons/user_purple.png" width="16" height="16"> <span class="x_users">{% if vault.members.count > 0 %}{{ vault.members.count }} member{{ vault.members.count|pluralize }}{% else %}No members{% endif %}</span></a>
+    	    <h3>{{ vault.name }}</h3>
+	        <div class="vault_users_popover">
+            {% ifequal vault.user request.user %}
+    		    <h4><span class="x_users">{{ vault.members.count }} user{{ vault.members.count|pluralize }}</span> can access this vault:</h4>
+    		    <ul>
+    			{% for m in vault.members.all %}
+    	        	{% include 'frontend/includes/vault_member.html' %}
+    			{% endfor %}
+                </ul>
+                {% if can_add_vault_members %}
+                <a class="add_user" rel="{{ vault.id }}"><img src="{{ MEDIA_URL }}images/icons/add.png" width="16" height="16"> Add another user</a>
+                {% else %}
+                <a class="upgrade_to_add_user" href="/pricing/"><img src="{{ MEDIA_URL }}images/icons/add.png" width="16" height="16"> Upgrade to add more users</a>
+                {% endif %}
+                <span class="arrow"></span>
+            {% endifequal %}
+            </div>
+        </div>
+        
+        <div class="vault_contents{% if vault.get_code_objects.count == 0 %} empty{% endif %}">
+    	{% if vault.get_code_objects.count > 0 %}
+            <h5>
+                <!-- This vault contains {{ vault.get_code_objects.count }} scraper{{ vault.get_code_objects.count|pluralize }}: -->
+                {{ vault.plan }} plan
+                <span class="usage{% if vault.percentage_this_month > 90 %} warning{% endif %}">
+                    <span class="key">{{ vault.percentage_this_month  }}% used</span>
+                    <span class="progressbar"><strong style="width: {{ vault.percentage_this_month }}%"></strong></span>
+                    <img src="{{ MEDIA_URL }}images/icons/{% if vault.percentage_this_month > 90 %}exclamation{% else %}help{% endif %}.png" width="16" height="16" />
+                </span>  
+                <div class="vault_usage_popover">
+        		    <h4>This month, you have used:</h4>
+        		    <p{% if vault.percentage_this_month > 90 %} class="warning"{% endif %}><strong>{{ vault.records_this_month|intcomma }} page requests</strong> <small>of {{ vault.records_allowed|intcomma }}</small></p>
+        		    <p class="last"><strong>0</strong> API calls <small>of 2000</small></p>
+        		    {% if vault.percentage_this_month > 99 %}
+        		    <p class="advice"><a href="#">Upgrade your plan</a> to scrape more</p>
+        		    {% else %}{% if vault.percentage_this_month > 90 %}
+        		    <p class="advice">You might want to <a href="#">Upgrade</a> soon</p>
+        		    {% endif %}{% endif %}
+                    <span class="arrow"></span>
+                </div>
+            </h5>
+    	    <ul class="scraper_list">
+    	    {% for code in vault.get_code_objects.all %}
+    	        {% include 'frontend/includes/vault_scraper_line.html' %}
+    	    {% endfor %}
+    	        <li class="new_object_line">
+    	            <div>
+    	               <p>Create a new <a data-vault_id="{{vault.id}}" data-wiki_type="scraper" class="add_to_vault">scraper</a> or <a data-vault_id="{{vault.id}}" data-wiki_type="view" class="add_to_vault">view</a> in here</p>
+    	            </div>
+    	        </li>
+    	    </ul>
+    	{% else %}
+    	    <h5>
+    	        <!-- This vault contains no scrapers -->
+    	        {{ vault.plan }} plan
+                <span class="usage{% if vault.percentage_this_month > 90 %} warning{% endif %}">
+                    <span class="key">{{ vault.percentage_this_month  }}% used</span>
+                    <span class="progressbar"><strong style="width: {{ vault.percentage_this_month }}%"></strong></span>
+                    <img src="{{ MEDIA_URL }}images/icons/{% if vault.percentage_this_month > 90 %}exclamation{% else %}help{% endif %}.png" width="16" height="16" />
+                </span>  
+                <div class="vault_usage_popover">
+        		    <h4>This month, you have used:</h4>
+        		    <p{% if vault.percentage_this_month > 90 %} class="warning"{% endif %}><strong>{{ vault.records_this_month|intcomma }} page requests</strong> <small>of {{ vault.records_allowed|intcomma }}</small></p>
+        		    <p class="last"><strong>0</strong> API calls <small>of 2000</small></p>
+        		    {% if vault.percentage_this_month > 99 %}
+        		    <p class="advice"><a href="#">Upgrade your plan</a> to scrape more</p>
+        		    {% else %}{% if vault.percentage_this_month > 90 %}
+        		    <p class="advice">You might want to <a href="#">Upgrade</a> soon</p>
+        		    {% endif %}{% endif %}
+                    <span class="arrow"></span>
+                </div>
+    	    </h5>
+    	    <div class="empty_vault">
+    	        <h4>This vault is empty!</h4>
+    	        <!-- <p>Perhaps you&rsquo;d like to read our <a>Vaults FAQ</a>,<br/>or <a>move some scrapers or views</a> here?</p> -->
+    	        <p>Vaults are a great way to keep scrapers secure, <br/>while sharing them with the people that matter.</p>
+    	        <p>Create a new <a data-vault_id="{{vault.id}}" data-wiki_type="scraper" class="add_to_vault">scraper</a> or <a data-vault_id="{{vault.id}}" data-wiki_type="view" class="add_to_vault">view</a> in here</p>
+    	    </div>
+    	{% endif %}
+    	</div>
+        
+        {% if request.user.is_staff %}
+        <div class="vault_footer">
+            <p class="transfer_ownership">
+                <a href="/vaults/{{ vault.id }}/transfer/"><img src="{{ MEDIA_URL }}images/icons/forward_arrow.png" width="16" height="16"> Transfer ownership of this vault<span> to:</span></a>
+                <span class="new_owner"><input type="text"/> <input type="button" value="Transfer!" /></span>
+            </p>
+        </div>
+        {% endif %}
+        
+    </div>
+    
+    {% endfor %}
+</div>
+{% else %}
+{% if self_service_vaults and vaults_remaining_in_plan %}
+<div id="my_vaults">
+    <h2>You don&rsquo;t have any vaults of your own <a id="new_vault" href="/vaults/new/">Create a new vault</a></h2>
+</div>
+{% endif %}
+{% endif %}
+
+{% if vault_membership_count %}
+<div id="shared_vaults">	
+    <h2>You can access {{ vault_membership_count }} shared vault{{ vault_membership_count|pluralize }}:</h2>
+	
+	{% for vault in vault_membership %}
+	<div class="vault">
+        
+    	<div class="vault_header">
+    	    <span class="shineyshiney"></span>
+	        <!-- <a class="vault_leave"><img src="{{ MEDIA_URL }}images/icons/door_exit.png" width="16" height="16"> Leave vault</a> -->
+	        <a class="vault_users"><img src="{{ MEDIA_URL }}images/icons/user_purple.png" width="16" height="16"> <span class="x_users">{% if vault.members.count > 0 %}{{ vault.members.count }} member{{ vault.members.count|pluralize }}{% else %}No members{% endif %}</span></a>
+    	    <h3><!-- <a href="{% url profiles_profile_detail vault.user.username %}" title="This vault is owned by {% if vault.user.get_profile.name %}{{vault.user.get_profile.name}}{% else %}{{vault.user.username}}{% endif %}" class="vault_owner">{% show_gravatar vault.user 'medium' %}</a> -->{{ vault.name }}</h3>
+	        <div class="vault_users_popover">
+    		    <h4><span class="x_users">{{ vault.members.count }} user{{ vault.members.count|pluralize }}</span> can access this vault:</h4>
+    		    <ul>
+    			{% for m in vault.members.all %}
+    	        	{% include 'frontend/includes/vault_member.html' %}
+    			{% endfor %}
+                </ul>
+                <span class="arrow"></span>
+            </div>
+        </div>
+        
+        <div class="vault_contents{% if vault.get_code_objects.count == 0 %} empty{% endif %}">
+    	{% if vault.get_code_objects.count > 0 %}
+            <h5>
+                {{ vault.plan }} plan
+                <span class="usage{% if vault.percentage_this_month > 90 %} warning{% endif %}">
+                    <span class="key">{{ vault.percentage_this_month  }}% used</span>
+                    <span class="progressbar"><strong style="width: {{ vault.percentage_this_month }}%"></strong></span>
+                    <img src="{{ MEDIA_URL }}images/icons/{% if vault.percentage_this_month > 90 %}exclamation{% else %}help{% endif %}.png" width="16" height="16" />
+                </span>  
+                <div class="vault_usage_popover">
+        		    <h4>This month, you have used:</h4>
+        		    <p{% if vault.percentage_this_month > 90 %} class="warning"{% endif %}><strong>{{ vault.records_this_month|intcomma }} page requests</strong> <small>of {{ vault.records_allowed|intcomma }}</small></p>
+        		    <p class="last"><strong>0</strong> API calls <small>of 2000</small></p>
+        		    {% if vault.percentage_this_month > 99 %}
+        		    <p class="advice"><a href="#">Upgrade your plan</a> to scrape more</p>
+        		    {% else %}{% if vault.percentage_this_month > 90 %}
+        		    <p class="advice">You might want to <a href="#">Upgrade</a> soon</p>
+        		    {% endif %}{% endif %}
+                    <span class="arrow"></span>
+                </div>
+            </h5>
+    	    <ul class="scraper_list">
+    	    {% for code in vault.get_code_objects.all %}
+    	        {% include 'frontend/includes/vault_scraper_line.html' %}
+    	    {% endfor %}
+    	        <li class="new_object_line">
+    	            <div>
+    	               <p>Create a new <a data-vault_id="{{vault.id}}" data-wiki_type="scraper" class="add_to_vault">scraper</a> or <a data-vault_id="{{vault.id}}" data-wiki_type="view" class="add_to_vault">view</a> in here</p>
+    	            </div>
+    	        </li>
+    	    </ul>
+    	{% else %}    
+    	    <h5>
+    	        <!-- This vault contains no scrapers -->
+    	        {{ vault.plan }} plan
+                <span class="usage{% if vault.percentage_this_month > 90 %} warning{% endif %}">
+                    <span class="key">{{ vault.percentage_this_month  }}% used</span>
+                    <span class="progressbar"><strong style="width: {{ vault.percentage_this_month }}%"></strong></span>
+                    <img src="{{ MEDIA_URL }}images/icons/{% if vault.percentage_this_month > 90 %}exclamation{% else %}help{% endif %}.png" width="16" height="16" />
+                </span>  
+                <div class="vault_usage_popover">
+        		    <h4>This month, you have used:</h4>
+        		    <p{% if vault.percentage_this_month > 90 %} class="warning"{% endif %}><strong>{{ vault.records_this_month|intcomma }} page requests</strong> <small>of {{ vault.records_allowed|intcomma }}</small></p>
+        		    <p class="last"><strong>0</strong> API calls <small>of 2000</small></p>
+        		    {% if vault.percentage_this_month > 99 %}
+        		    <p class="advice"><a href="#">Upgrade your plan</a> to scrape more</p>
+        		    {% else %}{% if vault.percentage_this_month > 90 %}
+        		    <p class="advice">You might want to <a href="#">Upgrade</a> soon</p>
+        		    {% endif %}{% endif %}
+                    <span class="arrow"></span>
+                </div>
+    	    </h5>
+    	    <div class="empty_vault">
+    	        <h4>This vault is empty!</h4>
+    	        <!-- <p>Perhaps you&rsquo;d like to read our <a>Vaults FAQ</a>,<br/>or <a>move some scrapers or views</a> here?</p> -->
+    	        <p>Vaults are a great way to keep scrapers secure, <br/>while sharing them with the people that matter.</p>
+    	        <p>Create a new <a data-vault_id="{{vault.id}}" data-wiki_type="scraper" class="add_to_vault">scraper</a> or <a data-vault_id="{{vault.id}}" data-wiki_type="view" class="add_to_vault">view</a> in here</p>
+    	    </div>
+    	{% endif %}
+    	</div>
+        
+    </div>
+	{% endfor %}
+</div>
+{% endif%}
+
+</div>
+
+
+{% endblock %}
+
+{% block run_script %}
+$(function(){
+   $('span.progressbar strong').each(function(){
+       if($(this).width() < 10){
+           $(this).width(8);
+       }
+   });
+});
+{% endblock %}

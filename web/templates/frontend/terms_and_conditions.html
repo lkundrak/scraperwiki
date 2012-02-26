@@ -1,0 +1,52 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Help{% endblock %}
+
+{% block header %}
+	<h2>Terms &amp; Conditions</h2>
+	<p>ScraperWiki legal stuff including your rights to the code you write.</p>
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="terms_2">
+            {% include 'shared/terms_and_conditions_2.html' %}
+        </div>
+        <div id="terms_diff_1_2">
+            {% include 'shared/terms_and_conditions_diff_1_2.html' %}
+        </div>
+        <div id="terms_1">
+            {% include 'shared/terms_and_conditions_1.html' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+$(function(){
+    if(window.location.hash == '#terms_2' || window.location.hash == '#terms_1' || window.location.hash == '#terms_diff_1_2'){
+		$(window.location.hash).show().siblings().hide();
+	} else {
+	    $('#terms_2').show().siblings().hide();
+	}
+	
+	$('a[href$="#terms_1"]').bind('click', function(e){ 
+	    e.preventDefault();
+	    window.location.hash = "#terms_1";
+	    $('#terms_1').show().siblings().hide();
+	});
+
+	$('a[href$="#terms_2"]').bind('click', function(e){ 
+	    e.preventDefault();
+	    window.location.hash = "#terms_2";
+	    $('#terms_2').show().siblings().hide();
+	});
+
+	$('a[href$="#terms_diff_1_2"]').bind('click', function(e){ 
+	    e.preventDefault();
+	    window.location.hash = "#terms_diff_1_2";
+	    $('#terms_diff_1_2').show().siblings().hide();
+	});
+});
+</script>
+{% endblock javascript %}

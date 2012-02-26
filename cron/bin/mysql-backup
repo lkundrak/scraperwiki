@@ -1,0 +1,8 @@
+#!/bin/sh
+# backup-mysql
+# David Jones, ScraperWiki Limited
+# Script to back up the MySQL database.  Intended to be run from
+# cron on the webserver (which has a MySQL database for Django).
+
+mysqldump --single-transaction --quick scraperwiki_$1 |
+  gzip --rsyncable > /root/backup/mysql-backup.sql.gz

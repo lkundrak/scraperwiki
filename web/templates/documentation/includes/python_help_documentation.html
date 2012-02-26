@@ -1,0 +1,161 @@
+{% load doc_links %}
+
+<div class="section">
+  <p>In addition to <a
+  href="https://scraperwiki.com/docs/python/python_libraries/">all the
+  standard Python libraries</a> for downloading and parsing pages from the web, 
+  ScraperWiki provides the <var>scraperwiki</var> Python library.</p>
+  
+  <p>Access like this:</p>
+
+  <code>import scraperwiki</code>
+
+  <p>The source code that implements these functions can be found 
+  <a href="https://bitbucket.org/ScraperWiki/scraperwiki/src/efd21ea1c875/scraperlibs/">here</a>.</p>
+</div>
+
+
+<h3>Scraping</h3>
+<p>You can also use any Python HTTP library.</p>
+
+<dl>
+<dt>scraperwiki.<strong>scrape</strong>(url[, params][,user_agent])</dt>
+    <dd><p>Returns the downloaded string from the given url.</p>
+    <p><var>params</var> are sent as a POST if set.</p>
+    <p><var>user_agent</var> sets the user-agent string if provided.</p>
+    </dd>
+</dl>
+
+
+<h3><span id="sql"></span>Datastore (SQLite)</h3>
+<p>ScraperWiki provides a fully-fledged SQLite database for each scraper which
+you can save to.  You can read the data back that has been committed by other
+scrapers, or extract it <a href="{% url docsexternal %}">through the API</a>. 
+</p>
+<p>
+See {% doc_link_full 'LANG_datastore_guide' language %} for examples.
+See SQLite's <a href="http://www.sqlite.org/lang.html">SQL as understood by SQLite</a> for the query language.
+</p>
+
+
+<dl>
+<dt>scraperwiki.<strong>sqlite.save</strong>(unique_keys, data[, table_name="swdata", verbose=2])</dt>
+    <dd><p>Saves a data record into the datastore into the table given
+    by <var>table_name</var>.</p>
+    <p>data is a dict object with field names as keys;
+    <var>unique_keys</var> is a subset
+        of data.keys() which determines when a record is
+        overwritten.</p>
+    <p>For large numbers of records data can be a list of dicts.</p>
+    <p><var>verbose</var> alters what is shown in the <var>Data</var> tab
+    of the editor.</p>
+    </dd>
+
+<dt>scraperwiki.<strong>sqlite.attach</strong>(name[, asname])</dt>
+    <dd><p>Attaches to the datastore of another scraper named
+    <var>name</var>.</p>
+    <p><var>asname</var> is an optional alias for the attached datastore.</p>
+    </dd>
+
+<dt>scraperwiki.<strong>sqlite.select</strong>(sqlfrag[, vars], verbose=1)</dt>
+    <dd><p>Executes a select command on the datastore.  For example:</p>
+    <code>scraperwiki.sqlite.select("* from swdata limit 10")</code>
+    <p>Returns a list of dicts that have been selected.</p>
+    <p><var>vars</var> is an optional list of parameters, inserted when the
+    select command contains '?'s.</p>
+    </dd>
+
+<dt>scraperwiki.<strong>sqlite.execute</strong>(sql[, vars], verbose=1)</dt>
+    <dd><p>Executes any arbitrary sqlite command (except attach). For
+    example create, delete, insert or drop.</p>
+    <p><var>vars</var> is an optional list of parameters, inserted when
+    the select command contains '?''s.
+    For example:</p>
+    <code>scraperwiki.sqlite.execute("insert into swdata values (?,?,?)", [a,b,c])</code>
+    </dd>
+
+<dt>scraperwiki.<strong>sqlite.commit</strong>()</dt>
+    <dd>Commits to the file after a series of execute commands.  (sqlite.save auto-commits after every action).
+    </dd>
+
+<dt>scraperwiki.<strong>sqlite.show_tables</strong>([dbname])</dt>
+    <dd>Returns an array of tables and their schemas in either the current or an attached database.</dd>
+
+<dt>scraperwiki.<strong>sqlite.table_info</strong>(name)</dt>
+    <dd>Returns an array of attributes for each element of the table.</dd>
+
+<dt>scraperwiki.<strong>sqlite.save_var</strong>(key, value)</dt>
+    <dd>Saves an arbitrary single-value into a table called
+    <var>swvariables</var>.  Intended to store scraper state so that
+    a scraper can continue after an interruption.
+    </dd>
+
+<dt>scraperwiki.<strong>sqlite.get_var</strong>(key[, default])</dt>
+    <dd>Retrieves a single value that was saved by <var>save_var</var>.
+        Only works for string, float, or int types.  
+        For anything else, use the <a
+        href="http://docs.python.org/library/pickle.html">pickle
+        library</a> to turn it into a string.
+    </dd>
+</dl>
+
+<dt>scraperwiki.<strong>sqlite.SqliteError</strong></dt>
+    <dd>An exception that is raised when there is, for example, a syntax error in your sql query.
+    </dd>
+</dl>
+
+
+<h3>Views</h3>
+
+<dt>scraperwiki.<strong>utils.httpresponseheader</strong>(headerkey, headervalue)</dt>
+    <dd><p>Set the content-type header to something other than HTML when
+    using a ScraperWiki "view".  For example:</p>
+    <code>scraperwiki.utils.httpresponseheader("Content-Type",
+    "image/png")</code>
+    </dd>
+
+<dt>scraperwiki.<strong>dumpMessage</strong>({"content":base64.encodestring(binstring), "message_type":"console", "encoding":"base64"})</dt>
+    <dd>The method for outputting the binary string <var>binstring</var>
+    that contains, for example, a PNG image</dd>
+
+<h3>Geocoding</h3>
+<p>Some installed functions to help you transform between different
+(Earth) coordinate systems.</p> 
+
+<dl>
+<dt>scraperwiki.<strong>geo.os_easting_northing_to_latlng</strong>(easting, northing[, grid='GB'])</dt>
+    <dd>Converts a <a href="http://en.wikipedia.org/wiki/British_national_grid_reference_system">OSGB</a> 
+        or <a href="http://en.wikipedia.org/wiki/Irish_grid_reference_system">OSIE</a> (grid='IE') 
+        grid reference to a WGS84 (lat, lng) pair.
+    </dd>
+
+<dt>scraperwiki.<strong>geo.extract_gb_postcode</strong>(string)</dt>
+    <dd>Attempts to extract a UK postcode from a given string.
+    </dd>
+
+<dt>scraperwiki.<strong>geo.gb_postcode_to_latlng</strong>(postcode)</dt>
+    <dd>Returns a WGS84 (lat, lng) pair for the central location of a UK postcode.
+    </dd>
+
+
+</dl>
+
+
+<h3>Miscellaneous</h3>
+<dl>
+
+<dt>scraperwiki.<strong>pdftoxml</strong>(pdfdata)</dt>
+    <dd>Convert a byte string containing a PDF file into an XML file containing the coordinates 
+        and font of each text string.  <br/>
+        Refer to 
+        <a href="https://scraperwiki.com/scrapers/new/python?template=advanced-scraping-pdfs">the example</a> 
+        for more details.
+    </dd>
+
+<dt>modulename = scraperwiki.<strong>utils.swimport</strong>(name)</dt>
+    <dd>Imports the code from another scraper as the module
+    <var>odulename</var>.
+    </dd>
+
+</dl>
+

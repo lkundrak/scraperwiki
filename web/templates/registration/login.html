@@ -1,0 +1,37 @@
+{% extends "frontend/base.html" %}
+{% block css %}{% endblock %}
+
+{% block title %}ScraperWiki login{% endblock %}
+{% block content %}
+
+  <div>
+    {% include 'shared/form_errors.html' %}
+
+	<form method="post" action=".">
+        {% csrf_token %}
+	    {{ login_form.username.label_tag }}
+	    {{ login_form.username }}
+	    {{ login_form.password.label_tag }}
+	    {{ login_form.password }}
+		<input type="submit" name="login" value="Sign in" />
+	</form>
+  </div>
+
+  <div>
+	{% include 'shared/form_errors.html' %}
+
+	<form method="post" action=".">
+        {% csrf_token %}
+	    {{ registration_form.username.label_tag }}
+	    {{ registration_form.username }}
+	    {{ registration_form.email.label_tag }}
+	    {{ registration_form.email }}
+	    {{ registration_form.password1.label_tag }}
+	    {{ registration_form.password1 }}
+	    {{ registration_form.password2.label_tag }}
+	    {{ registration_form.password2 }}
+		<input type="submit" name="register" value="Create an account" />
+	</form>
+  </div>
+
+{% endblock %}

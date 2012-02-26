@@ -1,0 +1,98 @@
+{% extends "frontend/base.html" %}
+{% load formhelper %}
+
+{% block css %}{% endblock %}
+
+{% block title %}Profile Creation{% endblock %}
+
+{% block errors %}
+  {% if form.errors %}
+      <ul>
+          {% form_errors form %}
+      </ul>
+  {% endif %}
+  
+{% endblock %}
+
+{% block header %}
+	<h2>Edit your profile</h2>
+	<p>Update your details and control email alert settings</p>
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+    	<form method="post">
+        {% csrf_token %}
+
+            <div class="profilepic">
+                <a href="http://en.gravatar.com" target="_blank">{% load gravatar %}
+                {% show_gravatar profile.user 'large' %}
+                <span>Change profile image using Gravatar</span></a>
+            </div>
+
+            <div class="profilebio">
+                <p class="name">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                    {% field_errors form.name %}
+                </p>
+                <p class="email">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    {% field_errors form.email %}
+                </p>
+                <p class="bio">
+                    {{ form.bio.label_tag }}
+                    {{ form.bio }}
+                    {% field_errors form.bio %}
+                </p>
+                
+                <div id="alerts">
+                    <h4>Alerts</h4>
+                    
+                    <p class="alert_frequency">
+                        <label for="id_alert_frequency">Email me when my scrapers stop working or someone edits them:</label>
+                        {{ form.alert_frequency }}
+                        <br class="clear" />
+                        {% field_errors form.alert_frequency %}
+                    </p>
+                  
+                    <p class="email_on_comments">
+                        <label for="id_email_on_comments">Email me when someone comments on one of my scrapers:</label>
+                        {{ form.email_on_comments }}
+                        <br class="clear" />
+                        {% field_errors form.email_on_comments %}
+                    </p>
+
+                    <p class="messages">
+                        <label for="id_messages" style="cursor:help" title="Don&rsquo;t worry, nobody will see your email address: Messages are sent from feedback@scraperwiki.com">I&rsquo;d like to send and receive messages via ScraperWiki:</span></label>
+                        {{ form.messages }}
+                        <br class="clear" />
+                        {% field_errors form.messages %}
+                    </p>
+                
+                </div>
+
+				{% if profile.possible_feature_count != 0 %}
+                <div id="features">
+                    <h4>Features</h4>
+                    <p>We regularly test new features that could make ScraperWiki even better. You can use these checkboxes to opt in or out of our current feature trials.</p>
+                    {{ form.features }}
+                </div>
+				{% endif %}
+                
+            </div>
+
+            <br class="clear" />
+            
+            <div class="profilesettings">
+                <input type="hidden" name="success_url" value="/" />
+                <p class="cancel"><a href="{% url profiles_profile_detail user.username %}"><img src="{{ MEDIA_URL }}images/icons/cross.png" width="16" height="16" alt="" /> Cancel Changes</a></p>
+                <p class="save"><input type="submit" class="button" value="Save changes" /><a href="#" class="submit_link"><img src="{{ MEDIA_URL }}images/icons/tick.png" width="16" height="16" alt="" /> Save Changes</a></p>
+                <br class="clear" />
+            </div>
+            
+            
+    	</form>
+    </div>
+{% endblock %}

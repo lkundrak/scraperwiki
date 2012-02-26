@@ -1,0 +1,315 @@
+<div style="line-height: 1.4em">
+    
+<p>The quickest and simplest way to visualise any data you&rsquo;ve scraped is often via an HTML (+ Javascript) View. In this quick tutorial, you&rsquo;ll learn what Views are, how they work, and how to write one that leverages the power of both the ScraperWiki API and the Google Maps API.</p>
+
+<h3>Making a map in a ScraperWiki View</h3>
+
+<p>Let&rsquo;s start a new View by clicking <b style="color:#28c">view</b>, next to <b style="color:#28c">New scraper</b> in the ScraperWiki sidebar.</p>
+
+<p>Pick HTML as your language, and then paste this into the Editor window:</p>
+
+<code style="height: 250px; overflow-y: scroll">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;UK Universities and Colleges&lt;/title&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;style type="text/css"&gt;
+            html, body, #map_canvas {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+        &lt;/style&gt;
+        &lt;script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"&gt;&lt;/script&gt;
+        &lt;script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"&gt;&lt;/script&gt;
+        &lt;script type="text/javascript"&gt;
+            var map;
+            $(function(){
+                var myOptions = {
+                    zoom: 7,
+                    center: new google.maps.LatLng(53.405092, -2.969876),
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+            });
+        &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id="map_canvas"&gt;&lt;/div&gt;
+    &lt;/body&gt;
+&lt;html&gt;
+</code>
+
+<p>Save your View, and then click the "Preview" button in the Editor. Your new View will open up in a new window, showing a map of the British Isles, centred on ScraperWiki HQ in Liverpool. Magic!</p>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+var map;
+$(function(){
+    var myOptions = {
+        zoom: 6,
+        center: new google.maps.LatLng(53.405092, -2.969876),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('liverpool_map'), myOptions);
+});
+</script>
+<div id="liverpool_map" style="width: 100%; height: 350px;"></div>
+
+<h3>How did we do it?</h3>
+
+<p>This CSS makes the map fill the whole window:</p>
+
+<code>&lt;style type="text/css"&gt;
+    html, body, #map_canvas {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+&lt;/style&gt;</code>
+
+<p>These two &lt;script&gt; tags pull in the Google Maps Javascript library (required to make the map), and the jQuery javascript library (will come in useful later):</p>
+
+<code>&lt;script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"&gt;&lt;/script&gt;</code>
+
+<p>And this bit of Javascript sets the location we&rsquo;d like to centre our map on, and creates the map.</p>
+
+<code>&lt;script type="text/javascript"&gt;
+    var map;
+    $(function(){
+        var myOptions = {
+            zoom: 7,
+            center: new google.maps.LatLng(53.405092, -2.969876),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+    }
+&lt;/script&gt;
+</code>
+
+<p>Note how the options include the default zoom level, the location coordinates, and the style of map we&rsquo;d like to see. Here we&rsquo;re picking the <i>ROADMAP</i> style, but you could also use <i>SATELLITE</i> for a satellite image, <i>HYBRID</i> for a satellite image with overlayed roads and placenames, and <i>TERRAIN</i> for a map of physical features. For more information, see the <a href="http://code.google.com/apis/maps/documentation/javascript/tutorial.html">Google Maps API documentation</a>.</p>
+
+<p>We could always change the map&rsquo;s central spot, zoom level, or style later using something like this:</p>
+
+<code>var pos = new google.maps.LatLng(52.11249, -2.61793); 
+map.setCenter(pos);
+
+map.setZoom(2);
+
+map.setMapTypeId('TERRAIN');
+</code>
+
+<p>Adding a marker at a specific point is just as easy:</p>
+
+<code>var pos = new google.maps.LatLng(52.11249, -2.61793); 
+var marker = new google.maps.Marker({position:pos, map:map, animation: google.maps.Animation.DROP, title:"OHAI!"});
+</code>
+
+<p>All you need is a latitude and a longitude. I wonder where we could find some of those&hellip;</p>
+
+<h3>Getting data out of the ScraperWiki datastore with jQuery</h3>
+
+<p>This little bit of code is all we need to get the locations of every UK university and college out of our datastore, and ready to plot on the map:</p>
+
+<code>$.ajax({
+    url: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=uk_universities_and_colleges&query=select%20*%20from%20%60universities%60%20where%20latitude%20is%20not%20null',
+    dataType: 'json',
+    success: function(data){ drop_markers(data); }
+});
+</code>
+
+<p>Here we&rsquo;re using the jQuery.ajax() function to call the ScraperWiki datastore and return a list of data points. Once jQuery has received the data, it passes it through a function we&rsquo;re about to write called <i>drop_markers()</i>. Simple.</p>
+<p>If you&rsquo;d like to know more about jQuery.ajax(), check out our guide to <a href="/docs/javascript/ajax_topic_guide">Using Ajax with ScraperWiki</a>.</p>
+
+<h3>Putting data on the map</h3>
+
+<p>Once the ScraperWiki datastore has returned our data points, we need to get the Google Maps library to plot them on our map. To keep everything neat, we&rsquo;ll do all of that in the <i>drop_markers()</i> function.</p>
+
+<p>Add this new code to your View, so the whole &lt;script&gt;&hellip;&lt;/script&gt; part looks like this:</p>
+
+<code>&lt;script type="text/javascript"&gt;
+    var map;
+    $(function(){
+        var myOptions = {
+            zoom: 10,
+            center: new google.maps.LatLng(0, 0),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+        $.ajax({
+            url: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=uk_universities_and_colleges&query=select%20*%20from%20%60universities%60%20where%20latitude%20is%20not%20null',
+            dataType: 'json',
+            success: function(data){ drop_markers(data); }
+        });
+        function drop_markers(data){
+            bounds = new google.maps.LatLngBounds();
+            for(i = 0; i < data.length; i++){
+                myLatLng = new google.maps.LatLng(data[i].latitude, data[i].longitude);
+                markerOptions = {position: myLatLng, map: map, title: data[i].name};
+                new google.maps.Marker(markerOptions);
+                bounds.extend(myLatLng);
+                map.fitBounds(bounds);
+            }
+        }
+    });
+&lt;/script&gt;
+</code>
+
+<p>The <i>drop_markers()</i> function takes our data points, extracts the latitude and longitude information from each, and plots those points on the map. It then resizes the map to make sure all the points fit on at the same time (very handy!).</p>
+
+<p>If you click the "Preview" button in your Editor now, you&rsquo;ll be able to see it in action.</p>
+
+<script type="text/javascript">
+var map;
+$(function(){
+    var myOptions = {
+        zoom: 5,
+        center: new google.maps.LatLng(54.21, -2.15),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('ucas_map'), myOptions);
+    $.ajax({
+        url: 'https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=uk_universities_and_colleges&query=select%20*%20from%20%60universities%60%20where%20latitude%20is%20not%20null',
+        dataType: 'json',
+        success: function(data){ drop_markers(data); }
+    });
+    function drop_markers(data){
+        bounds = new google.maps.LatLngBounds();
+        for(i = 0; i < data.length; i++){
+            myLatLng = new google.maps.LatLng(data[i].latitude, data[i].longitude);
+            markerOptions = {position: myLatLng, map: map, title: data[i].name};
+            new google.maps.Marker(markerOptions);
+        }
+    }
+});
+</script>
+<div id="ucas_map" style="width: 100%; height: 350px;"></div>
+
+
+
+</div>
+
+<!--
+
+<h2>1. Make a new scraper</h2>
+
+<p>We're going to scrape the averge number of years children spend
+in school in different countries from 
+<a href="http://unstats.un.org/unsd/demographic/products/socind/education.htm">this page</a> on a UN site.
+</p>
+
+<p>Pick "new scraper" from the main menu on the right, and choose Python.
+(If you're more comfortable with Ruby or PHP, choose a different language
+above). You'll get a web based code editor.
+</p>
+
+<p>Put in a few lines of code to show it runs, and click the "Run" button or
+type Ctrl+R.
+</p>
+
+<code>print "Hello, coding in the cloud!"</code>
+
+<p>(As we go through this tutorial, you can copy and paste each 
+block of code onto the end of your growing scraper, and run it each time.)</p>
+
+<p>The code runs on ScraperWiki's servers. You can see any output you
+printed in the Console tab at the bottom of the editor.
+</p>
+
+<h2>2. Download HTML from the web</h2>
+
+<p>You can use any normal Python library to crawl the web, such as urllib2 or Mechanize. 
+There is also a simple built in ScraperWiki function which may be easier to use.
+</p>
+
+<code>import scraperwiki
+html = scraperwiki.scrape("http://unstats.un.org/unsd/demographic/products/socind/education.htm")
+print html
+</code>
+
+<p>When you print something quite large, click "more" in the console
+to view it all. Alternatively, go to the Sources tab in the editor to see
+everything that has been downloaded.</p>
+
+<h2>3. Parsing the HTML to get your content</h2>
+
+<p>lxml is the best library for extracting content from HTML.
+</p>
+
+<code>import lxml.html
+root = lxml.html.fromstring(html)
+for tr in root.cssselect("div[align='left'] tr.tcont"):
+    tds = tr.cssselect("td")
+    data = {
+      'country' : tds[0].text_content(),
+      'years_in_school' : int(tds[4].text_content())
+    }
+    print data
+</code>
+
+
+<p>The bits of code like 'tr.tcont' are CSS selectors, just like 
+those used to style HTML.
+</p>
+
+<h2>4. Saving to the ScraperWiki datastore</h2>
+
+<p>The datastore is a magic SQL store, one where you don't need to make
+a schema up front.</p>
+
+<p>Replace "print data" in the lxml loop with this save command 
+(make sure you keep it indented with spaces at the start like this):</p>
+
+<code>    scraperwiki.sqlite.save(unique_keys=['country'], data=data)</code>
+
+<p>The unique keys (just country in this case) identify each piece of data.
+When the scraper runs again, existing data with the same values for the
+unique keys is replaced.</p>
+
+<p>Go to the Data tab in the editor to see the data loading in. 
+Wait until it has finished.</p>
+
+<h2>5. Getting the data out again</h2>
+
+<p>If you haven't done so yet, press "save scraper" at the bottom
+right of the editor. You'll need to give your scraper a title, and to make a
+ScraperWiki account if you don't have one already.</p>
+
+<p>Now, click on the Scraper tab at the top right to see a preview of your
+data.  The easiest way to get it all out is to "Download spreadsheet (CSV)".
+</p>
+
+<p>For more complex queries "Explore with ScraperWiki API". Try this
+query in the SQL query box.</p>
+
+<code>select * from swdata order by years_in_school desc limit 10</code>
+
+<p>It gives you the records for the ten countries where children spend
+the most years at school. </p>
+
+<p>Notice that as well as JSON, you can also get custom CSV files using 
+the SQL query in the URL.</p>
+
+<h2>What next?</h2>
+
+<p>If you have a scraper you want to write, and feel ready, then get going. Otherwise...
+
+{% load doc_links %}
+<ul>
+    <li>
+        <a href="{% url docs language %}">More documentation</a> on ScraperWiki
+        and common Python scraping libraries.
+    </li>
+    <li>
+        <a href="{% url get_involved %}" title="Get involved">Get involved!</a>
+        Fix, tag or document our shared public data scrapers.
+    </li>
+</ul>
+
+-->
+
+
+
+

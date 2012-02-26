@@ -1,0 +1,36 @@
+{% extends "frontend/base.html" %}
+{% load pagination_tags %}
+
+{% block title %}Your scrapers{% endblock %}
+
+{% block header %}
+	<h2>Your dashboard</h2>
+	<p>Scrapers and views you own or have edited
+	<!--Go to <a href="{% url profiles_profile_detail user.username %}">your profile page</a>.--></p>
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    {% if object_list %}
+	{% autopaginate object_list 20 %}
+
+      <ul class="scraper_list">
+      {% for code in object_list %}
+        {% with 1 as on_dashboard %}
+            {% include 'frontend/includes/code_object_line.html' %}
+        {% endwith %}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You have not yet contributed to any scrapers or views.</p>
+    <p><a data-wiki_type="scraper" href="{% url choose_template 'scraper' %}" title="Create a new screen scraper" class="editor_scraper">New scraper</a> / <a data-wiki_type="view" href="{% url choose_template 'view' %}" title="Create a new view" class="editor_view">view</a>
+
+  {% endif %}
+
+	{% paginate %}
+
+</div>
+
+
+{% endblock %}

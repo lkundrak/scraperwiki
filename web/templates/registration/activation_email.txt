@@ -1,0 +1,17 @@
+ScraperWiki
+___________
+
+Hi {{ user.get_profile.name }}!
+
+Thanks for creating a new ScraperWiki account.
+
+Please click this link to verify your email address:
+https://{{ site }}/accounts/activate/{{activation_key}}/
+
+__________
+
+Not {{ user.get_profile.name }}? No worries, 
+just delete this email and have a lovely day.
+
+
+

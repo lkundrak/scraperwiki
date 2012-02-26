@@ -1,0 +1,100 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Tour{% endblock %}
+
+{% block header %}
+    <h2>ScraperWiki Tour</h2>
+	<p>Find out what all the fuss is about.</p>
+{% endblock %}
+
+{% block content %}
+    <div id="divWelcome">
+        <img id="imgLogoLarge" src="{{MEDIA_URL}}/images/logo_large.png"/>
+        <h1>ScraperWiki is all the tools you need for Screen Scraping, Data Mining &amp; visualisation.</h1>
+        <div id="divIntroSlideShow">
+            <div class="slide_show">
+                <img src="{{ MEDIA_URL }}images/intro_slides/intro1.png" />
+                <img src="{{ MEDIA_URL }}images/intro_slides/intro2.png" />
+                <img src="{{ MEDIA_URL }}images/intro_slides/intro3.png" />
+                <img src="{{ MEDIA_URL }}images/intro_slides/intro4.png" />  
+                <img src="{{ MEDIA_URL }}images/intro_slides/intro5.png" />                                                
+            </div>
+            <div class="slide_nav"></div>
+        </div>            
+        <h2>Make bad data good, collaborate &amp; discover new datasets.</h2>
+        <br class="clear"/>
+    </div>
+
+
+{% endblock %}
+{% block run_script %}
+function setupScroller(){
+    
+    //left right buttons
+    $('.scroller a.scroll_left').click(
+        function(){
+            scrollScroller('left')
+            return false;
+        }
+    );
+    $('.scroller a.scroll_right').click(
+        function(){
+            scrollScroller('right')
+            return false;
+        }
+    );
+    
+    //resize
+    $(window).resize(
+        function(){
+            var iNewWidth = $('.scroller .scroller_wrapper').width() / 2;
+            if(iNewWidth < 250){
+               iNewWidth = 250;
+            }
+            $('.scroller .scroll_item').width(iNewWidth);
+        }
+    );
+}
+
+function scrollScroller(sDirection){
+
+    //can scroll?
+    var bCanScroll = true;
+    var iCurrentLeft = parseInt($('.scroller .scroll_items').css('left'));
+    if(sDirection == 'left' && iCurrentLeft >= 0){
+        bCanScroll = false;
+    }
+
+    if(bCanScroll == true){
+        //get the width of one item
+        iWidth = $('.scroller .scroll_items :first-child').outerWidth() + 18;
+        sWidth = ''
+        if(sDirection == 'right'){
+            sWidth = '-=' + iWidth
+        }else{
+            sWidth = '+=' + iWidth        
+        }
+
+        //scroll   
+        $('.scroller .scroll_items').animate({
+          left: sWidth
+        }, 500);
+    }
+    
+}
+
+function setupIntroSlideshow(){
+    $('.slide_show').cycle({
+		fx: 'fade',
+        speed:   1000, 
+        timeout: 7000, 
+        next:   '.slide_show', 
+        pause:   1,
+        pager: '.slide_nav',
+        autostop: 0
+	});
+}
+
+setupIntroSlideshow();
+
+{% endblock %}

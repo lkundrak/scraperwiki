@@ -1,0 +1,79 @@
+<div style="line-height: 1.4em">
+    
+<p>So you&rsquo;ve read <a href="/docs/html/html_views/">HTML Views 101</a> and now you want to know a bit more about AJAX?<br/>Well you&rsquo;ve come to the right place.</p>
+
+<h3>JSON and JSONP</h3>
+
+<p>As you saw, the basic recipe for calling the ScraperWiki API using <a href="http://api.jquery.com/jQuery.ajax/">jQuery.ajax()</a> is:</p>
+
+<code>var apiurl = "https://api.scraperwiki.com/api/1.0/datastore/sqlite"; 
+var srcname = "new_americ_foundation_drone_strikes"; 
+var sqlselect = "select * from swdata limit 10"; 
+$.ajax({
+    url: apiurl, 
+    dataType: "jsonp", 
+    data:{
+        name: srcname, 
+        query: sqlselect, 
+        format: "jsonlist"
+    }, 
+    success: function(data){
+        alert(data);
+    }
+}); 
+</code>
+
+<p>Note how we&rsquo;re using <em>dataType: "jsonp"</em> there. This is because security requirements stop our script (running in http://views.scraperwiki.com) from accessing data on a different domain (in this case http://api.scraperwiki.com) using regular Ajax. Instead, we have to use JSONP, which works around the limitation.
+ 
+<p>If, instead, you are calling to the same domain (https://views.scraperwiki.com), then a plain ajax call is fine:</p>
+<code>var url = "https://views.scraperwiki.com/run/python_output_stuff/"; 
+$.ajax({
+    url: url, 
+    success: function(data){ 
+        alert(data); 
+    }); 
+</code>
+
+<h3>Making lots of similar $.ajax calls in your script?</h3>
+
+<p>You can set the defaults for all your ajax calls at once:</p>
+<code>var apiurl = "https://api.scraperwiki.com/api/1.0/datastore/sqlite"; 
+$.ajaxSetup({
+    type: "GET", 
+    dataType: "jsonp", 
+    url: apiurl, 
+    error: function(jq, status) { 
+        alert(status); 
+    }
+}); 
+</code>
+
+<p>Now you can call back to the data API with hardly any code.</p>
+<code>var sqlselect = "select latlng_lat, latlng_lng, date, lowerest, higherest from swdata order by date limit 500";
+var name = "new_americ_foundation_drone_strikes";
+$.ajax({
+    data:{
+        name: name, 
+        query: sqlselect
+    }, 
+    success: consumedata
+}); 
+</code>
+
+<h3>Using JSON from the ScraperWiki Datastore</h3>
+
+<p>Data comes back from the datastore in a single entry list like this:</p>
+<pre>[ { keys:[keys], data:[row1, row1, ...] } ]</pre>
+<p>Here&rsquo;s how you could turn that list into a HTML table using jQuery:</p>
+<code>function consumedata(tdata)
+{
+    var keys = tdata[0]["keys"]; 
+    var data = tdata[0]["data"]; 
+    var tab = $("&lt;table>"); 
+    $(window).append(tab); 
+    tab.append($("&lt;tr>&lt;th>" + keys.join("&lt;/th>&lt;th>") + "&lt;/th>&lt;/tr>")); 
+    for (var i = 0; i &lt; data.length; i++)
+        tab.append($('&lt;tr>&lt;td>' + data[i].join("&lt;/td>&lt;td>") + "&lt;/td>&lt;/tr>")); 
+}
+</code>
+</div>

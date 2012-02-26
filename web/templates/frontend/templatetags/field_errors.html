@@ -1,0 +1,7 @@
+{% if errors %}
+    <small class="error_hint">
+        {% for error in errors %}
+            {{ error}}
+        {% endfor %}
+    </small>
+{% endif %}

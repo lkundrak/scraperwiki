@@ -1,0 +1,107 @@
+{% extends "frontend/base.html" %}
+{% load formhelper %}
+
+{% block title %}Contact us{% endblock %}
+
+{% block errors %}
+    {% if form.errors %}
+        <ul>
+            {% form_errors form %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
+
+{% block header %}
+	<h2>Contact us</h2>
+	<p>Ask us a question or make a suggestion.</p>
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <form action="/contact/" method="POST">
+            {% csrf_token %}
+            <ul class="form">
+            <li>
+                {{ form.subject_dropdown.label_tag }}
+                {{ form.subject_dropdown }}
+                {% field_errors form.subject_dropdown %}
+                <a id="requesting_data_tip" style="display: none" href="{% url request_data %}">
+                We have a special form that <br/>makes it dead easy to request&nbsp;data.<br/><strong>Click here to fill&nbsp;it&nbsp;out.</strong>
+                </a>
+            </li>
+            {% if request.user.is_authenticated %}
+                <input id="id_name" name="name" type="hidden" class="required" value="{{ request.user.get_profile.name }}" />
+                <input id="id_email" name="email" type="hidden" value="{{ request.user.email }}" /> 
+            {% else %}
+                <li>
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+        	        {% field_errors form.name %}                    
+                </li>
+                <li>
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+        	        {% field_errors form.email %}                    
+                </li>
+            {% endif %}               
+            <li>
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {% field_errors form.title %}
+            </li>
+            <li>
+                {{ form.body.label_tag }}                    
+                {{ form.body }}
+                {% field_errors form.body %}
+                <p class="tip"><b>Reporting a bug?</b> Remember to tell us your browser, operating system, and the scraper or page involved.</p>
+            </li>
+
+            {% if not request.user.is_authenticated %}
+                <li>
+                    {{ form.captcha.label_tag }}                    
+                    {{ form.captcha }}
+                    {% field_errors form.captcha %}
+                </li>
+            {% endif %}               
+            </ul>
+            <p class="last"><input type="submit" value="Send message" /></p>
+            <img src="{{ MEDIA_URL }}images/postman.gif" id="postman" width="175" height="260" alt="" />
+            <dl class="postphone">
+                <dt>feedback@scraperwiki.com</dt>
+                <dt>Scraperwiki, ic2<br>Liverpool Science Park<br>146 Brownlow Hill<br>Liverpool L3 5RF</dt>
+                <dt>+44 208 1330541</dt>
+            </dl>
+        </form>
+        <br />
+    </div>
+{% endblock %}
+
+{% block run_script %}
+    $(document).ready(function() 
+    { 
+        $("#id_subject_dropdown").change(function() { 
+            if ($(this).val() == 'request') {
+                $("#requesting_data_tip:hidden").slideDown(250);
+                $('.form li').not(':first').add('p.last').slideUp(250);
+            } else {
+                $("#requesting_data_tip:visible").slideUp(250);
+                $('.form li').not(':first').add('p.last').slideDown(250);
+            }
+        });
+        
+        if(
+            window.location.hash === '#suggestion' ||
+            window.location.hash === '#request' ||
+            window.location.hash === '#premium' ||
+            window.location.hash === '#corporate' ||
+            window.location.hash === '#help' ||
+            window.location.hash === '#bug' ||
+            window.location.hash === '#other'
+        ) {
+            $('select').val(window.location.hash.replace('#','')).trigger('change')
+            $('#id_title').focus();
+        }
+    }
+    );
+{% endblock %}

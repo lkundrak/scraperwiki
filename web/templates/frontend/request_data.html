@@ -1,0 +1,279 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Request data{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="Ask ScraperWiki to scrape the data you need. Public data requests are free, and fulfilled by our brilliant developer community. Private data requests are fulfilled by a crack team of data diggers, and the data stored in secure ScraperWiki Vaults." />
+{% endblock %}
+
+{% block javascript %}
+<script>
+var showinglookup = { 
+    private:'.urls, .columns, .frequency, .due_date, .first_name, .last_name, .email, .why', 
+    viz:'.urls, .columns, .frequency, .due_date, .visualisation, .first_name, .last_name, .email, .telephone, .why',
+    app:'.urls, .columns, .frequency, .due_date, .application, .first_name, .last_name, .email, .why',
+    etl:'.first_name, .last_name, .email, .telephone, .company_name, .why, .description',
+    public:'.urls, .columns, .frequency, .due_date, .first_name, .last_name, .email, .broadcast, .why'
+}
+
+$(function(){ 
+
+	function requestOption($a){
+		
+		$d = $a.parent().next();
+		var id = $d.attr('id');
+        window.location.hash = id;
+		
+		function switchForm($a, fade){
+		    if(id == 'public'){
+		        $('#request_form:visible').hide();
+		        if(fade){
+		            $('#public_request:hidden').fadeIn(200);
+		        } else {
+		            $('#public_request:hidden').show();
+		        }
+		    } else {
+		        $('#public_request:visible').hide();
+		        if(fade){
+		            $('#request_form:hidden').fadeIn(200);
+		        } else {
+		            $('#request_form:hidden').show();
+		        }
+    			$(showinglookup[id], $('#request_form')).filter(':hidden').slideDown(250);
+    			$('#request_form li').not(showinglookup[id]).slideUp(250);
+                $('#id_category').val(id);
+                $('#id_category_title').val($a.text());
+		    }
+		}
+		
+		function switchNav($a){
+		    $a.addClass('selected').parent().next().css('border-color', '#39c').slideDown(250);
+			$('#request_options h3 a.selected').not($a).removeClass('selected');
+			$('#request_options div:visible').not($d).css('border-color', '#E8F2F9').slideUp(250);
+		}
+		
+		if($('#request_options').css('marginLeft') != '0px'){
+			$('#request_options').animate({marginLeft: 0}, 400, 'easeOutCubic', function(){
+        		switchNav($a);
+				switchForm($a, true);
+			});	
+		} else {
+    		switchNav($a);
+    		switchForm($a, false);
+		}
+		
+	}
+	
+	function publicOption(){
+	    if($('#request_options').css('marginLeft') != '0px'){
+			$('#request_options').animate({marginLeft: 0}, 400, 'easeOutCubic', function(){
+				$('#public_request').fadeIn(200);
+			});	
+		} else {
+			$('#request_form').hide().prev().show();
+		}
+	}
+		
+	$('#request_options h3 a').bind('click', function(e){
+		e.preventDefault();
+    	requestOption($(this));
+	}).each(function(){
+		h = $(this).outerHeight() - 2;
+		$('<span>').addClass('arrow').css('border-width', Math.round(h/2) + 'px 0px ' + Math.round(h/2) + 'px 10px').attr('title',h).appendTo($(this));
+	});
+
+    if (window.location.hash)
+        setTimeout(function() { $('#request_options div'+window.location.hash).prev().find("a").click(); }, 200); 
+    if ($('#request_form #id_name').val())
+        setTimeout(function() { $('#request_form #id_name').change(); }, 300); 
+
+    // If the form is being returned with errors then the category will be set
+    // so display the form as required by the selected category
+    var choice = $('#id_category').val();
+    if(choice !== ''){
+        $('#request_options h3 a[href="#' + choice + '"]').click();
+    }
+	
+	$('#id_due_date').datepicker({
+		minDate: '+1'
+	}).next().bind('click', function(){
+		$(this).prev().datepicker("show");
+	});
+	
+}); 
+
+</script>
+{% endblock %}
+
+
+{% block header %}
+    <h2>Request data</h2>
+    <p>For Journalists, Researchers &amp; Data Analysts who know cut and paste won&rsquo;t work</p>
+{% endblock %}
+
+{% block content %}
+
+
+<div id="request_options">
+    <h2 class="paid">Paid premium services <i>(starting&nbsp;at&nbsp;$1000)</i></h2>
+    <h3 class="premium"><a href="#private">I need some data that I want to <strong>keep&nbsp;private</strong></a></h3>
+	<div id="private">
+		<p>We pay the best developers in our community to gather the data and store it for you in a private vault.</p>
+		<p class="paid">This is a paid service. The cost will depend on the amount and complexity of the information being gathered. It can take between a couple of hours and a few days to gather. When we know what you want, we will give you a quote.</p>
+	</div>
+    <h3 class="premium"><a href="#viz">I need data and I also want a <strong>visualisation</strong></a></h3>
+	<div id="viz">
+		<p>This is a combination of getting the data, storing it, and creating a visualisation that tells a story. You give us a short brief and a link to the data, and we help you create an engaging visualisation either directly or with a ScraperWiki partner.</p>
+		<p class="paid">This is a paid service. The cost will depend on the brief you give us, so be descriptive and we&rsquo;ll send you a quote.
+	</div>
+    <h3 class="premium"><a href="#app">I need a <strong>data application</strong> for my website</a></h3>
+	<div id="app">
+		<p>Data applications are designed to drive continuous traffic to a website and also offer the possibility of generating revenue through a subscription model for services like email alerts. This is an automated service.</p>
+		<p class="paid">This is a paid service.</p>
+	</div>
+    <h3 class="premium"><a href="#etl">I want to merge content from systems that cannot talk to each other (<strong>ETL</strong>) &ndash; Help!</a></h3>
+	<div id="etl">
+		<p>Sometimes it can be easier to scrape data from systems than to re-engineer the back-end. In this context ScraperWiki acts as a data hub for the purposes of transforming data into a central datastore. It is a more cost effective &lsquo;ETL&rsquo; (Extract, Transform and Load) and a flexible option for building an API for web or mobile applications.</p>
+		<p class="paid">This is a paid service &ndash; although it&rsquo;s usually a lot cheaper and faster than traditional ETL solutions. The time and cost will depend on the amount and the accessibility of the data we&rsquo;re scraping.
+	</div>
+	<h2 class="free">Community scraping service</h2>
+    <h3 class="free"><a href="#public">I need some data and I want to make it <strong>public&nbsp;&amp;&nbsp;open</strong></a></h3>
+	<div id="public">
+		<p class="free">This is a free service, if you have the technical skills just go and do it! If not, our developer community might help out.</p>
+		<p>Alternatively if you have budget we can pay a developer to do it for you. The cost can range in price and will depend on the size and complexity of the information.</p>
+	</div>
+</div>
+
+<div id="public_request" style="display: none">
+    <p>
+        If you&rsquo;ve found a cool dataset that you don't know how to liberate,
+        you should post it on <a href="http://groups.google.com/group/scraperwiki?hl=en">our community Google Group</a>.
+        Someone might be able to give you some tips or even write the scraper for you.
+        Here are some things you should include.
+    </p>
+    <ul class="bulleted">
+        <li>Why you want to liberate this data</li>
+        <li>URLs or source documents</li>
+        <li>How often the site gets updated (if you know)</li>
+    </ul>
+    <p>
+        It can also help developers if you provide a walkthrough
+        of how you would get the data if you needed to resort to
+        copy-and-paste. For complicated websites, annotated
+        screenshots are sometimes nice.
+        {# Column names of the resulting tables #}
+    </p> 
+    <p>
+        If your request sounds boring or overly commercial, people probably won&rsquo;t respond;
+        please consider our <a href="{% url request_data %}">premium services</a> if that is the case.
+    </p>
+</div>
+
+<form action="." method="post" id="request_form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        <div id="main_error">{{form.non_field_errors.0}}</div>
+    {% endif %}
+	<ul>
+	<li class="urls">
+        {{form.urls.label_tag}}
+        {{form.urls}}
+	</li> 
+	<li class="columns">
+        {{form.columns.label_tag}}
+        {{form.columns}}
+	</li> 
+	<li class="frequency">
+        {{form.frequency.label_tag}}
+        {{form.frequency}}
+	</li>
+	<li class="due_date">
+        {{form.due_date.label_tag}}
+        {{form.due_date}}
+        <a><img src="{{ MEDIA_URL }}images/icons/calendar.png" width="16" height="16" alt="" /> Show calendar</a>
+	</li> 
+	<li class="visualisation">
+        {{form.visualisation.label_tag}}
+        {{form.visualisation}}
+	</li>
+    <li class="application">
+        {{form.application.label_tag}}
+        {{form.application}}
+	</li>
+	<li class="description">
+        {{form.description.label_tag}}
+        {{form.description}}
+	</li>
+	<li class="why">
+        {{form.why.label_tag}}
+        {{form.why}}
+	</li>
+	<li class="first_name {% if form.first_name.errors %}error{% endif %}">
+        {{form.first_name.label_tag}}
+        {{form.first_name}}
+	</li> 
+	<li class="last_name {% if form.last_name.errors %}error{% endif %}">
+        {{form.last_name.label_tag}}
+        {{form.last_name}}
+	</li> 
+	<li class="email {% if form.email.errors %}error{% endif %}">
+        {{form.email.label_tag}}
+        {{form.email}}
+	</li> 
+	<li class="telephone">
+        {{form.telephone.label_tag}}
+        {{form.telephone}}
+	</li> 
+	<li class="company_name">
+        {{form.company_name.label_tag}}
+        {{form.company_name}}
+	</li> 
+	<li class="category">
+      {{form.category}}
+	</li> 
+	<li class="broadcast">
+        {{form.broadcast}}
+        {{form.broadcast.label_tag}}
+	</li>
+	</ul>
+    <p id="terms_and_conditions">
+        Don't worry, we never pass your details on to third parties, and everything's stored safely in accordance with our <a href="{% url terms %}">terms and conditions</a>.
+    </p>
+	<p class="last">
+		<input type="submit" value="Submit your request" id="submit" />
+	</p>
+</form>
+
+<div id="request_scrapbook">
+	<h2><a>Not convinced? See what we can do</a></h2>
+	<ul>
+        <li>
+            <a href="http://www.youtube.com/watch?v=3RQ1f6vUMoM&p=12A3B8DEF0A9F401">
+                <img src="{{ MEDIA_URL }}images/scrapbook_bbc.jpg" width="145" height="100" alt="ScraperWiki at the BBC Hack Day" />
+                <h4>Outreach at the BBC</h4>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.channel4.com/news/could-selling-off-britains-assets-cut-the-debt">
+                <img src="{{ MEDIA_URL }}images/scrapbook_channel4.jpg" width="145" height="100" alt="ScraperWiki&rsquo; Government spending chart for Channel4" />
+                <h4>Visualisations for Channel 4</h4>
+            </a>
+        </li>
+        <li>
+            <a href="http://blog.scraperwiki.com/2011/02/25/read-all-about-it-read-all-about-it-%E2%80%9Cscraperwiki-gets-on-the-guardian-front-page-%E2%80%9D/">
+                <img src="{{ MEDIA_URL }}images/scrapbook_guardian.jpg" width="145" height="100" alt="ScraperWiki on the Guardian front page" />
+                <h4>Data discovery in the Guardian</h4>
+            </a>
+        </li>
+        <li>
+            <a href="http://blog.scraperwiki.com/2011/05/11/access-government-in-a-way-that-makes-sense-to-you-surely-not/">
+                <img src="{{ MEDIA_URL }}images/scrapbook_alphagov.jpg" width="145" height="100" alt="Alpha.gov.uk website" />
+                <h4>Data Mining for the Government</h4>
+            </a>
+        </li>
+	    <li class="clear"></li>
+	</ul>
+</div>
+
+<br class="clear" />
+{% endblock %}

@@ -1,0 +1,104 @@
+{{{header}}}
+
+<div style="font-size: 16px; line-height: 21px; font-family: Helvetica, Arial, sans-serif; color: #333333; background: #eeeeee; padding: 20px; margin: 0 0 30px 0;">
+  <!-- Email details -->
+  <table cellpadding="0" cellspacing="0" width="460">
+    <tr>
+      <td style="font-weight: bold; font-size: 22px">Invoice {{invoice_number}}</td>
+      <td style="text-align: right; font-size: 22px">{{invoice_date}}</td>
+    </tr>
+  </table>
+  <!-- Customer details -->
+  <table cellpadding="0" cellspacing="0" width="460" style="margin-top: 20px">
+    <tr>
+      <td valign="top">
+        <b>{{billing_full_name}}</b><br />
+        {{{billing_full_address}}}
+      </td>
+      <td valign="top" style="text-align: right">
+        {{#subscription_active?}}
+          <b style="display: block">Your plan:</b>
+          <span style="display: block">{{plan_name}} ({{{subscription_subtotal_amount}}})</span>
+          <b style="display: block; margin-top: 10px">Next invoice date:</b>
+          <span style="display: block">{{subscription_next_payment_date}}</span>
+        {{/subscription_active?}}
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 style="font-size: 22px; line-height: 26px; font-family: Helvetica, Arial, sans-serif; color: #666666; margin: 0px; font-weight: normal;">Subscription Payment Declined</h2>
+
+<p style="font-size: 16px; line-height: 20px; font-family: Helvetica, Arial, sans-serif; color: #000; margin: 15px 0 0 0;">Oh no! Your most recent payment of {{{invoice_total_due}}} was <b>declined</b> :-(</p>
+
+<p style="font-size: 16px; line-height: 20px; font-family: Helvetica, Arial, sans-serif; color: #000; margin: 15px 0 0 0;">To continue your subscription, please click the link below and update your billing information:</p>
+
+<p style="margin: 25px 0">
+<a href="{{account_hosted_maintenance_url}}" style="padding: 8px 16px; background: #fbcb45; font-size: 20px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: #000000; text-decoration: none; -webkit-border-radius: 50px; -moz-border-radius: 50px; border-radius: 50px;">Update my billing information &rarr;</a>
+</p>
+
+<table width="500" cellpadding="0" cellspacing="0" style="margin: 55px 0 0 0; font-size: 13px; line-height: 17px; font-family: Helvetica, Arial, sans-serif;">
+  <thead>
+    <tr style="background: #F3F3F3">
+      <th align="left" style="padding: 5px 10px; border-bottom: 1px solid #cccccc;">Date</th>
+      <th align="left" style="padding: 5px 0px; border-bottom: 1px solid #cccccc;">Description</th>
+      <th align="right" style="padding: 5px 10px; border-bottom: 1px solid #cccccc;">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#invoice_line_items}}
+    <tr>
+      <td align="left" valign="top" style="border-bottom: 1px solid #eee; padding: 5px 10px">
+        {{{line_date}}}
+      </td>
+      <td align="left" valign="top" style="border-bottom: 1px solid #eee; padding: 5px 0">
+        {{line_description}}
+        {{^line_quantity_is_one?}}
+          (x {{line_quantity}})
+        {{/line_quantity_is_one?}}
+      </td>
+      <td align="right" valign="top" width="20" style="border-bottom: 1px solid #eee; padding: 5px 10px">
+        <b>{{{line_amount}}}</b>
+      </td>
+    </tr>
+    {{/invoice_line_items}}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td align="right" colspan="2" style="border-bottom: 1px solid #eee; padding: 5px 10px">
+        <strong>Subtotal:</strong>
+      </td>
+      <td align="right" width="20" style="border-bottom: 1px solid #eee; padding: 5px 10px">
+        <strong>{{{invoice_subtotal}}}</strong>
+      </td>
+    </tr>
+    {{#invoice_show_vat?}}
+    <tr>
+      <td align="right" colspan="2" style="border-bottom: 1px solid #eee; padding: 5px 10px">
+        <strong>VAT:</strong>
+      </td>
+      <td align="right" width="20" style="border-bottom: 1px solid #eee; padding: 5px 10px">
+        <strong>{{{invoice_vat_amount}}}</strong>
+      </td>
+    </tr>
+    {{/invoice_show_vat?}}
+    <tr style="border-bottom: 1px solid #f3f3f3;">
+      <td align="right" colspan="2" style="border-bottom: 1px solid #eee; padding: 5px 10px">
+        <strong>Paid:</strong>
+      </td>
+      <td align="right" width="20" style="border-bottom: 1px solid #eee; padding: 5px 10px">
+        <strong>{{{invoice_total_paid}}}</strong>
+      </td>
+    </tr>
+    <tr id="invoice-total" style="background: #F3F3F3">
+      <td align="right" colspan="2" style="border-bottom: 1px solid #cccccc; padding: 5px 10px">
+        <strong>Total:</strong>
+      </td>
+      <td align="right" width="20" style="border-bottom: 1px solid #cccccc; padding: 5px 10px">
+        <strong>{{{invoice_total_due}}}</strong>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+
+{{{footer}}}

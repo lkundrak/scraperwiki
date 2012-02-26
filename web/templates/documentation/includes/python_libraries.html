@@ -1,0 +1,201 @@
+<p>ScraperWiki supports a number of 3rd party Python libraries that we recommend for screen scraping, data analysis and data visualisation.</p>
+
+<p>If you would like us to add a library that isn't listed here, please <a href="/contact/">get in touch</a>.</p>
+
+<h2><span id="downloading"></span>Downloading</h2> 
+<dl>
+    <dt>requests</dt>
+    <dd>Humane and Pythonic way of opening URLs. <a href="http://pypi.python.org/pypi/requests" target="_blank">docs</a>
+    </dd>
+    <dt>urllib2, urlparse</dt>
+    <dd>Standard Python libraries for opening URLs. <a href="http://docs.python.org/library/urllib2.html" target="_blank">docs</a>
+    </dd>
+    <dt>gevent</dt>
+    <dd>Networking library with sychronous event loop. <a href="http://www.gevent.org/intro.html#example" target="_blank">docs</a>
+    </dd>
+
+    <!-- Browsers -->
+    <dt>mechanize</dt>
+    <dd>Navigate and complete HTML forms. <a href="http://wwwsearch.sourceforge.net/mechanize/" target="_new">docs</a>
+    </dd>
+    <dt>twill</dt>
+    <dd>A thin shell around mechanize, which you might find easier. <a href="http://twill.idyll.org/python-api.html" target="_new">docs</a>
+    </dd>
+    <dt>selenium</dt>
+    <dd>Automate operating real browsers like Firefox. NB: Only useful in ScraperWiki if you have a
+        Selenium server to point it to. <a href="http://pypi.python.org/pypi/selenium#example" target="_new">docs</a>
+    </dd>
+</dl>
+
+<h2><span id="parsing"></span>Parsing</h2> 
+<h3><span id="xml"></span>XML (HTML, RSS, Atom...)</h3> 
+<dl>
+    <dt>lxml</dt>
+    <dd>Highly effective HTML parser with a specialist screen scraping library. <a href="http://lxml.de/lxmlhtml.html#parsing-html" target="_new">docs</a>
+        <small>(also <a href="http://stackoverflow.com/questions/4909811/lxml-cssselect-parsing" target="_new">stackoverflow</a>)</small>
+    </dd>
+    <dt>html5lib</dt>
+    <dd>An HTML 5 parser, which also copes with invalid documents the same way that major desktop web browsers do. <a href="http://code.google.com/p/html5lib/wiki/UserDocumentation" target="_new">docs</a>
+    </dd>
+    <dt>Beautiful Soup</dt>
+    <dd>An alternative popular HTML parser. 
+        <a href="http://www.crummy.com/software/BeautifulSoup/documentation.html" target="_new">docs</a>
+    </dd>
+    <dt>Beautiful Soup 4</dt>
+    <dd>Idiomatic ways of navigating, searching, and modifying the parse tree. 
+        <a href="http://www.crummy.com/software/BeautifulSoup/" target="_new">Home page</a>,
+        <a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/" target="_new">quick start</a> and
+        <a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#porting-code-to-bs4" target="_new">tips on porting from Beautiful Soup 3</a>
+    </dd>
+    <dt>pyquery</dt>
+    <dd>Make jquery like queries from Python. <a href="http://packages.python.org/pyquery/" target="_new">docs</a>
+    </dd>
+    <dt>PyTidyLib</dt>
+    <dd>Calls out to the Tidy library, which cleans up bad HTML. <a href="http://countergram.com/open-source/pytidylib/docs/index.html" target="_new">docs</a>
+    </dd>
+
+    <!-- Feeds -->
+    <dt>Universal Feed Parser</dt>
+    <dd>Parse RSS and Atom feeds in Python. <a href="http://www.feedparser.org/" target="_new">docs</a>
+    </dd>
+
+<h3><span id="templates"></span>HTML-parser template languages</h3> 
+    <dt>Scrapemark</dt>
+    <dd>Scraping library that uses templates to extract content. <a href="http://arshaw.com/scrapemark/" target="_new">docs</a>
+    </dd>
+    <dt>scrapely</dt>
+    <dd>Given example web pages and data, constructs a parser for similar pages. <a href="https://github.com/scrapy/scrapely/blob/master/README.rst" target="_new">docs</a>
+    </dd>
+    <dt>scrapy</dt>
+    <dd>An application framework for crawling web sites and extracting structured data. <a href="http://doc.scrapy.org/en/latest/intro/overview.html" target="_new">docs</a>
+    </dd>
+</dl>
+
+<h3><span id="browsers"></span>Other formats</h3> 
+<dl>
+    <dt>demjson</dt>
+    <dd>Fancier JSON library than the built in one. <a href="http://deron.meranda.us/python/demjson/" target="_new">docs</a>
+    </dd>
+    <dt>xlrd, xlwt, xlutils</dt>
+    <dd>Read, write and process old Excel .xls files. <a href="http://www.python-excel.org/" target="_new">docs</a>
+    </dd>
+    <dt>openpyxl</dt>
+    <dd>Read and write Excel .xslx/.xlsm files. <a href="http://packages.python.org/openpyxl/" target="_new">docs</a>
+    <dt>csvkit</dt>
+    <dd>A library of utilities to manipulate CSV files. <a href="http://csvkit.readthedocs.org/en/latest/index.html#usage" target="_new">docs</a>
+    </dd>
+    <dt>PDFMiner</dt>
+    <dd>Python PDF parser and analyzer. <a href="http://www.unixuser.org/~euske/python/pdfminer/programming.html" target="_new">docs</a>
+    </dd>
+    <dt>pyPdf</dt>
+    <dd>Manipulate PDF files. <a href="http://pybrary.net/pyPdf/" target="_new">docs</a>
+    </dd>
+    <dt>iCalendar</dt>
+    <dd>Parse and generate calendar files. <a href="http://codespeak.net/icalendar/" target="_new">docs</a>
+    </dd>
+    <dt>RDFLib</dt>
+    <dd>Input and output linked data triples as RDF. <a href="http://www.rdflib.net/" target="_new">docs</a>
+    </dd>
+</dl>
+
+<h2><span id="geocode"></span>Geocoding</h2> 
+<dl>
+    <dt>geopy</dt>
+    <dd>Converts addresses into latitude/longitude, and measures distances on the earth. <a href="http://code.google.com/p/geopy/wiki/GettingStarted" target="_new">docs</a>
+    </dd>
+    <dt>GeoIP</dt>
+    <dd>Convert IP addresses into countries and similar.  <a href="http://www.maxmind.com/app/python" target="_new">docs</a>
+    </dd>
+</dl>
+
+<h2><span id="pipe"></span>Data pipes</h2> 
+<dl>
+    <dt>Python YQL</dt>
+    <dd>Yahoo Query Language, an expressive SQL-like language that lets you query, filter, and join data across Web services. <a href="http://python-yql.org/" target="_new">docs</a>
+    </dd>
+    <dt>Google Data (GData)</dt>
+    <dd>Access any service using the Google Data protocol. <a href="http://code.google.com/p/gdata-python-client/" target="_new">docs</a>
+    </dd>
+    <dt>pipe2py</dt>
+    <dd>Converts a Yahoo Pipe into Python so you can run it on ScraperWiki. <a href="https://github.com/ggaughan/pipe2py" target="_new">docs</a>
+    </dd>
+    <dt>Fluidinfo, FOM (Fluid Object Mapper)</dt>
+    <dd>Read or write to the Fluidinfo shared database. 
+        docs: <a href="https://github.com/fluidinfo/fluidinfo.py">fluidinfo</a>, <a href="https://launchpad.net/fom">fom</a>
+    </dd>
+    <dt>Tweepy</dt>
+    <dd>Twitter API, to read or send tweets. <a href="http://packages.python.org/tweepy/html/" target="_new">docs</a>
+    </dd>
+</dl>
+
+<h2><span id="analyze"></span>Visualising and analysing</h2>
+<h3><span id="analyze-general"></span>General analysis</h3>
+<dl>
+    <dt>NumPy</dt>
+    <dd>Large, multi-dimensional arrays, matrices and functions to operate on them. <a href="http://numpy.scipy.org/" target="_new">docs</a>
+    </dd>
+    <dt>SciPy</dt>
+    <dd>Uses NumPy to do advanced math, signal processing, optimization, statistics and much more. <a href="http://www.scipy.org/Getting_Started" target="_new">docs</a>
+    </dd>
+    <dt>RPy</dt>
+    <dd>Call out to GNU R, a popular statistical computing and graphics package. <a href="http://rpy.sourceforge.net/" target="_new">docs</a>
+    </dd>
+    <dt>pandas</dt>
+    <dd>An expressive framework for data analysis - the same purpose as R, but within Python.
+    <a href="http://pandas.sourceforge.net/basics.html" target="_new">docs</a>
+    </dd>
+    <dt>Data Science Toolkit (DSTK)</dt>
+    <dd>A collection of the best open data sets and open-source tools for data science. <a href="http://www.datasciencetoolkit.org/developerdocs#python" target="_new">docs</a>
+    </dd>
+</dl>
+
+<h3><span id="analyze-visualize"></span>Plotting</h3>
+<dl>
+    <dt>matplotlib</dt>
+    <dd>Easily generate lots of charts. <a href="http://matplotlib.sourceforge.net/" target="_new">docs</a>,
+<a href="https://scraperwiki.com/views/matplot_experiments/">example</a> (with ScraperWiki boilerplate)
+    </dd>
+    <dt>pygooglechart</dt>
+    <dd>Generate charts using the Google Chart API. <a href="http://pygooglechart.slowchop.com/" target="_new">docs</a>
+    </dd>
+</dl>
+
+<h3><span id="analyze-nlp"></span>Natural language processing</h3>
+<dl>
+    <dt>Natural Language Toolkit (NLTK)</dt>
+    <dd>Natural language processing and text analytics. <a href="http://www.nltk.org/documentation" target="_new">docs</a>
+    </dd>
+    <dt>Gensim</dt>
+    <dd>"Topic Modelling for Humans". <a href="http://radimrehurek.com/gensim/intro.html" target="_new">docs</a>
+    </dd>
+</dl>
+
+<h3><span id="analyze-nlp"></span>Network analysis</h3>
+<dl>
+    <dt>pydot</dt>
+    <dd>Layout networks of nodes (graphs) using Graphviz. <a href="http://pythonhaven.wordpress.com/tag/pydot/" target="_new">docs</a>
+    </dd>
+    <dt>NetworkX</dt>
+    <dd>Analyse and draw complex networks (maths graphs). <a href="http://networkx.lanl.gov/index.html" target="_new">docs</a>
+    </dd>
+    <dt>Python Levenshtein</dt>
+    <dd>Compute string distances and similarities. <a href="https://github.com/miohtama/python-Levenshtein" target="_new">docs</a>
+    </dd>
+</dl>
+
+
+<h2><span id="other"></span>Other</h2> 
+<dl>
+    <dt>chardet</dt>
+    <dd>Universal character encoding detector. <a href="http://pypi.python.org/pypi/chardet" target="_new">docs</a>
+    </dd>
+    <dt>unidecode</dt>
+    <dd>US-ASCII transliterations of Unicode text <a href="http://pypi.python.org/pypi/Unidecode" target="_new">docs</a>
+    </dd>
+    <dt>Dexy</dt>
+    <dd>Literate documentation tool. <a href="http://www.dexy.it/features/#coding" target="_new">docs</a>
+    </dd>
+    <dt>Python Imaging Library (PIL)</dt>
+    <dd>Image processing, lots of file formats. <a href="http://www.pythonware.com/library/pil/handbook/index.htm" target="_new">docs</a>
+    </dd>
+</dl>

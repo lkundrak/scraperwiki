@@ -1,0 +1,62 @@
+<p>Comma-separated value files are a quite commonly used text form of
+spreadsheet. To process them often requires special cases, such as
+parsing dates or removing bad rows.</p>
+
+<p>For more details, read the documentation for <a
+href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/csv/rdoc/index.html">Ruby's builtin CSV
+module</a> (which grew out of <a
+href="http://fastercsv.rubyforge.org/">FasterCSV</a>). This <a href="http://stackoverflow.com/questions/940774/how-do-you-change-headers-in-a-csv-file-with-fastercsv-then-save-the-new-headers">question on StackOverflow</a> gives some idea
+of the kinds of thing in can do.</p>
+
+<h2>Reading rows</h2>
+
+<p>Download the CSV file first. (If there are quirks in the input file, you
+might at this point want to preprocess the data using, for example, the
+<a
+href="http://www.ruby-doc.org/core-1.9.3/String.html#method-i-gsub">.gsub
+method</a>)
+</p>
+
+<code>data = ScraperWiki.scrape("http://s3-eu-west-1.amazonaws.com/ukhmgdata-cabinetoffice/Spend-data-2010-11-01/Spend-Transactions-with-descriptions-HMT-09-Sep-2010.csv")
+</code>
+
+<p>Load it into the standard Ruby CSV reader. It needs to be an array of lines.</p>
+
+<code>require 'fastercsv'
+csv = CSV.new(data)
+</code>
+
+<p>You can then loop through the rows as if they were an array.</p>
+
+<code>for row in csv:
+  puts format("%s spent on %s", row[7], row[3])
+end
+</code>
+
+The above example, is <a
+href="https://scraperwiki.com/scrapers/simple-ruby-csv/">available
+as a complete scraper</a>.
+
+<h2>Saving to the datastore</h2>
+
+<p>Conventionally the first line gives the names for the columns. You
+can get the standard reader to load in each row as a hash, where
+the keys are those names.</p>
+
+<code>csv = CSV.new(data, :headers =&gt; true)
+</code>
+
+<p>This makes it easy to save the data. By default everything
+comes out as strings. We convert the 'Amount' row to a number type, 
+so that it can then be added and sorted.</p>
+
+<code>for row in csv
+  if row['Transaction Number']
+    row['Amount'] = row['Amount'].to_f
+    ScraperWiki.save_sqlite(unique_keys=['Transaction Number', 'Expense Type', 'Expense Area'], row.to_hash)
+  end
+end
+</code>
+
+
+

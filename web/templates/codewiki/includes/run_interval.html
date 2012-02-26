@@ -1,0 +1,40 @@
+{% load schedule %}
+
+{% ifequal scraper.scraper.run_interval 1000000000 %}
+<p>
+	Scraper is running.
+</p>
+{% else %}
+<p>
+  <span title="Exact time of next run: {{scraper.scraper.next_run}}">
+
+      It is scheduled to run 
+
+      <span id="spnRunIntervalInner" rawInterval="{{scraper.scraper.run_interval}}">{{scraper.scraper.run_interval|schedule}}</span>
+      {% ifnotequal scraper.scraper.next_run.year 9999 %}
+        {% ifequal scraper.scraper.next_run|timeuntil '0 minutes' %}
+          (next run ASAP).
+        {% else %}
+          (next in {{scraper.scraper.next_run|timeuntil}}).
+        {% endifequal %} 
+      {% else %}
+        (no future run scheduled).
+      {% endifnotequal %}
+
+  </span>
+</p>
+
+{% ifnotequal scraper.scraper.next_run.year 9999 %}
+    {% if user_owns_it %}    
+        {% ifnotequal scraper.scraper.next_run|timeuntil '0 minutes' %}
+            <form action="{% url scraper_schedule_scraper scraper.short_name %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="schedule_scraper" value="1" />
+                <input type="submit" id="btnScheduleScraper" class="" value="Schedule next run ASAP" />
+            </form>
+            <br/>
+        {% endifnotequal %}
+    {% endif %}
+{% endifnotequal %} 
+{% endifequal %}
+

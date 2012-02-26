@@ -1,0 +1,21 @@
+#!/bin/sh
+# code-backup
+# David Jones, ScraperWiki Limited.
+# Backup the code (for our users' scrapers).  Usually run from cron.
+
+# Early bail.
+set -e
+
+cd /var/www/scraperwiki/
+. bin/activate
+dir=$(mktemp -d)
+for s in $(ls splitscrapers/)
+do
+    # Suppressing a warning about root not trusting an hgrc file owned
+    # scraperdeploy.
+    hg -q --config ui.report_untrusted=False \
+      clone splitscrapers/"$s" "$dir/$s"
+done
+tar cfP - "$dir" | gzip --rsyncable > /tmp/new-mercurial.tar.gz
+mv /tmp/new-mercurial.tar.gz /root/backup/mercurial.tar.gz
+rm -rf "$dir"

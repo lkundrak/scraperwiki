@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+#  David Jones, ScraperWiki Limited.
+#  2011-12-21
+#
+#  Run backend components (datastore, proxy, twister, orbited and scriptmgr)
+#  locally, for developing on a developer's laptop.
+#  Is intended to run without using a real LXC.
+#
+#  Usage:
+#  ./runlocal [--skip datastore,httpproxy,twister,orbited]
+# (not implemented yet)
+
+[ -f uml.cfg ] || {
+    echo "runlocal: uml.cfg not found;"
+    echo "runlocal: Script should be run from uml directory."
+
+    exit 1
+} 1>&2
+
+cmp -s uml.cfg uml.cfg-inhg || {
+    echo "runlocal: warning uml.cfg different to uml.cfg-inhg"
+    diff -u uml.cfg uml.cfg-inhg
+}
+
+rm      -rf     ./var/log
+rm      -rf     ./var/run
+mkdir   -p      ./var/log
+mkdir   -p      ./var/run
+
+NODE_PATH=`cd ../lib/node_modules;pwd`
+export NODE_PATH
+echo "Have set NODE_PATH to $NODE_PATH"
+
+(
+    cd ../services/scriptmgr
+    node ./scriptmgr.js &
+)
+
+./etc/local.d/dataproxy         start
+./etc/local.d/ftpproxy          start
+./etc/local.d/httpproxy         start
+./etc/local.d/httpsproxy        start
+./etc/local.d/twister           start
+./etc/local.d/orbited           start

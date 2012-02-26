@@ -1,0 +1,77 @@
+<p>The easiest and most familiar way to extract data from HTML web pages is to use
+"CSS selectors". These are part of the same rules which in web stylesheets are
+used to describe the spacing, colour and layout of web pages.</p>
+
+<p>For more details, read the <a href="http://simplehtmldom.sourceforge.net/manual.htm">Simple HTML DOM documentation</a>,
+or the <a href="http://www.w3.org/TR/CSS2/selector.html">CSS selector specification</a>.</p>
+
+<h2>Getting started</h2>
+
+<p>Grab the HTML web page, and parse the HTML using Simple HTML DOM.</p>
+
+<code>require 'scraperwiki/simple_html_dom.php';
+$html_content = scraperwiki::scrape("https://scraperwiki.com/");
+$html = str_get_html($html_content);
+</code>
+
+<p>Select all <b>&lt;a></b> elements that are inside <b>&lt;div class="featured"></b>.
+These queries work the same way as CSS stylesheets or jQuery. They are called
+CSS selectors, and are quite powerful.
+</p>
+
+<code>foreach ($html-&gt;find("div.featured a") as $el) {
+    print $el . "\n";
+}
+</code>
+
+<p>Read attributes, such as the target of the <b>&lt;a&gt;</b> tags (put this inside the "foreach" loop, before the "}").</p>
+<code>    print $el-&gt;href . "\n";</code>
+
+
+<h2>Text extraction</h2>
+
+<p>Select the first <b>&lt;strong></b> element inside <b>&lt;div id="footer_inner"></b>.</p>
+<code>$el = $html-&gt;find("div#footer_inner strong",0);
+print $el . "\n";
+</code>
+
+<p>Extract the text from inside the tag.</p>
+<code>print $el-&gt;innertext . "\n";</code>
+
+<p>Get all text recursively, throwing away any child tags.</p>
+<code>$eg = str_get_html('&lt;h2&gt;A thing &lt;b&gt;goes boom&lt;/b&gt; up &lt;i&gt;on &lt;em&gt;the tree&lt;/em&gt;&lt;/i&gt;&lt;/h2&gt;');
+print $eg-&gt;plaintext . "\n"; // 'A thing goes boom up on the tree'
+</code>
+
+
+<h2>Finding data manually</h2>
+
+<p>Iterate down through the elements in the document and see the tags and attributes on each element.</p>
+<code>$html_el = $html-&gt;find("html", 0);
+foreach ($html_el-&gt;children() as $child1) {
+    print $child1-&gt;tag . "\n";
+    foreach ($child1-&gt;children() as $child2) {
+        print "-- " . $child2-&gt;tag . " ";
+        print json_encode($child2-&gt;attr) . "\n";
+    }
+}
+</code>
+
+<p>Navigate around the document.</p>
+<code>$eg = str_get_html('&lt;h2&gt;A thing &lt;b&gt;goes boom&lt;/b&gt; up &lt;i&gt;on &lt;em&gt;the tree&lt;/em&gt;&lt;/i&gt;&lt;/h2&gt;');
+print $eg-&gt;root-&gt;first_child()-&gt;tag . "\n";                               # h2
+print $eg-&gt;root-&gt;first_child()-&gt;children(0)-&gt;tag . "\n";                  # b
+print $eg-&gt;root-&gt;first_child()-&gt;children(0)-&gt;next_sibling()-&gt;tag . "\n";  # i
+print $eg-&gt;root-&gt;first_child()-&gt;children(1)-&gt;tag . "\n";                  # i
+print $eg-&gt;root-&gt;first_child()-&gt;children(1)-&gt;parent()-&gt;tag . "\n";        # h2
+
+</code>
+
+<h2>Running out of memory</h2>
+
+<p>If your script is running out of memory, you can explicitly tell each
+DOM object you made to clean itself up. See, for example,
+<a href="https://scraperwiki.com/scrapers/wikicfpscrapper/">this scraper</a>.
+
+<code>$html-&gt;__destruct();</code>
+

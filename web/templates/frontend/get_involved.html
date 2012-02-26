@@ -1,0 +1,121 @@
+{% extends "frontend/base.html" %}
+{% load dial %}
+
+{% block title %}Get involved{% endblock %}
+
+{% block header %}
+	<h2>Get involved &ndash; where to start with ScraperWiki</h2>
+	<p>Here are just a few things things you can do to get involved with ScraperWiki and help improve public data</p>
+{% endblock %}
+
+{% block content %}
+
+<div class="content full">
+
+    <h2 id="technical">Technical tasks</h2>
+
+   <div class="task_complete">
+        <a href="{% url scraper_list_wiki_type 'scraper' %}?filter=sick">
+            {% dial scraper_sick_percent 200 100 %}   
+        </a>
+        <h3>Help fix a broken scraper <small>({{scraper_sick_percent}}% complete)</small></h3>
+        {% ifequal scraper_sick_count 0 %}
+            <p>No need! They&rsquo;ve are all working!</p>
+        {% else %}
+            <p>
+                Scrapers break. It&rsquo;s just the way things are. In fact that was one of the reasons that ScraperWiki was built 
+                - to help people work together to keep scrapers ticking over.
+                If you are new to writing scrapers, or new to ScraperWiki, fixing a broken scraper that someone else wrote is a great way to start
+                (and will earn you their undying gratitude).
+            </p>
+            <p>
+                At the moment <strong>{{scraper_sick_count}} out of {{scraper_count}}</strong> look like they might be a bit broken.
+            </p>
+            <form action="{% url scraper_list_wiki_type 'scraper' %}" method="get">
+                <input type="hidden" name="filter" value="sick"/>
+                <input type="submit" value="Show me scrapers that need fixing"/>
+            </form>
+        {% endifequal %}
+    </div>
+
+    <h2 id="nontechnical">Non-technical tasks</h2>
+
+    <div class="task_complete">
+        <a href="{% url scraper_list_wiki_type 'scraper' %}?filter=no_description">
+            {% dial scraper_description_percent 200 100 %}    
+        </a>
+        <h3>Add a description to a scraper <small>({{scraper_description_percent}}% complete)</small></h3>
+        {% ifequal scraper_no_description_count 0 %}
+            <p>No need! They&rsquo;ve all been done.</p>
+        {% else %}
+            <p>
+                <strong>{{scraper_no_description_count}} out of {{scraper_count}}</strong> scrapers are currently missing a description. Help out by adding one that describes what the dataset is and where it came from.
+            </p>
+            <form action="{% url scraper_list_wiki_type 'scraper' %}?filter=no_description" method="get">
+                <input type="hidden" name="filter" value="no_description"/>
+                <input type="submit" value="Show me scrapers with no description"/>
+            </form>
+        {% endifequal %}
+    </div>
+
+     <div class="task_complete">
+         <a href="{% url scraper_list_wiki_type 'view' %}?filter=no_description">
+             {% dial view_description_percent 200 100 %}
+         </a>
+         <h3>Add a description to a view <small>({{view_description_percent}}% complete)</small></h3>
+         {% ifequal view_no_description_count 0 %}
+             <p>No need! They&rsquo;ve all been done.</p>
+         {% else %}
+             <p>
+                 <strong>{{view_no_description_count}} out of {{view_count}}</strong> views are currently missing a description. Help out by adding one that describes what the view shows and what data it uses.
+             </p>
+             <form action="{% url scraper_list_wiki_type 'view' %}" method="get">
+                 <input type="hidden" name="filter" value="no_description"/>                    
+                 <input type="submit" value="Show me views with no description"/>
+             </form>
+         {% endifequal %}
+     </div>
+
+    <div class="task_complete">
+        <a href="{% url scraper_list_wiki_type 'scraper' %}?filter=no_tags">
+            {% dial scraper_tags_percent 200 100 %}    
+        </a>
+        <h3>Add some tags to a scraper <small>({{scraper_tags_percent}}% complete)</small></h3>
+        {% ifequal scraper_no_tags_count 0 %}
+            <p>No need! They&rsquo;ve all been done.</p>
+        {% else %}
+        <p>
+            <strong>{{scraper_no_tags_count}} out of {{scraper_count}}</strong> scrapers are currently not tagged. Help out by adding some tags that describe the dataset.
+            This will help make the scraper easier to find for other people.
+        </p>
+        <form action="{% url scraper_list_wiki_type 'scraper' %}" method="get">
+            <input type="hidden" name="filter" value="no_tags"/>
+            <input type="submit" value="Show me scrapers with no tags"/>
+        </form>
+    
+        {% endifequal %}
+    </div>
+
+    <div class="task_complete">
+        <a href="{% url scraper_list_wiki_type 'view' %}?filter=no_tags">
+            {% dial view_tags_percent 200 100 %}
+        </a>
+        <h3>Add some tags to a view <small>({{view_tags_percent}}% complete)</small></h3>
+        {% ifequal view_no_tags_count 0 %}
+            <p>No need! They&rsquo;ve all been done.</p>
+        {% else %}
+        <p>
+            <strong>{{view_no_tags_count}} out of {{view_count}}</strong> views are currently not tagged. Help out by adding some tags that describe the view.
+            This will help make the view easier to find for other people.
+        </p>
+        <form action="{% url scraper_list_wiki_type 'view' %}?filter=no_tags" method="get">
+            <input type="hidden" name="filter" value="no_tags"/>                
+            <input type="submit" value="Show me views with no tags"/>
+        </form>
+    
+        {% endifequal %}
+    </div>
+</div>
+
+
+{% endblock %}

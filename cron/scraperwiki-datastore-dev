@@ -1,0 +1,4 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# Do nothing

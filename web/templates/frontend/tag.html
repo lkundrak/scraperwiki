@@ -1,0 +1,46 @@
+{% extends "frontend/base.html" %}
+{% load pagination_tags %}
+
+{% block title %}Scrapers and requests tagged &lsquo;{{tag.name}}&rsquo;{% endblock %}
+
+{% block header %}
+	<h2><a href="/tags/">Browse by tag</a>{%if tag%} / <a href="{% url single_tag tag.name %}">{{tag.name}}{% endif %}</a></h2>
+	    {% if scrapers %}
+	        <p>Showing {% if scrapers.count = 1 %}the only scraper{% else %}all {{ scrapers.count }} scrapers and views{% endif %} tagged with &lsquo;{{tag_string}}&rsquo;</p>
+	    {% else %}
+    	    <p>There are no scrapers or views tagged with &lsquo;{{tag_string}}&rsquo;</p>
+	    {% endif %}
+{% endblock %}
+
+{% block tabs %}
+    <div class="page_tabs">
+        <ul>
+            <li class="selected"> 
+                <a id="tags" href="/tags/" class="selected">Browse by tag</a> 
+            </li>
+            <li> 
+                <a id="views" href="{% url scraper_list %}views">Views</a> 
+            </li>
+            <li> 
+                <a id="scrapers" href="{% url scraper_list %}scrapers">Scrapers</a> 
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="content full">
+    {% if scrapers %}
+		{% autopaginate scrapers 20 %}
+        <ul class="scraper_list">    
+            {% for code in scrapers %}
+                {% include 'frontend/includes/code_object_line.html' %}
+            {% endfor %}
+        </ul>
+
+		{% paginate %}
+    {% else %}
+        <p>There are no scrapers or views tagged with &lsquo;{{tag_string}}&rsquo;</p>
+    {% endif %}
+</div>
+{% endblock %}

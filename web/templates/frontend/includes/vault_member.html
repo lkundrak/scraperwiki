@@ -1,0 +1,11 @@
+{% load gravatar %}
+<li{% if vault.user.username == m.username %} title="{{ m.get_profile.name }} owns this vault"{% endif %}>
+    {% show_gravatar m 'medium' %}
+	<a href="{% url profiles_profile_detail m.username %}">{{ m.get_profile.name }} ({{m.username}})</a>
+{% if m.username != request.user.username %}
+	{% if editor or vault.user.id == request.user.id %}
+		<a href="{% url vault_user vault.id, 'removeuser', m.username %}" title="Revoke access to this vault" class="user_delete">Remove</a>
+    {% endif %}
+{% endif %}
+{% if vault.user.username == m.username %}<img class="vault_owner_flash" src="{{ MEDIA_URL }}/images/vault_owner_flash.png" width="39" height="39" />{% endif %}
+</li>

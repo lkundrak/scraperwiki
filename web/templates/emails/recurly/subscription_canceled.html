@@ -1,0 +1,36 @@
+{{{header}}}
+
+<div style="font-size: 16px; line-height: 21px; font-family: Helvetica, Arial, sans-serif; color: #333333; background: #eeeeee; padding: 20px; margin: 0 0 30px 0;">
+  <!-- Email details -->
+  <table cellpadding="0" cellspacing="0" width="460">
+    <tr>
+      <td style="font-weight: bold; font-size: 22px">Invoice {{invoice_number}}</td>
+      <td style="text-align: right; font-size: 22px">{{invoice_date}}</td>
+    </tr>
+  </table>
+  <!-- Customer details -->
+  <table cellpadding="0" cellspacing="0" width="460" style="margin-top: 20px">
+    <tr>
+      <td valign="top">
+        <b>{{billing_full_name}}</b><br />
+        {{{billing_full_address}}}
+      </td>
+      <td valign="top" style="text-align: right">
+        {{#subscription_active?}}
+          <b style="display: block">Your plan:</b>
+          <span style="display: block">{{plan_name}} ({{{subscription_subtotal_amount}}})</span>
+          <b style="display: block; margin-top: 10px">Expires on:</b>
+          <span style="display: block">{{subscription_expires_at}}</span>
+        {{/subscription_active?}}
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 style="font-size: 22px; line-height: 26px; font-family: Helvetica, Arial, sans-serif; color: #666666; margin: 0px; font-weight: normal;">Cancelled Subscription</h2>
+
+<p style="font-size: 16px; line-height: 20px; font-family: Helvetica, Arial, sans-serif; color: #000; margin: 15px 0 0 0;">This email is to confirm your recent subscription cancellation. Your subscription will remain active until {{subscription_expires_at}}.</p>
+
+<p style="font-size: 16px; line-height: 20px; font-family: Helvetica, Arial, sans-serif; color: #000; margin: 15px 0 0 0;">To reactivate your subscription before it expires, or to view previous invoices, please edit your <a href="{{account_hosted_maintenance_url}}">Account Details</a>.
+
+{{{footer}}}

@@ -1,0 +1,81 @@
+<h2>Google maps cheat sheet</h2>
+
+<p>Google maps 3 has a <a href="http://code.google.com/apis/maps/documentation/javascript/basics.html">well documented interface</a>.  
+Start your page by loading up the libraries</p>
+<code>&lt;html>
+&lt;head>
+  &lt;script src="http://maps.google.com/maps/api/js?sensor=false">&lt;/script>
+  &lt;script src="https://media.scraperwiki.com/js/jquery-1.5.2.js">&lt;/script>
+&lt;/head>
+&lt;body>
+&lt;div id="mapdiv" style="width:100%;height:600px">&lt;/div>
+&lt;/body>
+&lt;/html>
+</code>
+
+<p>You can make the map object centred on a place at a zoom level.  
+Other <a href="http://code.google.com/apis/maps/documentation/javascript/maptypes.html">Map Types</a> 
+are ROADMAP, SATELLITE, HYBRID.</p>
+
+<code>&lt;script>
+var map;
+function makemap()
+{
+    var cpos = new google.maps.LatLng(32.691399, 69.846954); 
+    var mapOptions = { "zoom": 7, "center": cpos, "mapTypeId": google.maps.MapTypeId.TERRAIN };
+    map = new google.maps.Map(document.getElementById("mapdiv"), mapOptions);
+}
+$(window).ready(function() 
+{
+    makemap(); 
+});
+&lt;/script>
+</code>
+
+<p>Put a <a href="http://code.google.com/apis/chart/docs/gallery/dynamic_icons.html#pins">pin</a> at a 
+point.  Animation can be BOUNCE or left as null.</p>
+<code>var pos = new google.maps.LatLng(32.691399, 69.846954);
+var icon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&amp;chld=X|0f0|f0f';
+var marker = new google.maps.Marker({position:pos, map:map, icon:icon, animation: google.maps.Animation.DROP, title:"title message"});
+</code>
+
+<p>To make your map clickable you need to add an 
+<a href="http://code.google.com/apis/maps/documentation/javascript/events.html">event listener</a>.</p>
+<code>google.maps.event.addListener(marker, "click", function() 
+{
+    alert(this.icon); 
+});
+</code>
+
+<p>You can make data for the pin appear in a separate pane or use an <a href="http://code.google.com/apis/maps/documentation/javascript/overlays.html#InfoWindows">InfoWindow</a>.
+Use same one for each pin or reset it each time.  The </p>
+<code>infowindow = new google.maps.InfoWindow({ content: "&lt;b>Infor&lt;/b>mation" });
+google.maps.event.addListener(marker, "click", function() 
+{
+    infowindow.content = this.title+infowindow.content; 
+    infowindow.open(map, marker)
+}); 
+</code>
+
+<p>Move the map using controls, such as:</p>
+<code>var pos = new google.maps.LatLng(34, 69.846954); 
+map.setCenter(pos); 
+</code>
+
+<p>Change a marker with:</p>
+<code>marker.setMap(null);
+</code>
+
+<p>To pull out a bunch of markers from ScraperWiki you will need to make a query the API</p>
+<code>var sourcename = "new_americ_foundation_drone_strikes"; 
+var apiurl = "https://api.scraperwiki.com/api/1.0/datastore/sqlite"; 
+var sqlselect = "select latlng_lat, latlng_lng from swdata order by date limit 500";
+var icon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&amp;chld=X|0f0|f0f';
+$.ajax({url:apiurl, dataType: "jsonp", data:{name:sourcename, query:sqlselect}, success:function(tdata)
+{ 
+    var data = tdata.data;
+    for (var i = 0; i &lt; data.length; i++)
+        var marker = new google.maps.Marker({position:new google.maps.LatLng(data[i][0], data[i][1]), map:map});
+}})
+</code>
+

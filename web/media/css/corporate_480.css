@@ -1,0 +1,16 @@
+/* 480.css
+   Builds on top of 320.css.
+   Everything here should look good 
+   on a 480px screen.
+*/
+
+
+/* HORS D'OUVRE */
+
+body:after {
+	content: '480px';
+}
+
+.content {
+	width: 480px;
+}

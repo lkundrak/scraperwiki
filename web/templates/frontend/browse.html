@@ -1,0 +1,50 @@
+{% extends "frontend/base.html" %}
+{% load pagination_tags %}
+
+{% block title %}Browse{% endblock %}
+{% block rss %}<link rel="alternate" type="application/rss+xml" title="RSS" href="/feeds/all_code_objects/" />{% endblock %}
+
+{% block header %}
+		{% autopaginate scrapers 20 %}
+
+	<h2>Browse{% if wiki_type %} {{wiki_type}}s{% endif %}{% ifequal special_filter 'no_description' %} with no description{% endifequal %}{% ifequal special_filter 'no_tags' %} with no tags{% endifequal %}{% ifequal special_filter 'sick' %} - broken{% endifequal %}{%if ff %} forked from '<a href='{% url code_overview wiki_type ff %}'>{{ff}}</a>'{%endif%}</h2>
+	<p>Page {{ page_obj.number }} of {{ paginator.num_pages }}, newest first.</p>
+{% endblock %}
+
+{% block tabs %}
+    <div class="page_tabs">
+        <ul>
+            <li> 
+                <a id="tags" href="/tags/">Browse by tag</a> 
+            </li>
+            <li{% ifequal wiki_type 'view' %} class="selected"{% endifequal %}> 
+                <a id="views" href="{% url scraper_list %}views">Views</a> 
+            </li>
+            <li{% ifequal wiki_type 'scraper' %} class="selected"{% endifequal %}> 
+                <a id="scrapers" href="{% url scraper_list %}scrapers">Scrapers</a> 
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+	{% autopaginate scrapers 20 %}
+    <div class="page_title">
+        <ul class="title_links">
+            <li class="rss">
+                <a href="/feeds/all_code_objects/">RSS feed of all scrapers / views</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+
+        <ul class="scraper_list">
+          {% for code in scrapers %}
+            {% include 'frontend/includes/code_object_line.html' %}
+          {% endfor %}
+        </ul>
+
+		{% paginate %}
+
+    </div>
+{% endblock %}

@@ -1,0 +1,93 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Subscribe to a Premium Account | ScraperWiki</title>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.5.2.js"></script>
+        <script src="{{ MEDIA_URL }}js/recurly.js"></script>
+        <script>
+            Recurly.config({
+                subdomain: '{{subdomain}}'
+                , currency: 'USD'
+                //, country: 'US'
+                , country: 'GB'
+                , VATPercent: '20'
+            });
+            Recurly.buildSubscriptionForm({
+                target: '#recurly-subscribe'
+                , planCode: '{{code}}'
+                , accountCode: '{{account_code}}'
+                , successURL: '/confirm_subscription/'
+                , distinguishContactFromBillingInfo: true
+                , collectCompany: true
+                {% if not enable_coupons %}, enableCoupons: false{% endif %}
+                , enableAddOns: false
+                , account: {
+                    firstName: '{{ firstname }}'
+                    , lastName: '{{ lastname }}'
+                    , email: '{{ email }}'
+                }
+                , signature: '{{ signature }}'
+                , beforeInject: function(form){
+                    $(form).prepend('<h2 class="introduction">Almost there! Just enter your payment details.</h2>');
+                    $('.footer', $(form)).prepend('<a href="/pricing/" class="back">&larr; Go back to pricing plans</a>');
+                    $('.country select', $(form)).val('US').trigger('change');
+                }
+            });
+        </script>
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/recurly.css" />
+
+    	{% if not debug %}
+    	    <script type="text/javascript">
+
+    	      var _gaq = _gaq || [];
+    	      _gaq.push(['_setAccount', 'UA-21451224-1']);
+              _gaq.push(['_setDomainName', 'none']);
+              _gaq.push(['_setCustomVar', 1, 'Registered User', '{% if user.is_authenticated %}True{% else %}False{% endif %}', 2]);
+    	      _gaq.push(['_trackPageview']);
+
+    	      (function() {
+    	        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    	        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    	        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    	      })();
+
+    	    </script>
+    	{% endif %}
+    </head>
+    <body class="payment">
+        {% if messages %}
+        	{% for message in messages %}
+        		{{ message|safe }}
+        	{% endfor %}
+        {% endif %}
+        <noscript>
+            <div id="alert_outer" class="error">
+            	<div id="alert_inner">
+            	    Oh no! You need to enable Javascript to use ScraperWiki.
+                    <a href="http://support.google.com/bin/answer.py?hl=en&mp;answer=23852">Find out how</a>
+                </div>
+            </div>
+        </noscript>
+        <!--[if IE 6]>
+            <div id="alert_outer" class="error">
+            	<div id="alert_inner">
+            	    Oh no! Your browser is too old to use ScraperWiki.
+                    <a href="http://browserchoice.eu">Click here to upgrade</a>
+                </div>
+            </div>
+        <![endif]-->
+        <!--[if IE 7]>
+            <div id="alert_outer" class="warning">
+            	<div id="alert_inner">
+            	    Still on IE7? For the best experience, you should upgrade your browser.
+                    <a href="http://browserchoice.eu">Cripes, upgrade me!</a>
+                </div>
+            </div>
+        <![endif]-->
+        <h1>ScraperWiki Premium Accounts</h1>
+        <div id="recurly-subscribe">
+            <p class="loading">Loading&hellip;</p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,10 @@
+{% extends "emails/base_email.html"%}
+{% block content %}
+    <h2 style="font-size: 22px; line-height: 26px; font-family: Helvetica, Arial, sans-serif; color: #666666; margin: 0px; font-weight: normal;">Hi {{ user.get_profile.name }}!</h2>
+    <p style="font-size: 18px; line-height: 23px; font-family: Helvetica, Arial, sans-serif; color: #666666; margin: 10px 0 0 0;">Thanks for creating a new ScraperWiki account.</p>
+    <p style="font-size: 18px; line-height: 23px; font-family: Helvetica, Arial, sans-serif; color: #666666; margin: 15px 0 0 0;">Please <a href="https://{{ site }}/accounts/activate/{{activation_key}}/" style="padding: 5px 13px; background: #fbcb45; font-size: 18px; line-height: 23px; font-family: Helvetica, Arial, sans-serif; color: #000000; text-decoration: none; -webkit-border-radius: 50px; -moz-border-radius: 50px; border-radius: 50px;">click this link</a> to verify your email address.</p>
+{% endblock %}
+
+{% block footer %}
+    <p style="font-size: 14px; line-height: 19px; font-family: Helvetica, Arial, sans-serif; color: #999999; margin: 80px 0 40px 0">Not {{ user.get_profile.name }}? No worries, just delete this email and have a lovely day.</p>
+{% endblock %}

@@ -1,0 +1,813 @@
+{% extends "frontend/base.html" %}
+
+{% load forking %}
+{% load humanize %}
+{% load schedule %}
+{% load markup %}
+{% load screen_shot %}
+{% load month_name %}
+{% load gravatar %}
+{% load comments %}
+{% load history %}
+{% load icanhaz %}
+{% load str_replace %}
+
+{% block title %}{% if scraper.owner.get_profile.name %}{{scraper.owner.get_profile.name}}{% else %}{{scraper.owner.username}}{% endif %} / {{ scraper.title }}{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="{% if scraper.description_safepart %}{{ scraper.description_safepart }}{% else %}A {{scraper.language}} {{scraper.wiki_type}} by {% if scraper.owner.get_profile.name %}{{scraper.owner.get_profile.name}}{% else %}{{scraper.owner.username}}{% endif %}{% endif %}" />
+    <meta property="og:title" content="{{ scraper.title }}" />
+    <meta property="og:description" content="{% if scraper.description_safepart %}{{ scraper.description_safepart }}{% else %}A {{scraper.language}} {{scraper.wiki_type}} by {% if scraper.owner.get_profile.name %}{{scraper.owner.get_profile.name}}{% else %}{{scraper.owner.username}}{% endif %}{% endif %}" />
+    <meta property="og:image" content="{{ scraper.screenshot_url }}" />
+    <meta property="og:site_name" content="ScraperWiki" />
+{% endblock %}
+
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/code_overview.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/jquery-dataTables.css" />{% endblock %}
+
+{% block rss %}<link rel="alternate" type="application/rss+xml" title="RSS" href="/feeds/code_object_comments/{{ scraper.short_name }}" />{% endblock %}
+
+{% block javascript %}
+    {% if not debug %}
+    <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+    {% endif %}
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.dataTables.js?{{settings.REVISION}}"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.snippet.min.js?{{settings.REVISION}}"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/codeoverview.js?{{settings.REVISION}}"></script>
+
+    {{ block.super }}
+      {% with scraper.language|lower as language %}
+        {% include 'codewiki/includes/codemirror_parsers.html' %}
+      {% endwith %}
+
+      <script type="text/javascript" src="{{ MEDIA_URL }}js/codeviewer.js?{{settings.REVISION}}"></script>  {# highlightCode(code, Parser), highlightOtherCode(greencode, redcode, matcheropcodes, Parser) #}
+
+{% endblock %}
+
+{% block header %}
+
+	<h2>
+      <a href="{% if scraper.owner.username %}{% url profiles_profile_detail scraper.owner.username %}{% endif %}">{% if scraper.owner %}{% if scraper.owner.get_profile.name %}{{scraper.owner.get_profile.name}}{% else %}{{scraper.owner.username}}{% endif %}{% endif %}</a> / 
+       {% if user.is_authenticated %}
+         <span id="hCodeTitle" title="Click to edit&hellip;">{{ scraper.title }}</span> 
+         <a id="aEditTitle" title="Edit title">Edit title</a>
+       {% else %}
+         {{ scraper.title }}
+       {% endif %}
+    </h2>
+	<p>
+	    <span class="language {{scraper.language|lower}}" rel="{{scraper.language|lower}}">{% if scraper.language == 'php' %}PHP{% else %}{{ scraper.language|capfirst }}{% endif %}</span>
+	    <span class="latestdomain">{% if scraper.last_runevent.first_url_scraped %}<a href="{{ scraper.last_runevent.first_url_scraped }}" title="{{scraper.last_runevent.first_url_scraped}}" target="_blank">{% str_replace "(https?://)([^/]+)(.+)?" "\2" scraper.last_runevent.first_url_scraped %}</a>{% else %}{% if scraper.last_runevent %}No pages scraped{% else %}Hasn&rsquo;t run yet{% endif %}{% endif %}</span>
+        {% if scraper.privacy_status == 'public' %}
+    	    <span class="privacystatus public" href="#privacy_status" title="This {{scraper.wiki_type|lower}} can be viewed and edited by anyone">Public</span>
+        {% endif %}
+    	{% if scraper.privacy_status == 'visible' %}
+    	    <span class="privacystatus visible" href="#privacy_status" title="This {{scraper.wiki_type|lower}} can be viewed by anyone, but edited only by its owner and listed contributors">Protected</span>
+        {% endif %}
+        {% if scraper.vault %}
+            <span class="privacystatus private" href="#privacy_status" title="This {{scraper.wiki_type|lower}} can only be viewed or edited by members of the vault &lsquo;{{ scraper.vault.name }}&rsquo;">In {% if scraper.vault.user.username == user.username %}your{% else %}{{scraper.vault.user.get_profile.name}}&rsquo;s{% endif %} vault</span>
+        {% else %}
+            {% if scraper.privacy_status == 'private' %}
+    	    <span class="privacystatus private" href="#privacy_status" title="This {{scraper.wiki_type|lower}} can only be viewed or edited by its owner or listed contributors">Private</span>
+    	    {% endif %}
+    	{% endif %}
+    </p>
+{% endblock %}
+
+
+{% block content %}
+
+{% if not debug %}
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+{% endif %}
+
+<fieldset>
+    <input type="hidden" id="hidScheduleOptions" value="{ {% for schedule_option, schedule_text in schedule_options %}'{{schedule_option|safe}}':'{{schedule_text|safe}}', {% endfor %} 'selected': 'PLACEHOLDER' }" />
+    <input type="hidden" id="id_api_base" value="{{api_base}}" />
+    <input type="hidden" id="id_data_base" value="{{MAIN_URL}}{% url code_overview scraper.wiki_type scraper.short_name %}data/" />
+    <input type="hidden" id="scrapershortname" value="{{scraper.short_name}}"/>
+    {% if scraper.access_apikey %}
+        <input type="hidden" id="id_apikey" value="{{scraper.access_apikey}}" />
+    {% else %}
+        <input type="hidden" id="id_apikey" value="" />
+    {% endif %}
+</fieldset>
+
+<ul class="toolbar">
+    <li class="edit"><a href="{% url editor_edit scraper.wiki_type scraper.short_name %}" rel="nofollow"><img src="{{ MEDIA_URL }}images/icons/edit.png" width="16" height="16" alt="">Edit</a></li>
+    <li class="copy"><a href="{% url editor scraper.wiki_type scraper.language %}?fork={{scraper.short_name}}" title="Create a new {{scraper.wiki_type}} with this {{scraper.wiki_type}}&rsquo;s code" rel="nofollow"><img src="{{ MEDIA_URL }}images/icons/arrow_copy.png" width="16" height="16" alt="">Copy</a></li>
+    <li class="viewsource"><a href="/editor/raw/{{ scraper.short_name }}" rel="nofollow">View Source</a></li>
+    <li class="share">
+        <a><img src="{{ MEDIA_URL }}images/icons/share.png" width="16" height="16" alt="">Share</a>
+        <div class="share_popover">
+            {% if debug %}
+            <div>(sharing disabled in DEBUG)</div>
+            {% else %}
+            <div class="provider">
+                <div class="fb-like" data-send="false" data-layout="box_count" data-width="55" data-show-faces="true"></div>
+            </div>
+            <div class="provider">
+                <a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="scraperwiki" rel="nofollow">Tweet</a>
+            </div>
+            <div class="provider">
+                <g:plusone size="tall"></g:plusone>
+            </div>
+            {% endif %}
+            <span class="arrow"></span>
+        </div>
+    </li>
+    {% if user_owns_it or user.is_staff %}<li class="admin">
+        <a href="{% url scraper_delete_scraper scraper.wiki_type scraper.short_name %}" id="delete_scraper" rel="nofollow">Delete {{scraper.wiki_type|title}}</a>
+        <form action="{% url scraper_delete_scraper scraper.wiki_type scraper.short_name %}" method="post" class="hide">
+            {% csrf_token %}    
+            <input type="hidden" name="delete_scraper" value="1" />
+            <input type="submit" id="btnDeleteScraper" value="Delete {{scraper.wiki_type|title}}" />
+          </form>
+    </li>{% endif %}
+    <li class="clear"></li>
+</ul>
+
+{% if scraper.is_sick_and_not_running or scraper.last_runevent.exception_message %}
+<div class="sick">
+    <h6>It looks like this scraper is broken!</h6>
+    {% if scraper.last_runevent.exception_message %}
+    <p>On its last run it generated the following error: <span class="error_message">{{ scraper.last_runevent.exception_message }}</span></p>
+    {% else %}
+    <p>We&rsquo;re not quite sure what&rsquo;s wrong with it. Could you take a look?</p>
+    {% endif %}
+    <a class="fix" href="{% url editor_edit scraper.wiki_type scraper.short_name %}" rel="nofollow">Fix this {{ scraper.wiki_type }}</a>
+</div>
+{% endif %}
+<table class="about" cellspacing="0" cellpadding="0">
+    <tr>
+    <td class="schedule">  
+        
+        <h3 class="current_status">Current status</h3>
+            {% if scraper.scraper.last_run %}
+                {% if scraper.scraper.run_interval == MAGIC_RUN_INTERVAL %}
+                    <p><span class="running">Will run as soon as possible&hellip;</span></p>
+                {% else %}
+                {% if user_owns_it or user_edits_it or user.is_staff %}<a href="{% url run_scraper_now scraper.short_name %}" title="Run this scraper now, without affecting its schedule" class="run" rel="nofollow">Run now</a>{% endif %}
+                <p>
+                    {% if scraper.scraper.run_interval == -1 %}
+                        Idle &ndash; not scheduled to run
+                    {% else %}
+                        Idle &ndash; next run {% ifequal scraper.scraper.next_run|timeuntil '0 minutes' %}
+                            <abbr title="This scraper is overdue and will be run as soon as possible">ASAP</abbr>
+                        {% else %}
+                            <abbr title="{{scraper.scraper.next_run}}">in {{scraper.scraper.next_run|timeuntil}}</abbr>
+                        {% endifequal %}
+                    {% endif %}
+                </p>
+                {% endif %}
+            {% else %}
+                {% if scraper.scraper.run_interval == -1 %}
+                {% if user_owns_it or user_edits_it or user.is_staff %}<a href="{% url run_scraper_now scraper.short_name %}" title="Run this scraper now, without affecting its schedule" class="run" rel="nofollow">Run now</a>{% endif %}
+                <p>
+                    Idle &ndash; not scheduled to run
+                </p>
+                {% else %}
+                    <p><span class="running">Will run as soon as possible&hellip;</span></p>
+                {% endif %}
+            {% endif %}
+        </p>
+        
+        
+        {% if url_screenshot %}
+            <a href="{{ url_screenshot }}" target="_blank" id="scraper_screenshot" rel="nofollow">{% screen_shot scraper %}</a>
+        {% else %}
+            <a href="#" id="scraper_screenshot" rel="nofollow"><img src="{{ MEDIA_URL }}images/screenshot_placeholder.png" alt="Run this scraper to generate a screenshot"></a>
+        {% endif %}
+        <h3 class="last_run">Last run{% if scraper.last_runevent.exception_message %} <em class="fail" title="This scraper generated the following error on its last run: {{scraper.last_runevent.exception_message}}">Failed!</em>{% endif %}</h3>
+        {% if scraper.last_runevent %}
+            <p><a href="#run_{{ scraper.last_runevent.id }}" title="{{scraper.last_runevent.run_started}}" rel="nofollow">{{scraper.last_runevent.run_started|timesince}} ago</a></p>
+            {% if scraper.last_runevent.pages_scraped %}
+                <p>Scraped {{ scraper.last_runevent.pages_scraped }} page{{ scraper.last_runevent.pages_scraped|pluralize }}{% if scraper.last_runevent.first_url_scraped %} from <a id="first_url_scraped" href="{{ scraper.last_runevent.first_url_scraped }}" title="{{ scraper.last_runevent.first_url_scraped }}" target="_blank" rel="nofollow">{% str_replace "(https?://)([^/]+)(.+)?" "\2" scraper.last_runevent.first_url_scraped %}</a>{% endif %}</p>
+            {% else %}
+                <p>No pages scraped</p>
+            {% endif %}
+        {% else %}
+            <p>Has not run yet</p>
+        {% endif %}
+        
+        <h3 class="schedule">Schedule{% if user_owns_it or user_edits_it or user.is_staff %} <a href="#edit_schedule" title="Edit this scraper&rsquo;s schedule" class="edit edit_schedule" rel="nofollow">Edit</a>{% endif %}</h3>
+        {% if scraper.scraper.next_run.year != 9999 %}
+            {% if scraper.scraper.run_interval != 1000000000 %}
+                <p>{{scraper.scraper.run_interval|schedule}}</p>           
+            {% else %}
+                <p>No schedule set</p>
+            {% endif%}
+        {% else %}
+            <p>No schedule set</p>
+        {% endif %}
+
+        <table cellspacing="0" cellpadding="0" style="display:none" id="edit_schedule">
+            {% for interval, id, label in schedule_options %}
+            {% if id = 'hourly' and not user_can_set_hourly %}
+            <tr class="premium">
+                <td class="checkbox"><input type="radio" value="/scrapers/{{scraper.short_name}}/admin/set_interval/{{interval}}/" name="schedule" id="schedule_{{id}}" {% if scraper.scraper.run_interval == interval %}checked="checked" {% endif %}disabled="disabled"/></td>
+                <td class="label"><label for="schedule_{{id}}">{{label|safe}}</label><a href="/pricing/" class="upgrade_to_activate">Upgrade to activate &raquo;</a></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td class="checkbox"><input type="radio" value="/scrapers/{{scraper.short_name}}/admin/set_interval/{{interval}}/" name="schedule" id="schedule_{{id}}" {% if scraper.scraper.run_interval == interval %}checked="checked" {% endif %}/></td>
+                <td class="label"><label for="schedule_{{id}}">{{label|safe}}</label></td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+
+        </table>
+    </td>
+    <td class="description">
+        <h3 class="about_this_scraper">About this scraper {% if user_edits_it or user.is_staff %}<a class="edit edit_description"{% if user.is_staff %} title="(You can only see this because you&rsquo;re staff)"{% endif %}>Edit</a>{% endif %}</h3>
+        <div id="divAboutScraper">
+        {% if scraper.description %}
+            {{ scraper.description_ashtml|safe }}
+        {% else %}
+            <p>This scraper has no description. {% if user.is_authenticated %}
+                {% if user_edits_it or user.is_staff %}
+                    <br/><a href="#" class="edit_description" rel="nofollow"{% if user.is_staff %} title="(You can only see this because you&rsquo;re staff)"{% endif %}>Would you like to add one?</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url login %}?next={% url code_overview 'scraper' scraper.short_name %}">Sign in to add one.</a>
+            {% endif %}</p>
+        {% endif %}
+        </div>
+        
+        <input type="hidden" id="admincontroleditors" value="{% url scraper_admin_controleditors scraper.short_name %}"/>
+        <input type="hidden" id="adminprivacystatusurl" value="{% url scraper_admin_privacystatus scraper.short_name %}"/>
+        
+        <div id="collaboration">
+            <ul class="buttons">
+                {% if scraper.privacy_status == 'public' %}
+                    <li><a href="#privacy_status" title="This {{scraper.wiki_type|lower}} can be viewed and edited by anyone" rel="nofollow"><img src="{{ MEDIA_URL }}images/icons/shield-public.png" width="16" height="16" />Public</a></li>
+                {% endif %}
+        	    {% if scraper.privacy_status == 'visible' %}
+        	        <li><a href="#privacy_status" title="This {{scraper.wiki_type|lower}} can be viewed by anyone, but edited only by its owner and listed contributors" rel="nofollow"><img src="{{ MEDIA_URL }}images/icons/shield-protected.png" width="16" height="16" />Protected</a></li>
+                {% endif %}
+                {% if scraper.privacy_status == 'private' %}
+                    {% if scraper.vault %}
+                    <li><a href="#privacy_status" title="This {{scraper.wiki_type|lower}} can only be viewed or edited by members of the vault &lsquo;{{ scraper.vault.name }}&rsquo;" rel="nofollow"><img src="{{ MEDIA_URL }}images/icons/shield-private.png" width="16" height="16" />In {% if scraper.vault.user.username == user.username %}your{% else %}{{scraper.vault.user.get_profile.name}}&rsquo;s{% endif %} vault</a></li>
+                    {% else %}
+        	        <li><a href="#privacy_status" title="This {{scraper.wiki_type|lower}} can only be viewed or edited by its owner or listed contributors" rel="nofollow"><img src="{{ MEDIA_URL }}images/icons/shield-private.png" width="16" height="16" />Private</a></li>
+        	        {% endif %}
+        	    {% endif %}
+        	    <li><a href="#contributors" rel="nofollow">{{ scraper.usercoderole_set.count }} {% if scraper.privacy_status == 'public' %}contributor{% else %}editor{% endif %}{{ scraper.usercoderole_set.count|pluralize }}</a></li>
+        	    <li class="clear"></li>
+            </ul>
+        	<div id="privacy_status">
+        	    {% if scraper.owner == request.user %}
+                    <a class="editlink" id="show_privacy_choices">Change</a>
+                {% endif %}
+        	    {% if scraper.privacy_status == 'public' %}
+        	        <h4>This {{scraper.wiki_type}} is public</h4>
+                    <p>Anyone can see this {{scraper.wiki_type}}, and any registered user can edit it.</p>
+                {% endif %}
+                {% if scraper.privacy_status == 'visible' %}
+                    <h4>This {{scraper.wiki_type}} is protected</h4>
+                    <p>Anyone can see this {{scraper.wiki_type}}, but only its {{ scraper.usercoderole_set.count }} selected editor{{ scraper.usercoderole_set.count|pluralize }} can edit it.</p>
+                {% endif %}
+                {% if scraper.privacy_status == 'private' %}
+                    {% if scraper.vault %}
+                        <h4>This {{scraper.wiki_type}} is in {% if scraper.vault.user.username == user.username %}your{% else %}{{scraper.vault.user.get_profile.name}}&rsquo;s{% endif %} vault</h4>
+            	        <p>It can only be seen or edited by the members of <a href="/vaults/" id="current_vault_link" title="This is {% if scraper.vault.user.username == user.username %}your{% else %}{{scraper.vault.user.get_profile.name}}&rsquo;s{% endif %} vault">{{ scraper.vault.name }}</a>.</p>
+            	    {% else %}
+            	        <h4>This {{scraper.wiki_type}} is private</h4>
+            	        <p>Only the {{ scraper.usercoderole_set.count }} selected editor{{ scraper.usercoderole_set.count|pluralize }} can see or edit this {{scraper.wiki_type}}.</p>
+            	    {% endif %}
+                {% endif %}
+        	    
+        	    {% if scraper.owner == request.user %}
+                    <form id="privacy_status_form">
+                        <!--<a class="cancel" id="hide_privacy_choices"><img src="{{ MEDIA_URL }}images/icons/cancel.png" width="16" height="16" /><span>Cancel</span></a>-->
+                        <table cellspacing="0" cellpadding="0">
+                            <tr class="first">
+                                <td class="radio"><input type="radio" name="privacy_status" value="public" id="privacy_public" 
+                                {% ifequal scraper.privacy_status 'public' %} checked="checked" {% endifequal %}
+                                /></td>
+                                <td><h4><label for="privacy_public">{% if scraper.privacy_status == 'public' %}Keep as Public{% else %}Change to Public{% endif %}</label></h4><p><label for="privacy_public">Everyone {% if scraper.privacy_status == 'public' %}can{% else %}will be able to{% endif %} see and edit this {{scraper.wiki_type}} and its data.</label></p></td>
+                            </tr>
+                            <tr>
+                                <td class="radio"><input type="radio" name="privacy_status" value="visible" id="privacy_protected" 
+                                {% ifequal scraper.privacy_status 'visible' %} checked="checked" {% endifequal %}
+                                /></td>
+                                <td><h4><label for="privacy_protected">{% if scraper.privacy_status == 'visible' %}Keep as Protected{% else %}Change to Protected{% endif %}</label></h4><p><label for="privacy_protected">Everyone {% if scraper.privacy_status == 'visible' %}can{% else %}will be able to{% endif %} see this {{scraper.wiki_type}}, but only selected contributors {% if scraper.privacy_status == 'visible' %}can{% else %}will be able to{% endif %} edit it.</label></p></td>
+                            </tr>
+                            {% if scraper.privacy_status == 'private' %}
+                            <tr>
+                                <td class="radio"><input type="radio" name="privacy_status" value="private" id="privacy_private" 
+                                {% ifequal scraper.privacy_status 'private' %} checked="checked" {% endifequal %}
+                                /></td>
+                                <td><h4><label for="privacy_private">{% if scraper.privacy_status == 'private' %}Keep as Private{% else %}Change to Private{% endif %} <span style="color:#999; font-weight: normal">({% if user.is_staff %}staff-only{% else %}deprecated{% endif %})</span></label></h4><p><label for="privacy_private">Only selected contributors {% if scraper.privacy_status == 'private' %}can{% else %}will be able to{% endif %} see or edit this {{scraper.wiki_type}}.</label></p></td>
+                            </tr>
+                            {% endif %}
+                            {% if request.user.vault_membership.count or user_plan != 'free' %}
+                            <tr>
+                                <td class="radio"><input type="radio" name="privacy_status" value="vault" id="privacy_vault"{% if scraper.vault %} checked="checked"{% endif %}{% if not request.user.vault_membership.count %} disabled="disabled"{% endif %} /></td>
+                                <td>
+                                    <h4><label for="privacy_vault">{% if scraper.vault %}Keep in a Vault{% else %}Move to a Vault{% endif %}</label></h4>
+                                    <p><label for="privacy_vault">Only vault members {% if scraper.vault %}can{% else %}will be able to{% endif %} <br/>see or edit this {{scraper.wiki_type}}.</label></p>
+                                    <p><select id="move_to_vault">
+                                        {% if scraper.vault %}{% else %}<option></option>{% endif %}
+                                        {% if not request.user.vault_membership.count %}<option disabled="disabled">Oh noes! You don't have a vault!</option>{% endif %}
+                                    {% for vault in request.user.vault_membership.all %}
+                                        <option  value="{% url vault_scrapers_add vault.id, scraper.short_name %}" {% if vault.id == scraper.vault.id %}selected="selected"{% endif %}>{{ vault.name }} ({% if vault.user.username == user.username %}your vault{% else %}{{vault.user.get_profile.name}}&rsquo;s vault{% endif %})</option>
+                                    {% endfor %}
+                                    </select> <input type="button" value="&rarr; Move!"/></p>
+                                </td>
+                            </tr>
+                        	{% else %}
+                        	    {% if self_service_vaults %}
+                            <tr class="premium">
+                                <td class="radio"><input type="radio" name="privacy_status" value="vault" id="privacy_vault" disabled="disabled" /></td>
+                                <td>
+                                    <h4><label for="privacy_vault">Move to a private vault</label></h4>
+                                    <p><label for="privacy_vault">Only people you select will be able to see or edit&nbsp;this&nbsp;{{scraper.wiki_type}}.</label></p>
+                                    <a href="/pricing/" class="upgrade_to_activate">Upgrade to activate &raquo;</a>
+                                </td>
+                            </tr>
+                        	    {% endif %}
+                            {% endif %}
+                        </table>
+                        {% if scraper.vault.id %}<input type="hidden" id="current_vault_id" value="{{scraper.vault.id}}" />{% endif %}
+                        <input type="button" value="Save" id="saveprivacy">
+                    </form>
+                {% endif %}
+        	</div>
+        	<div id="contributors">
+        	    <p>Users who {% if scraper.privacy_status == 'public' %}have contributed to{% else %}can edit{% endif %} this {{ scraper.wiki_type }}:</p>
+        	    <ul>
+                    {% if not userrolemap.owner %}
+                      <li style="color:red">[Error: this scraper has no creator]</li>
+                    {% endif %}
+
+                    {% with 'owner' as role %}
+                      {% for contributor in userrolemap.owner %}
+                        {% include 'codewiki/includes/contributor.html' %}
+                      {% endfor %}
+                    {% endwith %}
+
+                    {% with 'editor' as role %}
+                      {% for contributor in userrolemap.editor %}  
+                        {% include 'codewiki/includes/contributor.html' %}
+                      {% endfor %}
+                    {% endwith %}
+
+                    {% with 'email' as role %}
+                      {% for contributor in userrolemap.email %}  
+                        {% include 'codewiki/includes/contributor.html' %}
+                      {% endfor %}
+                    {% endwith %}
+                </ul>
+                {% if user_owns_it %}
+                  {% if scraper.privacy_status == 'visible' or scraper.privacy_status == 'private' %}
+                    <a class="add_user" rel="{{ scraper.short_name }}"><img src="{{ MEDIA_URL }}images/icons/add.png" width="16" height="16"> Add another editor</a>
+                  {% endif %}
+                {% endif %}
+        	</div>
+        </div>
+    
+    </td>
+    </tr>
+</table>
+
+<div class="data">
+    <ul class="titlebar">
+        <li class="first"><h3>This scraper&rsquo;s datastore</h3></li>
+        <li class="api"><a href="{% url docsexternal %}?name={{scraper.short_name}}{% if scraper.access_apikey %}&apikey_scraper={{scraper.access_apikey}}{% endif %}#sqlite"><img src="{{ MEDIA_URL }}images/icons/hard_hat.png" width="16" height="16" alt="">Explore with API</a></li>
+        <li class="download">
+            <a><img src="{{ MEDIA_URL }}images/icons/arrow_down.png" width="16" height="16" alt="">Download</a>
+            <div class="download_popover">
+                <h6>Download whole datastore&hellip;</h6>
+                <ul>
+                    <li class="database_sqlite"><a href="{% url export_sqlite scraper.short_name %}" rel="nofollow"><span class="icon"></span> As an SQLite database</a></li>
+                <!--  <li class="database_csv"><a href="#"><span class="icon"></span> As a folder of CSVs</a></li>
+                    <li class="database_json"><a href="#"><span class="icon"></span> As a folder of JSON files</a></li>
+                    <li class="database_excel"><a href="#"><span class="icon"></span> As an Excel file</a></li>  -->
+                </ul>
+                <h6>Download just <span>this table</span>&hellip;</h6>
+                <ul>
+                <!--  <li class="table_sqlite"><a href="#"><span class="icon"></span> As an SQLite table</a></li>  -->
+                    <li class="table_csv"><a href="#"><span class="icon"></span> As a CSV</a></li>
+                    <li class="table_json"><a href="#"><span class="icon"></span> As a JSON file</a></li>
+                <!--  <li class="table_excel"><a href="#"><span class="icon"></span> As an Excel table</a></li>  -->
+                </ul>
+                <span class="arrow"></span>
+            </div>
+        </li>
+        {% if scraper.privacy_status == 'public' %}
+            {% if user.is_authenticated %}<li class="empty">
+                <a href="{% url scraper_delete_scraper scraper.wiki_type scraper.short_name %}" title="Delete all of this {{scraper.wiki_type}}&rsquo;s data?" id="empty_datastore" rel="nofollow">Clear data</a>
+                <form action="{% url scraper_delete_data scraper.short_name %}" method="post" class="hide">
+                    {% csrf_token %}
+                    <input type="hidden" name="delete_data" value="1" />
+                    <input type="submit" id="btnClearDatastore" value="Clear the datastore" />
+                </form>
+            </li>{% endif %}
+        {% else %}
+            {% if user_edits_it or user.is_staff %}<li class="empty">
+                <a href="{% url scraper_delete_scraper scraper.wiki_type scraper.short_name %}" title="{% if user.is_staff %}(You can only see this because you&rsquo;re staff) {% endif %}Delete all of this {{scraper.wiki_type}}&rsquo;s data?" id="empty_datastore" rel="nofollow">Clear data</a>
+                <form action="{% url scraper_delete_data scraper.short_name %}" method="post" class="hide">
+                    {% csrf_token %}
+                    <input type="hidden" name="delete_data" value="1" />
+                    <input type="submit" id="btnClearDatastore" value="Clear the datastore" />
+                </form>
+            </li>{% endif %}
+        {% endif %}
+        <li class="clear"></li>
+      </ul>
+
+    {% icanhaz "data_preview" %}
+    {% icanhaz "overview_data_tabs" %}
+    {% icanhaz "data_preview_schema" %}
+   <ul class="data_tabs">
+    </ul>
+    <div id="datapreviews"></div>
+
+</div>
+
+<div class="network">
+    <ul class="titlebar">
+        <li class="first"><h3>{% if related_views or scraper.forked_from or forked_to_total or scraper_tags %}This scraper in context{% else %}This scraper is lonely{% endif %}</h3></li>
+        {% if user_edits_it or user.is_staff %}<li class="tag"><a href="#tags" title="Use tags to organise and group similar scrapers"><img src="{{ MEDIA_URL }}images/icons/tag.png" width="16" height="16" alt="">Tag</a></li>{% endif %}
+        <li class="view"><a data-wiki_type="view" data-sourcescraper="{{scraper.short_name}}" href="{% url choose_template 'view' %}?sourcescraper={{scraper.short_name}}" title="Create a new view using this scraper&rsquo;s data" rel="nofollow"><img src="{{ MEDIA_URL }}images/icons/chart.png" width="16" height="16" alt="">Visualise</a></li>
+        <li class="copy"><a href="{% url editor scraper.wiki_type scraper.language %}?fork={{scraper.short_name}}" title="Create a new {{scraper.wiki_type}} with this {{scraper.wiki_type}}&rsquo;s code" rel="nofollow"><img src="{{ MEDIA_URL }}images/icons/arrow_copy.png" width="16" height="16" alt="">Copy</a></li>
+        <li class="clear"></li>
+    </ul>
+    
+    <input type="hidden" id="adminsettagurl" value="{% url scraper_admin_settags scraper.short_name %}"/>
+    
+    <div class="tags"{% if not scraper_tags %} style="display:none"{% endif %}>
+        <h4>Tags:</h4>
+        <ul>
+        {% for tag in scraper_tags %}
+            <li{% if user_edits_it or user.is_staff %} class="editable"{% endif %}><a href="{% url single_tag tag|urlencode %}">{{tag}}</a>{% if user_edits_it or user.is_staff %}<a href="#" class="remove" title="Remove this tag">&times;</a>{% endif %}</li>
+        {% endfor %}
+        {% if user_edits_it or user.is_staff %}
+        <li class="new_tag">
+            <a title="Add a new tag">+</a>
+        </li>
+        <li class="new_tag_box" style="display:none">
+            <input type="text" title="Press Enter or Return to save" />
+            <a class="hide" title="Cancel new tag">&times;</a>
+        </li>
+        {% endif %}
+        </ul>
+    </div>
+
+    {% if scraper.forked_from %}
+    <div class="forked_from">
+        <h4>Based&nbsp;on:</h4>
+        <ul>
+            <li><a href="{% url profiles_profile_detail scraper.forked_from.owner.username %}">{{ scraper.forked_from.owner.get_profile.name }}</a> / <a href="{% url code_overview scraper.forked_from.wiki_type scraper.forked_from.short_name %}">{{ scraper.forked_from.title }}</a></li>
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if forked_to_total %}
+    <div class="forked_to">
+        <h4>Copied&nbsp;to:</h4>
+        <ul>
+        {% for s in forked_to %}
+            <li><a href="{% url profiles_profile_detail s.owner.username %}">{{ s.owner.get_profile.name }}</a> / <a href="{% url code_overview s.wiki_type s.short_name %}">{{ s.title }}</a></li>
+        {% endfor %}
+        {% if forked_to_total > forked_to|length %}
+            <li class="more"><a href="/browse/{{scraper.wiki_type}}s/?forked_from={{scraper.short_name}}" title="Click to show all {{scraper.wiki_type}}s based on this one">&hellip;and {{forked_to_remainder}} more</a></li>
+        {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if related_views %}
+    <div class="views">
+        <h4>Views&nbsp;using this&nbsp;data:</h4>
+        <ul>
+        {% for v in related_views %}
+            <li><a href="{% url profiles_profile_detail v.owner.username %}">{{ v.owner.get_profile.name }}</a> / <a href="{% url code_overview v.wiki_type v.short_name %}">{{ v.title }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    
+</div>
+
+<div class="history">
+    <ul class="titlebar">
+        <li class="first"><h3>This scraper&rsquo;s history</h3></li>
+        <li class="full_history"><a href="{% url full_history scraper.wiki_type, scraper.short_name %}" rel="nofollow">Show full history</a></li>
+        <li class="clear"></li>
+    </ul>
+    
+    <div>
+    {% history scraper.scraper user 10 %}
+    </div>
+    
+</div>
+
+<div class="chat" id="chat">
+    {% get_comment_list for scraper as comment_list %}
+    <ul class="titlebar">
+        <li class="first"><h3>{% if comment_list %}This {{scraper.wiki_type}}&rsquo;s chat{% else %}This {{scraper.wiki_type}} has no chat&hellip; yet{% endif %}</h3></li>
+        <li class="clear"></li>
+    </ul>
+        {% if user.is_authenticated %}
+            {% get_comment_form for scraper as form %}
+        <form action="{% comment_form_target %}" method="post" class="add_comment">
+            <input type="hidden" name="next" value="{% url code_overview scraper.wiki_type scraper.short_name %}#chat" />
+           {% show_gravatar user 'medium' %}
+           <div>
+            	<textarea name="comment" id="id_comment" rows="3">Make a comment or ask a question about this scraper</textarea>
+                {% csrf_token %}
+            	{{ form.content_type }} 
+            	{{ form.object_pk }} 
+            	{{ form.timestamp }} 
+            	{{ form.security_hash }}
+            	<input type="submit" class="button" value="Add" id="id_submit" /> 
+            </div>
+        </form>
+        {% endif %}
+
+    {% if comment_list %}
+      {% for comment in comment_list reversed %} 
+        <div class="user_comment">  
+
+            <p id="comment_{{ comment.id }}">
+                {% show_gravatar comment.user 'medium' %} 
+                {{ comment.comment|escape|urlizetrunc:"100"|linebreaks }}
+            </p>
+            <small>
+                Added by <a href="{% url profiles_profile_detail comment.user.username %}">{{ comment.name|escape }}</a>, {{ comment.submit_date|timesince }} ago
+            </small>
+        </div>
+     {% endfor %}
+    {% endif %}
+</div>
+
+
+{% endblock %}
+
+
+{% block jrun_script %}
+<script>
+{{block.super}}
+jQuery.fn.autolink = function () {
+    return this.each( function(){
+        var re = 
+/((http|https|ftp):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g;
+        $(this).html( $(this).html().replace(re, '<a href="$1">$1</a> ') );
+    });
+}
+
+$(document).ready(function() 
+{
+    setupCodeOverview('{{scraper.short_name}}');
+    $('#data_tab_1').trigger('click');
+    //  Disabling attachables for now
+    //  setupChangeAttachables('{{scraper.short_name}}');
+});
+</script>
+<script type="text/javascript" defer="defer">
+
+var fetchedcache = { }; // cached code of different versions
+function cachefetch(cid, callback)
+{
+    if (cid && (fetchedcache[cid] == undefined))
+    {
+        var url; 
+        if (cid.substring(0, 4) == "?rev")
+            url = $("#rawcodeurl").val()+cid; 
+        else if (cid.substring(0, 9) == "?otherrev")
+            url = $("#diffsequrl").val()+cid; 
+        else
+            url = $("#run_event_json").val().replace('XXX', cid); 
+
+        $.ajax({url:url, success: function(sdata) 
+        {
+            fetchedcache[cid] = sdata; 
+            callback(); 
+        }}); 
+    }
+    else
+        callback(); 
+}
+
+
+function previewchanges_hideequal(block, curr)
+{
+    var oth = null, currY;  
+    if (curr)
+    {
+        oth = curr; 
+        while (oth && (!oth.hasClass(".fequal") && (oth.attr("display") != "none")))
+            oth = oth.next(); 
+        if (!oth)
+        {
+            oth = curr; 
+            while (oth && (!oth.hasClass(".fequal") && (oth.attr("display") != "none")))
+                oth = oth.prev(); 
+        }
+        currY = curr.offset().top; 
+    }
+
+    block.find('.codepreviewer .fequal').hide(); 
+    block.find('.codepreviewer .expander').show(); 
+
+    if (oth)
+        $(window).scrollTop($(window).scrollTop() + oth.offset().top - currY); 
+}
+
+function previewchanges_showequal(block, curr)
+{
+    var oth = null, currY;  
+    if (curr)
+    {
+        oth = curr.next(); 
+        if (!oth)
+            oth = curr.prev(); 
+        currY = curr.offset().top; 
+    }
+
+    block.find('.codepreviewer .fequal').show(); 
+    block.find('.codepreviewer .expander').hide(); 
+
+    if (oth)
+        $(window).scrollTop($(window).scrollTop() + oth.offset().top - currY); 
+}
+
+
+function previewchanges_showsidecode()
+{
+    var block = $(this).parents(".history_edit"); 
+    var curr = $(this); 
+
+    // allow clicking on the inserted or deleted code
+    if (curr.hasClass("delete"))
+        curr = block.find(".otherlinenumbers"); 
+    if (curr.hasClass("insert"))
+        curr = block.find(".linenumbers"); 
+
+    // allow toggling so you don't need to move the mouse
+    if (curr.hasClass("shcodesel") && curr.hasClass("otherlinenumbers"))
+        curr = block.find(".linenumbers"); 
+    if (curr.hasClass("shcodesel") && curr.hasClass("linenumbers"))
+        curr = block.find(".otherlinenumbers"); 
+
+    block.find(".history_code_border div").removeClass("shcodesel"); 
+    if (curr.hasClass("linenumbers"))
+    {
+        block.find('.codepreviewer .delete').hide(); 
+        block.find('.codepreviewer .insert').show(); 
+        curr.addClass("shcodesel"); 
+    }
+    else if (curr.hasClass("otherlinenumbers"))
+    {
+        block.find('.codepreviewer .insert').hide(); 
+        block.find('.codepreviewer .delete').show(); 
+        curr.addClass("shcodesel"); 
+    }
+}
+
+
+function previewchanges_showbothcode(block)
+{
+    block.find(".history_code_border div").removeClass("shcodesel"); 
+    block.find('.codepreviewer .insert').show(); 
+    block.find('.codepreviewer .delete').show(); 
+}
+
+
+function previewchanges_hide(block)
+{
+    var codepreviewerdiv = block.find(".codepreviewer");
+    codepreviewerdiv.hide(); 
+    block.find(".history_view_changes .hidechanges").hide(); 
+    block.find(".history_view_changes .showchanges").show(); 
+    block.find(".history_editor_info .rollbackchanges").hide(); 
+}
+
+function previewchanges_show(block)
+{
+    hideallshowhistrun(); 
+
+    block.find(".history_view_changes .showchanges").hide(); 
+    block.find(".history_view_changes .hidechanges").show(); 
+    block.find(".history_editor_info .rollbackchanges").show(); 
+
+    var rev = block.find("span.revlist span.revelem:first span.rev").text();  
+    var prevrev = block.find("span.revlist span.revelem:last span.prevrev").text();  
+
+    var cidrev = "?rev="+rev; 
+    var cidprevrev = (prevrev ? "?rev="+prevrev : ""); 
+    var ciddiff = (prevrev ? "?otherrev="+prevrev+"&rev="+rev : ""); 
+
+    var codepreviewerdiv = block.find(".codepreviewer");
+    codepreviewerdiv.find(".history_code_border").hide();
+    codepreviewerdiv.find(".loading").show();
+    codepreviewerdiv.show();
+
+    cachefetch(cidrev, function() { cachefetch(cidprevrev, function() { cachefetch(ciddiff, function()
+    {
+        codepreviewerdiv.find(".cprev span.shrev").text(rev);  // could allow for sub-inspection of series
+        codepreviewerdiv.find(".cprev span.shprevrev").text(prevrev); 
+
+        var fequallines = 0; 
+        if (prevrev)
+        {
+            var matcheropcodes = $.evalJSON(fetchedcache[ciddiff]); // [ ("replace|delete|insert|equal", i1, i2, j1, j2) ]
+            fequallines = highlightOtherCode(fetchedcache[cidrev], fetchedcache[cidprevrev], matcheropcodes, Parser, codepreviewerdiv); 
+        }
+        else
+            highlightCode(fetchedcache[cidrev], Parser, codepreviewerdiv); 
+
+        if (fequallines > 5) 
+            previewchanges_hideequal(block); 
+        else
+            previewchanges_showequal(block); 
+
+        codepreviewerdiv.find(".loading").hide();
+        codepreviewerdiv.find(".history_code_border").show();
+
+        codepreviewerdiv.find(".outputlines .fequal").click(function() { previewchanges_hideequal(block, $(this)); }); 
+        codepreviewerdiv.find(".outputlines .equal").click(function() { previewchanges_showbothcode(block); }); 
+        codepreviewerdiv.find(".outputlines .delete").click(previewchanges_showsidecode); 
+        codepreviewerdiv.find(".outputlines .insert").click(previewchanges_showsidecode); 
+        codepreviewerdiv.find(".expander").click(function() { previewchanges_showequal(block, $(this)); }); 
+
+        codepreviewerdiv.find(".expander").attr("title", "Expand to show all unchanged lines"); 
+
+    })})}); 
+}
+
+
+function previewrunevent_show(block)
+{
+    hideallshowhistrun(); 
+
+    block.find(".showrunevent").hide(); 
+    block.find(".hiderunevent, .runpermalink").show();
+
+    var runid = block.find("span.runidlist span.runidelem:first span.runid").text();  
+    block.find(".history_code_border").hide();
+
+    block.find(".loading").show();
+    block.find(".runpreviewer").show(); 
+    cachefetch(runid, function() 
+    { 
+        var runevent = $.evalJSON(fetchedcache[runid]); 
+        block.find(".loading").hide();
+        block.find(".runpreview").text(runevent.output).show(); 
+    }); 
+}
+
+function previewrunevent_hide(block)
+{
+    block.find(".runpreviewer").hide(); 
+    block.find(".showrunevent").show(); 
+    block.find(".hiderunevent, .runpermalink").hide(); 
+}
+
+function hideallshowhistrun()
+{
+    $(".history_edit").each(function(i, el) { previewchanges_hide($(el)) });
+    $(".history_run_event").each(function(i, el) { previewrunevent_hide($(el)) });
+}
+
+$(document).ready(function() 
+{ 
+    $(".cprev").hide();     // hide these ugly titles for now
+    hideallshowhistrun(); 
+
+    $(".history_edit").each(function(i, el) { previewchanges_hide($(el)) });
+
+    $(".history_edit .showchanges").click(function() { previewchanges_show($(this).parents(".history_edit")); }); 
+    $(".history_edit .hidechanges").click(function() { previewchanges_hide($(this).parents(".history_edit")); }); 
+
+    $(".history_edit .history_code_border .otherlinenumbers").click(previewchanges_showsidecode); 
+    $(".history_edit .history_code_border .linenumbers").click(previewchanges_showsidecode); 
+
+    $(".history_run_event .showrunevent").click(function() { previewrunevent_show($(this).parents(".history_run_event")); }); 
+    $(".history_run_event .hiderunevent").click(function() { previewrunevent_hide($(this).parents(".history_run_event")); }); 
+
+    // if they put # and the run_id in the URL, open up that one
+    if (window.location.hash) {
+        var hash_run_event = $(window.location.hash);
+        if (hash_run_event.length != 0) {
+            previewrunevent_show(hash_run_event);
+        }
+    }
+
+}); 
+</script>
+{% endblock %}
+
+

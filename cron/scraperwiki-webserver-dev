@@ -1,0 +1,12 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# m h  dom mon dow   command
+
+# Backup Django database, and scraper mercurial repositories
+# ... this one takes 5 minutes (26th Jan 2012)
+0 4 * * * root /var/www/scraperwiki/cron/bin/mysql-backup dev
+
+# Run screenshooters locally
+0 */8 * * * scraperdeploy cd /var/www/scraperwiki/ && source bin/activate && cd web &&  xvfb-run --auto-servernum --server-args="-screen 0, 1440x900x24" python manage.py take_screenshot --verbose --url_prefix=https://devviews.scraperwiki.com --run_scrapers > /var/log/scraperwiki/screenshooter-scrapers.txt
+0 */8 * * * scraperdeploy cd /var/www/scraperwiki/ && source bin/activate && cd web &&  xvfb-run --auto-servernum --server-args="-screen 0, 1440x900x24" python manage.py take_screenshot --verbose --url_prefix=https://devviews.scraperwiki.com --run_views > /var/log/scraperwiki/screenshooter-views.txt

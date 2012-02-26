@@ -1,0 +1,46 @@
+{{{header}}}
+
+Thank you for subscribing with {{company_name}}.  Your order details are:
+
+Description: {{plan_name}}
+Quantity:    {{subscription_quantity}}
+Total:       {{{subscription_total_amount}}} {{plan_per_interval}}
+{{#subscription_active?}}
+Next Payment: {{subscription_next_payment_date}}
+{{/subscription_active?}}
+
+
+Invoice {{invoice_number}}
+{{invoice_date}}
+
+{{#invoice_line_items}}
+{{{line_amount}}} --  {{line_description}}
+           {{{line_date}}}
+{{/invoice_line_items}}
+
+Subtotal:  {{{invoice_subtotal}}}
+{{#invoice_has_discount?}}
+Discount:  {{{invoice_discount_amount}}}
+{{/invoice_has_discount?}}
+{{#invoice_show_vat?}}
+VAT:       {{{invoice_vat_amount}}}
+{{/invoice_show_vat?}}
+Paid:      {{{invoice_total_paid}}}
+Total Due: {{{invoice_total_due}}} ****
+
+Billed To:
+{{billing_full_name}}
+{{{billing_full_address}}}
+
+
+{{#subscription_has_trial?}}
+Your credit card will be billed {{{subscription_total_amount}}} when your trial expires on {{subscription_trial_ends_at}}.
+{{/subscription_has_trial?}}
+{{^subscription_has_trial?}}
+Your credit card was charged {{{invoice_total_paid}}}.
+{{/subscription_has_trial?}}
+
+Please keep this email for your records.  If you have any questions, please
+contact {{company_email}}. Thanks again for your purchase.
+
+{{{footer}}}

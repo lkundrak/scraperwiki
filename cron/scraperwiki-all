@@ -1,0 +1,12 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# Randomly backup these two directories, in case we missed something
+# ... this one takes about half an hour (26th Jan 2012)
+0 5 * * * root tar zcfP /root/backup/scraperwiki.tar.gz /var/www/scraperwiki --exclude "/var/www/scraperwiki/resourcedir"
+0 6 * * * root tar zcfP /root/backup/etc.tar.gz /etc
+
+# Backup everything to headquarters (one hour later than bytemark backups)
+0 8 * * * root /var/www/scraperwiki/cron/bin/hq-backup
+
+

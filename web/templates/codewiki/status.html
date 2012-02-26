@@ -1,0 +1,511 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Status{% endblock %}
+
+{% block css %}
+
+<style type="text/css">
+
+.bkrunning {  background-color:orange; }
+.bksaving {  background-color:green; }
+.bktyping {  background-color:yellow; }
+
+.lasttouch { display: none; }
+
+.killrunning { display: none; }
+.bkrunning .killrunning, #killallscheduled { display: inline; }
+
+</style>
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.json-2.2.min.js"></script>
+    <script src="{{ settings.ORBITED_URL }}/static/Orbited.js"></script>
+    <script>Orbited.settings.streaming = false</script>
+
+    {# Needed for orbited, dont remove #}
+    <script>document.domain = document.domain;</script>
+    <script>Orbited.settings.streaming = false</script>
+
+<script type="text/javascript">
+$(document).ready(function() 
+{
+    var bConnected = false; 
+    var username = $('#username').val(); 
+    var userrealname = $('#userrealname').val(); 
+    var isstaff = $('#isstaff').val(); 
+    var servernowtime = new Date(); // set by the server
+
+    TCPSocket = Orbited.TCPSocket;
+    var conn = new TCPSocket(); 
+    var buffer = ""; 
+    var receiverecordqueue = [ ];
+
+    conn.open('localhost', '9010'); 
+
+    conn.onopen = function(code)
+    {
+        if (conn.readyState == conn.READY_STATE_OPEN)
+            mreadystate = 'Ready'; 
+        else
+            mreadystate = 'readystate=' + conn.readyState;
+        $("#monitoroutput #connectionstatus").html('<strong>Connection opened:</strong> ' + mreadystate); 
+        bConnected = true; 
+        jdata = { "command":'connection_open', 
+                  "umlmonitoring":"yes",
+                  "username":username, 
+                  "userrealname":userrealname, 
+                  "isstaff":isstaff };
+        sendjson(jdata);
+    }
+
+    conn.onclose = function(code)
+    {
+        if (code == Orbited.Statuses.ServerClosedConnection)
+            mcode = 'ServerClosedConnection'; 
+        else if (code == Orbited.Errors.ConnectionTimeout)
+            mcode = 'ConnectionTimeout'; 
+        else  
+            mcode = 'code=' + code;
+        $("#monitoroutput #connectionstatus").html('<span class="error">Connection closed: ' + mcode+"</span>"); 
+    }
+
+    // should post up status in a little box
+    conn.onread = function(ldata) 
+    {
+        //alert(ldata); 
+        buffer = buffer+ldata;
+        while (true) 
+        {
+            var linefeed = buffer.indexOf("\n"); 
+            if (linefeed == -1)
+                break; 
+            sdata = buffer.substring(0, linefeed); 
+            buffer = buffer.substring(linefeed+1); 
+            sdata = sdata.replace(/[\s,]+$/g, '');  // trailing commas cannot be evaluated in IE
+            if (sdata.length == 0)
+                continue; 
+            var jdata = undefined; 
+            try {
+                jdata = $.evalJSON(sdata);
+            } catch(err) {
+//                alert("Malformed json: '''" + sdata + "'''"); 
+				
+            }
+
+            if (jdata != undefined) 
+            {
+                receiverecordqueue.push(jdata); 
+                if (receiverecordqueue.length == 1)
+                    window.setTimeout(function() { receiveRecordFromQueue(); }, 1);  
+            }
+        }
+    }
+
+
+    function receiveRecordFromQueue() 
+    {
+        var jdata = undefined; 
+        if (receiverecordqueue.length > 0) 
+        {
+            jdata = receiverecordqueue.shift(); 
+            receiveRecord(jdata);
+            if (receiverecordqueue.length >= 1)
+                window.setTimeout(function() { receiveRecordFromQueue(); }, 1); 
+        }
+    }
+
+    function getIDfromCChatname(cchatname)
+    {
+        vv = cchatname.replace(/\*/g, "STAR").split("|"); 
+        if (vv[0])
+            return vv[0]; 
+        return vv[1]; // anonymous type
+    }
+
+    function getUserfromCChatname(cchatname)
+    {
+        vv = cchatname.split("|");
+        if (vv[0]){
+            if(vv[1] == '*SCHEDULED*'){
+                return '<a style="cursor: default;text-decoration:none">SCHEDULED</a>';
+            } else {
+                return "<a href=\"/profiles/"+vv[0]+"/\">"+vv[1]+"</a>";
+            }
+        }
+        return '<a>' + vv[1] + '</a>'; // anonymous type
+    }
+
+    function getScraperfromScrapername(scrapername)
+    {
+        return '<a href="/scrapers/' + scrapername + '/" class="scrapername title" title="' + scrapername + '">' + scrapername + '</a>';
+    }
+
+    function getNewDatetimeSpan(datetime)
+    {
+        return '<span class="lasttouchdiff"><span class="lasttouch">' + datetime.getTime() + "</span><span></span></span>"; 
+    }
+    function parseISOdate(sdatetime)
+    {
+        return new Date(parseInt(sdatetime)); 
+    }
+    
+    function updateLastTouches(){
+        $(".lasttouchdiff .lasttouch").each( function(index){
+            d = new Date(); // Using d rather than servernowtime - not sure why you'd ever want the latter??
+            var seconds = (d.getTime() - parseInt($(this).text()))/1000;
+            if(seconds >= 3600){
+                if((seconds/3600) % 1 < 0.15 || (seconds/3600) % 1 > 0.85){
+                    var mess = Math.round(seconds/3600) + " hour" + (Math.round(seconds/3600) == 1 ? "" : "s") + " ago";
+                } else {
+                    var mess = (seconds/3600).toFixed(1) + " hours ago";
+                }
+            } else if(seconds >= 60){
+                if((seconds/60) % 1 < 0.25 || (seconds/60) % 1 > 0.75){
+                    var mess = Math.round(seconds/60) + " min" + (Math.round(seconds/60) == 1 ? "" : "s") + " ago";
+                } else {
+                    var mess = (seconds/60).toFixed(1) + " mins ago";
+                }
+            } else {
+                var mess = Math.round(seconds) + "s ago"
+            }
+            $(this).next().text(mess);
+        });
+    }
+
+    //read data back from twisted
+    function receiveRecord(jdata) 
+    {
+        $("#monitoroutput #jdatareceived").append('<div>'+$.toJSON(jdata)+'</div>'); 
+        while ($('#monitoroutput #jdatareceived').children().size() >= 10) 
+            $('#monitoroutput #jdatareceived').children(':first').remove();
+
+        servernowtime = parseISOdate(jdata.nowtime); 
+        $("#monitoroutput #servernowtime").html(servernowtime.toUTCString()); 
+
+        if (jdata.umlmonitoringusers)
+        {
+            if (jdata.message_type == "umlstatus")
+                $("#monitoroutput #monitoringusers ul ul").html(""); 
+            for (i = 0; i < jdata.umlmonitoringusers.length; i++)
+            {
+                var umlmonitoringuser = jdata.umlmonitoringusers[i]; 
+                var chatname = umlmonitoringuser.chatname; 
+                var idchatname = "MON_" + getIDfromCChatname(chatname); 
+                var present = umlmonitoringuser.present; 
+                var lasttouch = parseISOdate(umlmonitoringuser.lasttouch); 
+                var ele = "#monitoroutput #monitoringusers ul ul li#"+idchatname; 
+                if (present)
+                {
+                    if (!$(ele).attr("id"))
+                        $("#monitoroutput #monitoringusers ul ul").append("<li id=\""+idchatname+"\" class=\"luser user\">"+getUserfromCChatname(chatname)+" " + getNewDatetimeSpan(lasttouch)+"</li>"); 
+                    else
+                        $(ele + " .lasttouchdiff .lasttouch").text(String(lasttouch.getTime())); 
+                }
+                else
+                    $(ele).remove(); 
+            }
+        }
+
+        if (jdata.rpcrunningclients)
+        {
+            if (jdata.message_type == "umlstatus")
+                $("#monitoroutput #rpcrunningclients ul ul").html(""); 
+            for (i = 0; i < jdata.rpcrunningclients.length; i++)
+            {
+                var rpcrunningclient = jdata.rpcrunningclients[i]; 
+                var clientnumber = rpcrunningclient.clientnumber; 
+                var chatname = rpcrunningclient.chatname; 
+                var scrapername = rpcrunningclient.scrapername; 
+                var idclientnumber = "RPC_" + clientnumber; 
+                var present = rpcrunningclient.present; 
+                var lasttouch = parseISOdate(rpcrunningclient.lasttouch); 
+                var ele = "#monitoroutput #rpcrunningclients ul ul li#"+idclientnumber; 
+                if (present)
+                {
+                    if (!$(ele).attr("id"))
+                    {
+                        var lli = [ '<li id="', idclientnumber, '" class="lscraper user">', '<a href="/scrapers/' + scrapername + '/">' + scrapername + '</a>', ' ' ]; 
+                        lli.push(getNewDatetimeSpan(lasttouch), '</li>'); 
+                        $("#monitoroutput #rpcrunningclients ul ul").append(lli.join("")); 
+                    }
+                    else
+                        $(ele + " .lasttouchdiff .lasttouch").text(String(lasttouch.getTime())); 
+                }
+                else
+                    $(ele).remove(); 
+            }
+        }
+
+        if (jdata.draftscraperusers)
+        {
+            if (jdata.message_type == "umlstatus")
+                $("#monitoroutput #draftscraperusers ul ul").html(""); 
+            for (i = 0; i < jdata.draftscraperusers.length; i++)
+            {
+                var chatname = jdata.draftscraperusers[i].chatname; 
+                var idchatname = "DRA_" + getIDfromCChatname(chatname); 
+                var present = jdata.draftscraperusers[i].present; 
+                var running = jdata.draftscraperusers[i].running; 
+                var ele = "#monitoroutput #draftscraperusers ul ul li#"+idchatname; 
+                if (present)
+                {
+                    if (!$(ele).attr("id"))
+                        $("#monitoroutput #draftscraperusers ul ul.users").append("<li id=\""+idchatname+"\" class=\"user\">"+getUserfromCChatname(chatname)+"</li>"); 
+                    if (running)
+                        $(ele).addClass("bkrunning"); 
+                    else
+                        $(ele).removeClass("bkrunning"); 
+                }
+                else
+                    $(ele).remove(); 
+            }
+        }
+
+        if (jdata.scraperentries)
+        {
+            if (jdata.message_type == "umlstatus")
+                $("#scraperusers ul").html(""); 
+            for (i = 0; i < jdata.scraperentries.length; i++)
+            {
+                var scraperentry = jdata.scraperentries[i]; 
+                var scrapername = scraperentry.scrapername; 
+                var scraperpresent = scraperentry.present; 
+                var running = scraperentry.running; 
+                var scraperusers = scraperentry.scraperusers; 
+
+                var idscrapername = "SCR_" + scrapername.replace(".", "--"); 
+                var ele = "#scraperusers ul li#"+idscrapername; 
+                if (scraperpresent)
+                {
+                    if (!$(ele).attr("id"))
+                    {
+                        var lil = ['<li id="', idscrapername, '" class="scraper row">' ]; 
+                        if (isstaff)
+                            lil.push('<a class="killrunning" title="Kill running scraper">&times;</a>'); 
+                        lil.push(getScraperfromScrapername(scrapername), ' <ul class="scraperusers users"></ul></li>'); 
+                        if ((scraperusers.length != 0) && (scraperusers[0].chatname.substring(0, 11) == "*SCHEDULED*"))
+                            $("#scraperusers ul.rows").append(lil.join("")); 
+                        else
+                            $("#scraperusers ul.rows").prepend(lil.join("")); 
+
+                        $("#scraperusers ul a.killrunning").click(function() 
+                        {
+                            var scrapername = $(this).parent().find("a.scrapername").text(); 
+                            sendjson({command:'umlcontrol', subcommand:'killscraper', scrapername:scrapername}); 
+                        }); 
+                    }
+                    if (running)
+                        $(ele).addClass("bkrunning"); 
+                    else
+                        $(ele).removeClass("bkrunning"); 
+
+                    for (j = 0; j < scraperusers.length; j++)
+                    {
+                        var scraperuser = scraperusers[j]; 
+                        var chatname = scraperuser.chatname; 
+                        var idcchatname = idscrapername + "_CHA_" + getIDfromCChatname(chatname); 
+                        var cpresent = scraperuser.present; 
+                        var userlasttouch = parseISOdate(scraperuser.userlasttouch); 
+                        var cele = ele + " ul li#"+idcchatname; 
+                        if (cpresent)
+                        {
+                            var uclientlist = [ ];
+                            for (var k = 0; k < scraperuser.uclients.length; k++)
+                                uclientlist.push(String(scraperuser.uclients[k])); 
+                            if (!$(cele).attr("id"))
+                            {
+                                $(ele+" ul").append("<li id=\""+idcchatname+"\" class=\"luser user\">"
+                                                    +getUserfromCChatname(chatname)+" "
+                                                    +getNewDatetimeSpan(userlasttouch)
+                                                    +' (<span class="nondraftcount">'+uclientlist.join(", ")+"</span>)</li>"); 
+                            }
+                            else
+                            {
+                                $(cele + " .lasttouchdiff .lasttouch").text(String(userlasttouch.getTime())); 
+                                $(cele + " .nondraftcount").text(uclientlist.join(", ")); 
+                            }
+                        }
+                        else
+                            $(cele).remove(); 
+                    }
+                }
+                else
+                    $(ele).remove(); 
+            }
+        }
+
+        if (jdata.message_type == "savenote"){
+            hidcchatname = "#SCR_" + jdata.scrapername.replace(".", "--") + "_CHA_" + getIDfromCChatname(jdata.cchatname); 
+            $(hidcchatname).parents('.row').addClass("bksaving"); 
+            window.setTimeout(function() { $(hidcchatname).parents('.row').removeClass("bksaving") }, 2500);
+            $(hidcchatname + " .lasttouchdiff .lasttouch").text(String(servernowtime.getTime())); 
+        }
+        
+        if (jdata.message_type == "typingnote"){
+            hidcchatname = "#SCR_" + jdata.scrapername.replace(".", "--") + "_CHA_" + getIDfromCChatname(jdata.cchatname); 
+            $(hidcchatname).addClass("bktyping"); 
+            window.setTimeout(function() { $(hidcchatname).removeClass("bktyping") }, 250);
+            $(hidcchatname + " .lasttouchdiff .lasttouch").text(String(servernowtime.getTime())); 
+        }
+        
+        if (jdata.maxscheduledscrapers){
+            $("#maxscheduledscrapers input").val(jdata.maxscheduledscrapers);
+        }
+
+        // update all the timeagos
+        updateLastTouches();
+        
+    }
+
+    //send a message to the server
+    function sendjson(json_data) {
+        var jdata = $.toJSON(json_data); 
+        try {
+            conn.send(jdata + "\r\n");  
+        } 
+        catch(err){ 
+            alert("Send error: " + $.toJSON(err));
+        }
+    }
+
+
+
+    var imgrefresharr = [ ]; 
+    function refreshImages(){
+        q = (new Date())
+        $("#murefsh").html(q.toUTCString()); 
+        for (i = 0; i < imgrefresharr.length; i++){
+            $(imgrefresharr[i][0]).attr("src", imgrefresharr[i][1]+"?"+q.getTime());
+        }
+        window.setTimeout(refreshImages, 2*60*1000);  
+    } 
+
+    $("#showmonitoradmin").bind('click', function(e){
+        e.preventDefault(); 
+        $("#monitoradmin").slideToggle(500);
+    });
+    
+    $("#monitoradmin").hide();
+    
+    if (isstaff){
+        $("a#killallscheduled").click(function(){
+            sendjson({command:'umlcontrol', subcommand:'killallscheduled'}); 
+        }); 
+        $("#maxscheduledscrapers input").bind('keypress', function(eventObject){
+            var key = (eventObject.charCode ? eventObject.charCode : eventObject.keyCode ? eventObject.keyCode : 0);
+            var target = eventObject.target.tagName.toLowerCase();
+            if (key === 13 && target === 'input'){
+                eventObject.preventDefault();
+                sendjson({command:'umlcontrol', maxscheduledscrapers:parseInt($("#maxscheduledscrapers input").val()) }); 
+                return false; 
+            }
+            return true; 
+        });
+    }
+    
+    window.setInterval(function(){
+        updateLastTouches();
+        $.get('/status/', function(html){
+            $('#runevents').replaceWith( $('#runevents', html) );
+            $('#overdue').replaceWith( $('#overdue', html) );
+        });
+    }, 5000);
+    
+    
+}); 
+</script>
+{% endblock %}
+
+
+{% block header %}
+<h2>ScraperWiki<span style="opacity: 0.5"> / </span>Status</h2>
+<p>What's going on in twister and the LXCs</p>
+{% endblock %}
+
+{% block content_outer  %}
+
+<div id="page_outer">
+    <div id="page_inner">
+
+        <form>
+            <fieldset>
+                {# Hidden inputs for passing to js #}
+                <input type="hidden" id="username" value="{{ user.username }}"/>
+                <input type="hidden" id="userrealname" value="{{ user.get_profile.name }}"/>
+                <input type="hidden" id="isstaff" value="{% if user.is_staff %}yes{% endif %}"/>
+            </fieldset>
+        </form>
+
+        <h2>Users currently editing code (from twister)</h2>
+        <div id="monitoroutput">
+            <div id="monitorvisible">
+                <div id="draftscraperusers">
+                    <ul class="rows">
+                        <li class="row">
+                            <a class="title">Drafts</a>
+                            <ul class="users"></ul>
+                        </li>
+                    </ul>
+                </div>
+                <div id="scraperusers">
+                    <ul class="rows"></ul>
+                </div>
+                <div id="rpcrunningclients">
+                    <ul class="rows">
+                        <li class="row">
+                            <a class="title">Running views</a>
+                            <ul class="users"></ul>
+                        </li>
+                    </ul>
+                </div>
+                <div id="monitoringusers">
+                    <ul class="rows">
+                        <li class="row">
+                            <a class="title">Monitoring</a>
+                            <ul class="users"></ul>
+                        </li>
+                    </ul>
+                </div>
+                <div id="maxscheduledscrapers">
+                    {% if user.is_staff %}<a id="killallscheduled" title="Kill all scheduled runs">Kill all scheduled scrapers</a>{% endif %}
+                    Number of overdue scrapers: <strong id="overdue">{{overdue_count}}</strong>
+                    <label>Max scheduled scrapers</label>
+                    <input type="text" value="0">
+                </div>
+            </div>
+
+            <div id="connectionstatusdiv">
+                <a id="showmonitoradmin" href="#">Toggle connection admin</a>
+                <span id="connectionstatus">...</span> <strong>Server time:</strong> <span id="servernowtime"></span>
+            </div>
+            <div id="monitoradmin">
+                <div id="jdatareceived"></div>
+            </div>
+        </div>
+
+        <div id="runevents">
+            <h2>{{eventsmax}} most recent run events</h2>
+            <table>
+                <tr>
+                    <th>Scraper</th>
+                    <th>Started</th>
+                    <th>Duration</th>
+                    <th>Output summary</th>
+                </tr>
+            {% for run_event in events %}
+                <tr>
+                    <td {% ifnotequal run_event.pid -1 %}style="color:white; background:black"{% endifnotequal %}><a href="{% url code_overview run_event.scraper.wiki_type run_event.scraper.short_name %}">{{run_event.scraper.title}}</a></td> 
+                    <td><abbr title="{{run_event.run_started}}">{{run_event.run_started|timesince}} ago</td> 
+                    <td>{{run_event.getduration}}</td> 
+                    <td><a href="{% url scraper_history run_event.scraper.wiki_type run_event.scraper.short_name %}#run_{{ run_event.id }}">{{run_event.outputsummary}}</a></td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

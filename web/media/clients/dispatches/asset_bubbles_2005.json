@@ -1,0 +1,2510 @@
+jsonpassetbubbles([
+    {
+        "keys": [
+            "Dept", 
+            "Sub dept", 
+            "Category", 
+            "Subcategory", 
+            "Amount", 
+            "Citation"
+        ], 
+        "data": [
+            [
+                "All Assets", 
+                "", 
+                "", 
+                "", 
+                337104.12, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_272%2C815_884%2C835/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Attorney General", 
+                "", 
+                "", 
+                "", 
+                58.890999999999998, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_274%2C403_889%2C428/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Attorney General", 
+                "Crown Prosecution Service", 
+                "", 
+                "", 
+                27.733000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_115%2C329_863%2C385/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter1.pdf"
+            ], 
+            [
+                "Attorney General", 
+                "Serious Fraud Office", 
+                "", 
+                "", 
+                2.2999999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_114%2C437_859%2C498/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter1.pdf"
+            ], 
+            [
+                "Attorney General", 
+                "Treasury Solicitor's Department", 
+                "", 
+                "", 
+                28.858000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_114%2C502_863%2C542/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter1.pdf"
+            ], 
+            [
+                "Cabinet Office", 
+                "", 
+                "", 
+                "", 
+                242.24100000000001, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_279%2C427_882%2C452/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Cabinet Office", 
+                "Central Office of Information", 
+                "", 
+                "", 
+                0.78000000000000003, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_114%2C374_864%2C430/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter2.pdf"
+            ], 
+            [
+                "Cabinet Office", 
+                "Core Department", 
+                "", 
+                "", 
+                237.18100000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_114%2C317_862%2C380/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter2.pdf"
+            ], 
+            [
+                "Cabinet Office", 
+                "Privy Council Office", 
+                "", 
+                "", 
+                4.2800000000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_114%2C432_860%2C474/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter2.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "", 
+                "", 
+                "", 
+                3135.9569999999999, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_279%2C448_883%2C473/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "Bank of England", 
+                "", 
+                "", 
+                237.01900000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C313_854%2C353/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "Debt Management Office", 
+                "", 
+                "", 
+                1.5600000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C494_855%2C534/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "Government Actuary's Department", 
+                "", 
+                "", 
+                1.8580000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C348_852%2C388/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "HM Revenue and Customs", 
+                "", 
+                "", 
+                944.697, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C384_850%2C425/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "HM Treasury Group", 
+                "", 
+                "", 
+                1722.318, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C458_853%2C498/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "National Svaings and Investment", 
+                "", 
+                "", 
+                25.539999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C568_855%2C607/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "OGCBuying.Solutions", 
+                "", 
+                "", 
+                12.535, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C602_854%2C642/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "Office of Government Commerce", 
+                "", 
+                "", 
+                32.506999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C528_853%2C568/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "Office of National Statistics", 
+                "", 
+                "", 
+                97.123000000000005, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C637_854%2C677/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "The Royal Mint", 
+                "", 
+                "", 
+                39.899999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C674_853%2C709/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Chancellor of the Exchequer's Department", 
+                "Valuation Office Agency", 
+                "", 
+                "", 
+                20.899999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C420_852%2C460/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter3.pdf"
+            ], 
+            [
+                "Communities and Local Government", 
+                "", 
+                "", 
+                "", 
+                432.767, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_277%2C470_884%2C495/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Communities and Local Government", 
+                "Architects Registration Board", 
+                "", 
+                "", 
+                0.80500000000000005, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C860_854%2C879/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter4.pdf"
+            ], 
+            [
+                "Communities and Local Government", 
+                "Audit Commission", 
+                "", 
+                "", 
+                10.598000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_117%2C878_858%2C898/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter4.pdf"
+            ], 
+            [
+                "Communities and Local Government", 
+                "Core Department", 
+                "", 
+                "", 
+                200.92099999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C327_854%2C377/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter4.pdf"
+            ], 
+            [
+                "Communities and Local Government", 
+                "Fire Service College", 
+                "", 
+                "", 
+                58.093000000000004, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C768_852%2C788/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter4.pdf"
+            ], 
+            [
+                "Communities and Local Government", 
+                "Ordnance Survey", 
+                "", 
+                "", 
+                54.872999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C784_854%2C809/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter4.pdf"
+            ], 
+            [
+                "Communities and Local Government", 
+                "QUANGOs", 
+                "", 
+                "", 
+                95.936000000000007, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C435_857%2C744/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter4.pdf"
+            ], 
+            [
+                "Communities and Local Government", 
+                "Queen Elizabeth II Conference Centre", 
+                "", 
+                "", 
+                3.2029999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C805_853%2C829/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter4.pdf"
+            ], 
+            [
+                "Communities and Local Government", 
+                "The Planning Inspectorate", 
+                "", 
+                "", 
+                8.3379999999999992, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C380_853%2C434/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter4.pdf"
+            ], 
+            [
+                "Constitutional Affairs", 
+                "", 
+                "", 
+                "", 
+                3222.0920000000001, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_277%2C489_883%2C515/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Constitutional Affairs", 
+                "Core Department", 
+                "", 
+                "", 
+                903.88400000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C328_858%2C377/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter5.pdf"
+            ], 
+            [
+                "Constitutional Affairs", 
+                "Court Sevice", 
+                "", 
+                "", 
+                1788.3389999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C403_857%2C423/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter5.pdf"
+            ], 
+            [
+                "Constitutional Affairs", 
+                "Information Commissioners Office", 
+                "", 
+                "", 
+                5.9050000000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C473_853%2C498/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter5.pdf"
+            ], 
+            [
+                "Constitutional Affairs", 
+                "Land Registry", 
+                "", 
+                "", 
+                210.58699999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C529_863%2C579/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter5.pdf"
+            ], 
+            [
+                "Constitutional Affairs", 
+                "Legal Services Commission", 
+                "", 
+                "", 
+                8.4429999999999996, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C493_853%2C515/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter5.pdf"
+            ], 
+            [
+                "Constitutional Affairs", 
+                "National Archives", 
+                "", 
+                "", 
+                105.486, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C582_852%2C634/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter5.pdf"
+            ], 
+            [
+                "Constitutional Affairs", 
+                "Northern Ireland Court Service", 
+                "", 
+                "", 
+                194.99000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C638_853%2C678/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter5.pdf"
+            ], 
+            [
+                "Constitutional Affairs", 
+                "Public Guardianship Office", 
+                "", 
+                "", 
+                4.4580000000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C420_853%2C444/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter5.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "", 
+                "", 
+                "", 
+                4420.1719999999996, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_278%2C513_883%2C537/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "BBC", 
+                "", 
+                "", 
+                879.79999999999995, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C1022_855%2C1044/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "Channel 4", 
+                "", 
+                "", 
+                51.399999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C968_857%2C995/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "Core Department", 
+                "", 
+                "", 
+                28.989000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C323_857%2C372/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "Historic Royal Palaces", 
+                "", 
+                "", 
+                12.988, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C948_853%2C969/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "QUANGOs", 
+                "", 
+                "", 
+                3398.165, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_118%2C432_859%2C923/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "QUANGOs", 
+                "All others", 
+                "", 
+                183.03899999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_118%2C432_859%2C923/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "QUANGOs", 
+                "British Library", 
+                "", 
+                499.96899999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C474_850%2C494/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "QUANGOs", 
+                "British Museum", 
+                "", 
+                435.09800000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C492_857%2C513/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "QUANGOs", 
+                "National Gallery", 
+                "", 
+                258.61500000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C655_854%2C679/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "QUANGOs", 
+                "National Museum of Science and Industry", 
+                "", 
+                248.30699999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C693_854%2C712/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "QUANGOs", 
+                "Natural History Museum", 
+                "", 
+                389.22899999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C748_852%2C767/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "QUANGOs", 
+                "Other Museums", 
+                "", 
+                638.86599999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_118%2C432_859%2C923/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "QUANGOs", 
+                "Tate", 
+                "", 
+                405.27999999999997, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C819_852%2C842/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "QUANGOs", 
+                "Victoria and Albert Museum", 
+                "", 
+                339.762, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C857_852%2C879/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "Royal Parks Agency", 
+                "", 
+                "", 
+                40.738999999999997, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C377_854%2C425/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Culture, Media and Sport", 
+                "S4C", 
+                "", 
+                "", 
+                8.0909999999999993, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C1039_852%2C1062/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter6.pdf"
+            ], 
+            [
+                "Defence", 
+                "", 
+                "", 
+                "", 
+                93384.502999999997, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_278%2C534_882%2C560/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "", 
+                "", 
+                92853.524000000005, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_120%2C322_857%2C370/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "", 
+                8372.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_144%2C1142_883%2C1163/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "All others", 
+                649.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_150%2C1049_889%2C1140/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "Astor", 
+                434.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_150%2C953_877%2C975/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "Astute", 
+                1212.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_150%2C863_878%2C885/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "Bowman", 
+                567.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_150%2C903_880%2C938/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "Destroyer Type 45", 
+                649.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_148%2C883_879%2C902/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "Landing Ship Dock Auxilliary", 
+                334.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_152%2C972_878%2C997/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "Nimrod MR4", 
+                504.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_150%2C935_879%2C958/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "Principal Anti Air Missile system", 
+                295.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_153%2C1012_880%2C1049/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "Storm Shadow", 
+                333.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_149%2C993_883%2C1013/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Assets Under Construction", 
+                "Typhoon", 
+                3395.0, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_152%2C843_879%2C867/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "", 
+                19663.223000000002, 
+                "http://scraperwiki.com/cropper/u/page_31/clip_145%2C492_883%2C512/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "120mm Gun Challenger 2", 
+                303.98500000000001, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_125%2C823_852%2C844/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "AirBorne Stand Off Radar", 
+                262.185, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_124%2C1133_854%2C1153/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "All others", 
+                4627.8940000000002, 
+                ""
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Asraam", 
+                278.41699999999997, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_120%2C788_855%2C812/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Astute Class Submarines", 
+                538.654, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_125%2C1219_857%2C1244/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Bowman", 
+                439.32499999999999, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_125%2C858_855%2C878/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "DGSS-Horizon", 
+                325.35199999999998, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_125%2C1049_854%2C1068/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Future Joint Combat Aircraft", 
+                337.255, 
+                "http://scraperwiki.com/cropper/u/page_31/clip_143%2C314_883%2C334/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Harrier", 
+                367.91899999999998, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_125%2C842_857%2C859/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Merlin", 
+                2092.3180000000002, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_123%2C943_853%2C965/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Nimrod MRA4", 
+                1621.3599999999999, 
+                "http://scraperwiki.com/cropper/u/page_31/clip_152%2C278_878%2C300/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Principal Anti-Aircraft Missile system", 
+                870.13800000000003, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_118%2C1064_853%2C1085/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Spearfish Torpedo", 
+                702.29899999999998, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_124%2C910_854%2C930/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Tornado", 
+                855.39300000000003, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_125%2C929_853%2C947/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Tornado GR4", 
+                580.19899999999996, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_125%2C892_855%2C912/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Trafalgar Submarine", 
+                452.31599999999997, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_125%2C875_853%2C894/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Typhoon", 
+                4704.2690000000002, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_125%2C962_850%2C982/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Development Expenditure", 
+                "Vanguard Submarine", 
+                303.94499999999999, 
+                "http://scraperwiki.com/cropper/u/page_30/clip_124%2C807_853%2C827/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Dwellings", 
+                "", 
+                1826.0050000000001, 
+                "http://scraperwiki.com/cropper/u/page_24/clip_118%2C1148_857%2C1170/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Dwellings", 
+                "Aldershot Garrison, Hampshire", 
+                428.0, 
+                "http://scraperwiki.com/cropper/u/page_23/clip_149%2C925_882%2C945/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Dwellings", 
+                "All others", 
+                1398.0050000000001, 
+                ""
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Information Technology", 
+                "", 
+                784.56399999999996, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_145%2C742_883%2C762/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Information Technology", 
+                "All others", 
+                347.46600000000001, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_152%2C535_879%2C740/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Information Technology", 
+                "Communication Equipment", 
+                437.09800000000001, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_150%2C517_878%2C537/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Land and Buldings not Dwellings", 
+                "", 
+                15652.155000000001, 
+                "http://scraperwiki.com/cropper/u/page_21/clip_144%2C433_882%2C458/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Land and Buldings not Dwellings", 
+                "All others", 
+                13881.885, 
+                ""
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Land and Buldings not Dwellings", 
+                "Awe Aldermaston", 
+                352.74099999999999, 
+                "http://scraperwiki.com/cropper/u/page_14/clip_120%2C520_860%2C543/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Land and Buldings not Dwellings", 
+                "Her Majesty's Naval Base Portsmouth", 
+                608.55899999999997, 
+                "http://scraperwiki.com/cropper/u/page_15/clip_147%2C557_879%2C595/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Land and Buldings not Dwellings", 
+                "Her Majesty's Navel Base Clyde", 
+                260.05500000000001, 
+                "http://scraperwiki.com/cropper/u/page_8/clip_124%2C507_853%2C543/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Land and Buldings not Dwellings", 
+                "MOD Main Building", 
+                298.5, 
+                "http://scraperwiki.com/cropper/u/page_12/clip_123%2C904_854%2C927/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Land and Buldings not Dwellings", 
+                "Padderborn Family Quarters, Germany", 
+                250.41499999999999, 
+                "http://scraperwiki.com/cropper/u/page_6/clip_124%2C299_857%2C330/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Plant and Machinery", 
+                "", 
+                2913.8440000000001, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_144%2C415_882%2C437/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Plant and Machinery", 
+                "All others", 
+                1032.829, 
+                ""
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Plant and Machinery", 
+                "Capital Spares", 
+                519.44000000000005, 
+                "http://scraperwiki.com/cropper/u/page_27/clip_152%2C390_879%2C417/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Plant and Machinery", 
+                "Jigs, tools and test equipment", 
+                488.863, 
+                "http://scraperwiki.com/cropper/u/page_26/clip_120%2C1013_853%2C1039/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Plant and Machinery", 
+                "Nuclear Biological Chemical Equipment", 
+                872.71199999999999, 
+                "http://scraperwiki.com/cropper/u/page_26/clip_124%2C775_854%2C797/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "", 
+                29084.699000000001, 
+                "http://scraperwiki.com/cropper/u/page_29/clip_144%2C834_879%2C854/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "All others", 
+                2842.221, 
+                ""
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Anti Submarine Warfare Marine Carriers", 
+                577.86300000000006, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_123%2C522_858%2C544/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Apache Helicopters", 
+                1980.3219999999999, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_124%2C795_854%2C819/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Assult Ships", 
+                640.78599999999994, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_123%2C632_855%2C653/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Capital spares", 
+                6444.4049999999997, 
+                "http://scraperwiki.com/cropper/u/page_29/clip_148%2C758_890%2C795/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Challenger 2 Combat Tanks", 
+                1118.605, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_124%2C1088_857%2C1110/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Combat Reconnaissance Vehicles", 
+                698.60199999999998, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_120%2C1018_857%2C1038/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Destroyers Type 42", 
+                443.18200000000002, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_123%2C483_857%2C509/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Frigates Type 22", 
+                391.48500000000001, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_118%2C449_857%2C472/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Frigates Type 23", 
+                1122.3109999999999, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_124%2C465_857%2C488/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Guided Missiles and Bombs", 
+                1552.0, 
+                "http://scraperwiki.com/cropper/u/page_29/clip_148%2C794_883%2C832/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Harrier GR7/7A Aircraft", 
+                556.99699999999996, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_119%2C648_852%2C672/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Lynx Mark 8 Helicopter", 
+                258.84800000000001, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_123%2C577_859%2C598/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Marine Mine Hunters", 
+                591.35699999999997, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_123%2C540_854%2C563/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Merlin HMI Helicopters", 
+                1416.4179999999999, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_123%2C779_857%2C802/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Merlin Mark 3 Helicopters", 
+                290.17899999999997, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_124%2C740_854%2C762/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Rapier Field Standard C", 
+                385.209, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_124%2C980_854%2C1002/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Sentry E3-D Aircraft", 
+                504.06799999999998, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_123%2C503_855%2C525/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Small Arms Weaponry", 
+                305.86900000000003, 
+                "http://scraperwiki.com/cropper/u/page_29/clip_148%2C614_884%2C634/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Swiftsure Submarines", 
+                324.03199999999998, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_123%2C429_862%2C452/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Tornado F3 Aircraft", 
+                744.08199999999999, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_125%2C834_855%2C855/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Tornado GR4 Aircraft", 
+                1547.9680000000001, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_122%2C849_855%2C875/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Trafalgar Submarines", 
+                1378.894, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_125%2C724_857%2C743/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Typhoon Aircraft", 
+                849.81500000000005, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_120%2C704_858%2C728/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Single Use Military Equipment", 
+                "Vanguard Submarines", 
+                2119.181, 
+                "http://scraperwiki.com/cropper/u/page_28/clip_123%2C815_863%2C837/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Transport Equipment", 
+                "", 
+                3804.4079999999999, 
+                "http://scraperwiki.com/cropper/u/page_26/clip_119%2C429_857%2C452/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Transport Equipment", 
+                "All others", 
+                2311.04, 
+                ""
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Transport Equipment", 
+                "Chinook helicopter", 
+                389.44900000000001, 
+                "http://scraperwiki.com/cropper/u/page_25/clip_145%2C737_883%2C759/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Transport Equipment", 
+                "Hercules: CI30J Transport aircraft", 
+                753.08299999999997, 
+                "http://scraperwiki.com/cropper/u/page_25/clip_144%2C829_882%2C848/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Ministry of Defence", 
+                "Transport Equipment", 
+                "Royal Fleet auxilliary Replenishment ships", 
+                350.83600000000001, 
+                "http://scraperwiki.com/cropper/u/page_26/clip_125%2C298_853%2C319/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Museums", 
+                "", 
+                "", 
+                84.951999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C382_859%2C523/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Other", 
+                "", 
+                "", 
+                446.02699999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_119%2C519_859%2C694/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Other", 
+                "Defence Science and Technology Laboratory", 
+                "", 
+                122.953, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C583_852%2C603/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Defence", 
+                "Other", 
+                "Meteorological Office", 
+                "", 
+                192.99000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C600_857%2C623/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter7.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "", 
+                "", 
+                "", 
+                290.84699999999998, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_279%2C558_882%2C580/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "Core Department", 
+                "", 
+                "", 
+                86.825999999999993, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_119%2C328_854%2C374/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "Office for Standards in Education", 
+                "", 
+                "", 
+                10.460000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_119%2C678_855%2C717/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "", 
+                "", 
+                193.56100000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C383_852%2C660/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Adult Learning Inspectorate", 
+                "", 
+                1.458, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C403_867%2C424/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "British Educational Communications and Technology Agency", 
+                "", 
+                0.84499999999999997, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C419_858%2C440/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Children and Family Court Advisory and Support Service", 
+                "", 
+                6.2729999999999997, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C438_853%2C459/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Construction Industry Training Board", 
+                "", 
+                42.923000000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C455_854%2C477/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Engineering and Construction Industry Training Board", 
+                "", 
+                13.278, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C475_854%2C497/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Higher Education Funding Council for England", 
+                "", 
+                0.096000000000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C493_855%2C514/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Investors in People UK LTD", 
+                "", 
+                0.224, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C512_855%2C532/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Learning and Skills Council", 
+                "", 
+                90.299999999999997, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C530_858%2C549/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "National College for School Leadership", 
+                "", 
+                24.715, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C547_857%2C569/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Partnerships for Schools", 
+                "", 
+                0.10299999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C565_855%2C587/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Qualifications and Curriculum Authority", 
+                "", 
+                3.3220000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C584_857%2C604/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Sector Skills Development Agency", 
+                "", 
+                2.4609999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C602_853%2C624/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Student Loans Company", 
+                "", 
+                5.4820000000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C622_853%2C642/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Education and Skills", 
+                "QUANGOs", 
+                "Training and Development Agency for Schools", 
+                "", 
+                2.081, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C639_852%2C665/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter8.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "", 
+                "", 
+                "", 
+                4305.0479999999998, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_279%2C579_883%2C600/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "British Waterways", 
+                "", 
+                "", 
+                572.55399999999997, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C784_852%2C807/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Central Science Laboratory", 
+                "", 
+                "", 
+                110.952, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C419_854%2C442/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Centre for Environment, Fisheries and Aquaculture Science", 
+                "", 
+                "", 
+                58.503, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C399_857%2C422/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Covent Garden Market Authority", 
+                "", 
+                "", 
+                9.2810000000000006, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C803_852%2C829/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "DEFRA", 
+                "", 
+                "", 
+                269.44400000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_120%2C325_857%2C377/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Forestry", 
+                "", 
+                "", 
+                1049.4769999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_119%2C830_857%2C1112/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Forestry", 
+                "Forestry Commission England", 
+                "", 
+                16.873999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C834_862%2C885/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Forestry", 
+                "Forestry Commission Scotland", 
+                "", 
+                426.46600000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C947_855%2C993/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Forestry", 
+                "Forestry Commission Wales", 
+                "", 
+                142.15299999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C1055_855%2C1102/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Forestry", 
+                "Forestry Enterprise England", 
+                "", 
+                437.43099999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_120%2C893_859%2C942/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Forestry", 
+                "Forestry Enterprise Scotland", 
+                "", 
+                26.553000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C1007_854%2C1050/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Office of Water Services", 
+                "", 
+                "", 
+                0.80600000000000005, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_118%2C1113_858%2C1153/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Pesticides Safety Directorate", 
+                "", 
+                "", 
+                0.39500000000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C439_853%2C458/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "", 
+                "", 
+                1925.2559999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C525_855%2C754/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "British Potato Council", 
+                "", 
+                0.51800000000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C547_862%2C572/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "Countryside Agency", 
+                "", 
+                3.3660000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C567_853%2C588/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "English Nature", 
+                "", 
+                11.388999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C584_850%2C605/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "Environment Agency", 
+                "", 
+                1811.4580000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C602_853%2C625/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "Food From Britain", 
+                "", 
+                0.070999999999999994, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C620_852%2C642/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "Home Grown Cereals Authority", 
+                "", 
+                3.794, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C640_855%2C662/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "Meat and Livestock Commission", 
+                "", 
+                4.6399999999999997, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C658_858%2C678/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "Milk Development Council", 
+                "", 
+                0.031, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C677_855%2C697/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "National Forest Company", 
+                "", 
+                0.503, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C695_857%2C714/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "Royal Botanical Gardens, Kew", 
+                "", 
+                86.811999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C712_852%2C733/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "QUANGOs", 
+                "Sea Fish Industry Authority", 
+                "", 
+                2.6739999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C733_857%2C750/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Rural Payments Agency", 
+                "", 
+                "", 
+                68.713999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C454_858%2C478/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Veterinary Laboratories Agency", 
+                "", 
+                "", 
+                234.38900000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C475_857%2C495/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Environment, Food and Rural Affairs", 
+                "Veterinary Medicines Directorate", 
+                "", 
+                "", 
+                5.2770000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C493_855%2C515/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter9.pdf"
+            ], 
+            [
+                "Foreign and Commonwealth Office", 
+                "", 
+                "", 
+                "", 
+                1520.9829999999999, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_278%2C598_884%2C623/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Foreign and Commonwealth Office", 
+                "BBC World Service", 
+                "", 
+                "", 
+                155.80000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C419_853%2C443/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter10.pdf"
+            ], 
+            [
+                "Foreign and Commonwealth Office", 
+                "British Council", 
+                "", 
+                "", 
+                110.608, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C400_852%2C422/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter10.pdf"
+            ], 
+            [
+                "Foreign and Commonwealth Office", 
+                "Core Department", 
+                "", 
+                "", 
+                1254.575, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C328_860%2C372/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter10.pdf"
+            ], 
+            [
+                "Health", 
+                "", 
+                "", 
+                "", 
+                40219.091999999997, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_279%2C623_883%2C647/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Health", 
+                "Core Department", 
+                "", 
+                "", 
+                1599.1659999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C323_855%2C370/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter11.pdf"
+            ], 
+            [
+                "Health", 
+                "Food Standards Agency", 
+                "", 
+                "", 
+                10.837, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C487_859%2C515/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter11.pdf"
+            ], 
+            [
+                "Health", 
+                "NHS Trusts and Foundation Trusts", 
+                "", 
+                "", 
+                32839.550999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C412_855%2C449/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter11.pdf"
+            ], 
+            [
+                "Health", 
+                "Primary Care Trusts", 
+                "", 
+                "", 
+                5706.5990000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C374_857%2C413/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter11.pdf"
+            ], 
+            [
+                "Health", 
+                "Strategic Health Authorities", 
+                "", 
+                "", 
+                62.899000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_120%2C454_854%2C488/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter11.pdf"
+            ], 
+            [
+                "Home Office", 
+                "", 
+                "", 
+                "", 
+                6882.7889999999998, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_278%2C640_883%2C668/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Home Office", 
+                "Assets Recovery Agency", 
+                "", 
+                "", 
+                1.6930000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_118%2C767_853%2C810/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "Charity Commission", 
+                "", 
+                "", 
+                4.6749999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C819_853%2C858/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "Core Department", 
+                "", 
+                "", 
+                1313.3119999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_118%2C322_854%2C369/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "HM Prison Service", 
+                "", 
+                "", 
+                5234.6620000000003, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C397_859%2C419/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "", 
+                "", 
+                268.97600000000006, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C453_862%2C762/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Central Police Training and Development Authority", 
+                "", 
+                75.941000000000003, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C474_853%2C493/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Commission for Racial Equality", 
+                "", 
+                0.66400000000000003, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C490_854%2C512/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Community Development Foundation", 
+                "", 
+                0.39600000000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C509_852%2C530/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Criminal Cases Review Commission", 
+                "", 
+                1.4430000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C527_853%2C547/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Criminal Injuries Compensation Authority", 
+                "", 
+                1.385, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C547_852%2C568/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Criminal Records Bureau", 
+                "", 
+                0.62, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C564_852%2C584/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Indpendent Police Complaints Commission", 
+                "", 
+                9.9299999999999997, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C582_852%2C602/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "National Crime Squad", 
+                "", 
+                27.431999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C603_857%2C620/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "National Criminal Intelligence Service", 
+                "", 
+                19.539999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C619_852%2C639/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "National Probation Service", 
+                "", 
+                5.4619999999999997, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C638_853%2C658/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Office of the Immigration Services", 
+                "", 
+                0.51200000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C655_852%2C677/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Police Information Technology Organisation", 
+                "", 
+                37.18, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C673_853%2C693/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Security Industry Authority", 
+                "", 
+                7.8929999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C692_857%2C714/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "The Parole Board", 
+                "", 
+                0.02, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C712_855%2C730/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "QUANGOs", 
+                "Youth Justice Board", 
+                "", 
+                80.558000000000007, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_127%2C728_853%2C752/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "Home Office", 
+                "UK Passport Office", 
+                "", 
+                "", 
+                59.470999999999997, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C415_857%2C443/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter12.pdf"
+            ], 
+            [
+                "International Development", 
+                "", 
+                "", 
+                "", 
+                2596.71, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_278%2C665_883%2C687/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "International Development", 
+                "All others", 
+                "", 
+                "", 
+                609.71000000000004, 
+                ""
+            ], 
+            [
+                "International Development", 
+                "Investment - CDC Group plc", 
+                "", 
+                "", 
+                765.0, 
+                "http://scraperwiki.com/cropper/u/page_4/clip_375%2C380_855%2C403/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter13.pdf"
+            ], 
+            [
+                "International Development", 
+                "Investment - European Bank for Reconstruction and Development", 
+                "", 
+                "", 
+                396.0, 
+                "http://scraperwiki.com/cropper/u/page_4/clip_374%2C275_852%2C297/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter13.pdf"
+            ], 
+            [
+                "International Development", 
+                "Investment - International Bank for Reconstruction and Development", 
+                "", 
+                "", 
+                826.0, 
+                "http://scraperwiki.com/cropper/u/page_4/clip_372%2C244_853%2C264/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter13.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "", 
+                "", 
+                "", 
+                38798.137999999999, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_279%2C685_883%2C709/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Department for Agriculture and Rural Affairs", 
+                "", 
+                "", 
+                701.13999999999999, 
+                "http://scraperwiki.com/cropper/u/page_5/clip_149%2C632_888%2C865/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Department for Culture, Arts and Leisure", 
+                "", 
+                "", 
+                156.559, 
+                "http://scraperwiki.com/cropper/u/page_5/clip_148%2C872_883%2C1224/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Department for Education", 
+                "", 
+                "", 
+                1909.134, 
+                "http://scraperwiki.com/cropper/u/page_6/clip_124%2C477_858%2C733/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Department for Employment and Learning", 
+                "", 
+                "", 
+                58.079000000000001, 
+                "http://scraperwiki.com/cropper/u/page_6/clip_119%2C284_857%2C473/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Department for Regional Development", 
+                "", 
+                "", 
+                29141.620999999999, 
+                "http://scraperwiki.com/cropper/u/page_7/clip_150%2C758_890%2C962/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Department for Social Development", 
+                "", 
+                "", 
+                3222.5169999999998, 
+                "http://scraperwiki.com/cropper/u/page_7/clip_148%2C352_880%2C575/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Department of Enterprise, Trade and Investment", 
+                "", 
+                "", 
+                168.416, 
+                "http://scraperwiki.com/cropper/u/page_6/clip_125%2C744_858%2C912/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Department of Finance and Personnel", 
+                "", 
+                "", 
+                313.18200000000002, 
+                "http://scraperwiki.com/cropper/u/page_6/clip_125%2C909_853%2C1065/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Department of Health, Social Services and Public Safety", 
+                "", 
+                "", 
+                1761.3209999999999, 
+                "http://scraperwiki.com/cropper/u/page_7/clip_152%2C972_879%2C1150/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Department of the Environment", 
+                "", 
+                "", 
+                53.877000000000002, 
+                "http://scraperwiki.com/cropper/u/page_6/clip_118%2C1069_867%2C1222/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Executive Agencies", 
+                "All others", 
+                "", 
+                200.18000000000001, 
+                "http://scraperwiki.com/cropper/u/page_5/clip_148%2C379_883%2C590/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Executive Agencies", 
+                "Police Service", 
+                "", 
+                526.35599999999999, 
+                "http://scraperwiki.com/cropper/u/page_5/clip_152%2C527_880%2C548/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Northern Ireland Office", 
+                "", 
+                "", 
+                846.57600000000002, 
+                "http://scraperwiki.com/cropper/u/page_5/clip_149%2C323_880%2C589/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Northern Ireland", 
+                "Office of the First and Deputy Prime Minister", 
+                "", 
+                "", 
+                15.715999999999999, 
+                "http://scraperwiki.com/cropper/u/page_7/clip_153%2C579_883%2C745/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter14.pdf"
+            ], 
+            [
+                "Scotland", 
+                "", 
+                "", 
+                "", 
+                22998.299999999999, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_279%2C708_884%2C730/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Scotland", 
+                "Caledonian MacBrayne Limited", 
+                "", 
+                "", 
+                100.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_149%2C1093_882%2C1115/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Scotland", 
+                "Crown Office and Procurator Fiscal Service", 
+                "", 
+                "", 
+                15.0, 
+                "http://scraperwiki.com/cropper/u/page_4/clip_123%2C335_857%2C379/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Scotland", 
+                "Executive Agencies", 
+                "", 
+                "", 
+                1066.2, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_149%2C379_882%2C587/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Scotland", 
+                "General Register Office for Scotland", 
+                "", 
+                "", 
+                6.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_152%2C1165_879%2C1189/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Scotland", 
+                "Highlands and Islands Airports Limited", 
+                "", 
+                "", 
+                36.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_152%2C1115_882%2C1135/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Scotland", 
+                "NHS Health Boards and Bodies", 
+                "", 
+                "", 
+                4186.0, 
+                "http://scraperwiki.com/cropper/u/page_4/clip_127%2C268_854%2C324/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Scotland", 
+                "National Archives Scotland", 
+                "", 
+                "", 
+                11.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_152%2C1187_880%2C1213/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Scotland", 
+                "QUANGOs", 
+                "", 
+                "", 
+                759.10000000000002, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_148%2C598_882%2C960/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Scotland", 
+                "Registers of Scotland", 
+                "", 
+                "", 
+                13.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_152%2C962_884%2C1009/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Scotland", 
+                "Scottish Executive Department", 
+                "", 
+                "", 
+                13958.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_149%2C324_895%2C370/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Scotland", 
+                "Scottish Water", 
+                "", 
+                "", 
+                2848.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_152%2C1022_879%2C1063/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter15.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "", 
+                "", 
+                "", 
+                19154.967000000001, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_280%2C728_883%2C749/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "Advisory, Conciliation and Arbitration Service", 
+                "", 
+                "", 
+                7.0750000000000002, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_147%2C399_879%2C420/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "British Nuclear Fuels", 
+                "", 
+                "", 
+                11536.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_148%2C1022_884%2C1043/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "Companies House", 
+                "", 
+                "", 
+                40.661000000000001, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_148%2C1093_883%2C1115/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "Core Department", 
+                "", 
+                "", 
+                3838.0189999999998, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_150%2C324_880%2C369/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "Export Credits Guarantee Department", 
+                "", 
+                "", 
+                2.2509999999999999, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_150%2C1150_878%2C1194/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "Insolvency Service", 
+                "", 
+                "", 
+                1.917, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_149%2C419_880%2C439/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "National Weights and Measures Laboratory", 
+                "", 
+                "", 
+                1.202, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_149%2C435_880%2C457/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "OFCOM", 
+                "", 
+                "", 
+                30.148, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_145%2C1202_884%2C1254/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "OFGEM", 
+                "", 
+                "", 
+                4.4630000000000001, 
+                "http://scraperwiki.com/cropper/u/page_4/clip_125%2C328_853%2C374/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "Office of Fair Trading", 
+                "", 
+                "", 
+                7.3680000000000003, 
+                "http://scraperwiki.com/cropper/u/page_4/clip_124%2C277_857%2C332/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "Patents Office", 
+                "", 
+                "", 
+                28.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_150%2C1112_880%2C1138/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "Postal Services Commision", 
+                "", 
+                "", 
+                1.0429999999999999, 
+                "http://scraperwiki.com/cropper/u/page_4/clip_120%2C383_855%2C429/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "QUANGOs", 
+                "", 
+                "", 
+                1782.4009999999998, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_148%2C487_887%2C990/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "QUANGOs", 
+                "All others", 
+                "", 
+                808.70100000000002, 
+                ""
+            ], 
+            [
+                "Trade and Industry", 
+                "QUANGOs", 
+                "Central Laboratory of the Research Councils", 
+                "", 
+                469.80000000000001, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_148%2C564_879%2C585/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "QUANGOs", 
+                "Medical Research Council", 
+                "", 
+                263.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_150%2C728_880%2C750/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "QUANGOs", 
+                "Natural Encironment Research Council", 
+                "", 
+                240.90000000000001, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_152%2C765_878%2C785/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "Royal Mail", 
+                "", 
+                "", 
+                1874.0, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_152%2C1042_879%2C1063/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "Small Business Service", 
+                "", 
+                "", 
+                0.029999999999999999, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_152%2C453_888%2C475/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Trade and Industry", 
+                "UK Trade and Investment", 
+                "", 
+                "", 
+                0.38900000000000001, 
+                "http://scraperwiki.com/cropper/u/page_4/clip_125%2C442_852%2C480/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter16.pdf"
+            ], 
+            [
+                "Transport", 
+                "", 
+                "", 
+                "", 
+                81024.925000000003, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_278%2C749_883%2C772/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Transport", 
+                "British Rail (Residuary) Board", 
+                "", 
+                "", 
+                126.0, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C694_859%2C734/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "British Transport Police Authority", 
+                "", 
+                "", 
+                5.0, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C508_857%2C535/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Civil Aviation Authority", 
+                "", 
+                "", 
+                29.780999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C745_853%2C792/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Core Department", 
+                "", 
+                "", 
+                1655.9949999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C327_857%2C369/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Driver and Vehicle Licensing Agency", 
+                "", 
+                "", 
+                93.689999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C620_854%2C639/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Driving Standards Agency", 
+                "", 
+                "", 
+                24.5, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C637_853%2C658/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Government Car and Despatch Agency", 
+                "", 
+                "", 
+                2.3900000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_128%2C402_853%2C419/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Highways Agency", 
+                "", 
+                "", 
+                73403.762000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C419_854%2C439/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Highways Agency", 
+                "All others", 
+                "", 
+                1259.3889999999999, 
+                ""
+            ], 
+            [
+                "Transport", 
+                "Highways Agency", 
+                "Infrastructure", 
+                "", 
+                72144.373000000007, 
+                "http://scraperwiki.com/cropper/u/page_11/clip_144%2C668_880%2C688/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Highways Agency", 
+                "Infrastructure", 
+                "Communications", 
+                362.37900000000002, 
+                "http://scraperwiki.com/cropper/u/page_11/clip_149%2C645_879%2C665/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Highways Agency", 
+                "Infrastructure", 
+                "Land Take", 
+                14787.242, 
+                "http://scraperwiki.com/cropper/u/page_11/clip_152%2C609_880%2C645/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Highways Agency", 
+                "Infrastructure", 
+                "Motorways", 
+                18624.714, 
+                "http://scraperwiki.com/cropper/u/page_11/clip_152%2C570_879%2C592/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Highways Agency", 
+                "Infrastructure", 
+                "Structure", 
+                18078.48, 
+                "http://scraperwiki.com/cropper/u/page_11/clip_153%2C592_887%2C610/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Highways Agency", 
+                "Infrastructure", 
+                "Trunk Road", 
+                20291.558000000001, 
+                "http://scraperwiki.com/cropper/u/page_11/clip_153%2C555_879%2C572/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "London and Continental Railways", 
+                "", 
+                "", 
+                5452.3299999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_122%2C543_855%2C590/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Maritime and Coastal Agency", 
+                "", 
+                "", 
+                54.700000000000003, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C435_854%2C457/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Office of the Rail Regulator", 
+                "", 
+                "", 
+                0.80700000000000005, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_119%2C802_857%2C844/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Vehicle Certification Agency", 
+                "", 
+                "", 
+                0.81999999999999995, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C454_852%2C480/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Transport", 
+                "Vehicle and Operator Services Agency", 
+                "", 
+                "", 
+                175.15000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C654_858%2C683/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter17.pdf"
+            ], 
+            [
+                "Wales", 
+                "", 
+                "", 
+                "", 
+                13603.764999999999, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_277%2C769_883%2C795/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Wales", 
+                "Cadw", 
+                "", 
+                "", 
+                6.0999999999999996, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C377_853%2C429/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter18.pdf"
+            ], 
+            [
+                "Wales", 
+                "Estyn", 
+                "", 
+                "", 
+                0.80200000000000005, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C434_857%2C480/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter18.pdf"
+            ], 
+            [
+                "Wales", 
+                "NHS Trusts and Local Health Boards", 
+                "", 
+                "", 
+                2143.7359999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C803_855%2C859/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter18.pdf"
+            ], 
+            [
+                "Wales", 
+                "National Assembly of Wales", 
+                "", 
+                "", 
+                10973.591, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_119%2C322_857%2C373/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter18.pdf"
+            ], 
+            [
+                "Wales", 
+                "QUANGOs", 
+                "", 
+                "", 
+                479.536, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C488_857%2C789/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter18.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "", 
+                "", 
+                "", 
+                811.97299999999996, 
+                "http://scraperwiki.com/cropper/u/page_3/clip_274%2C792_882%2C814/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_introduction.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "Appeals Service", 
+                "", 
+                "", 
+                1.3260000000000001, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_120%2C657_857%2C693/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "Child Support Agency", 
+                "", 
+                "", 
+                11.778, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C324_853%2C369/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "Core Department", 
+                "", 
+                "", 
+                193.428, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_123%2C324_853%2C369/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "Disability Rights Commission", 
+                "", 
+                "", 
+                1.798, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C528_853%2C547/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "Disability and Carers Service", 
+                "", 
+                "", 
+                4.2709999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C439_850%2C458/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "Health and Safety Executive", 
+                "", 
+                "", 
+                83.429000000000002, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C547_853%2C567/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "Independent Living Funds", 
+                "", 
+                "", 
+                0.41299999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C563_853%2C585/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "Jobcentre Plus", 
+                "", 
+                "", 
+                447.50299999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C418_852%2C439/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "Pensions Service", 
+                "", 
+                "", 
+                18.062999999999999, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_124%2C455_853%2C474/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "Remploy", 
+                "", 
+                "", 
+                42.820999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_127%2C603_853%2C640/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ], 
+            [
+                "Work and Pensions", 
+                "The Rent Service", 
+                "", 
+                "", 
+                7.1429999999999998, 
+                "http://scraperwiki.com/cropper/u/page_2/clip_125%2C472_855%2C494/?url=http%3A%2F%2Fwww.hm-treasury.gov.uk%2Fd%2Fnar2007_chapter19.pdf"
+            ]
+        ]
+    }
+])

@@ -1,0 +1,16 @@
+/* 768.css
+   Builds on top of 320/480.css.
+   Everything here should look good 
+   on a 768px screen.
+*/
+
+
+/* HORS D'OUVRE */
+
+body:after {
+	content: '768px';
+}
+
+.content {
+	width: 768px;
+}

@@ -1,0 +1,81 @@
+{% load doc_links %}
+
+<p>Learn to make a view by copying and pasting code, for programmers or non-programmers (30 minutes).</p>
+
+<h2>1. Make a new view</h2>
+
+<p>If you haven't already, please do the {% doc_link_full 'LANG_intro_tutorial' language %} first.
+</p>
+
+<p>Find the school life expectancy scraper that you made 
+(or use <a href="https://scraperwiki.com/scrapers/school_life_expectancy_in_years/">this one we made earlier</a>). 
+Half way down, in the views section, choose "create a new view" and pick Python as your language.
+</p>
+
+<p>Put in a few lines of code, and click the "Preview" button or type Ctrl+P.
+</p>
+
+<code>print "This is a &lt;em&gt;fragment&lt;/em&gt; of HTML."
+</code>
+
+<p>A new browser tab will open, and after a moment the rendered output will appear.</p>
+
+
+<h2>2. Query the scraper's datastore</h2>
+
+<p>Before you can read the scraper's datastore from the view, you 
+need to attach to it.</p>
+
+<code>import scraperwiki
+scraperwiki.sqlite.attach("school_life_expectancy_in_years")
+</code>
+
+<p>You can attach to as many datastores as you like. Then you can access their
+tables directly from queries.</p>
+
+<code>data = scraperwiki.sqlite.select(
+    '''* from school_life_expectancy_in_years.swdata 
+    order by years_in_school desc limit 10'''
+)
+print data
+</code>
+
+<p>The data comes back as an array of dictionaries.</p>
+
+<h2>3. Print out the results</h2>
+
+<p>To output, you simply print to standard output.
+
+<code>print "&lt;table&gt;"
+print "&lt;tr&gt;&lt;th&gt;Country&lt;/th&gt;&lt;th&gt;Years in school&lt;/th&gt;"
+for d in data:
+    print "&lt;tr&gt;"
+    print "&lt;td&gt;", d["country"], "&lt;/td&gt;"
+    print "&lt;td&gt;", d["years_in_school"], "&lt;/td&gt;"
+    print "&lt;/tr&gt;"
+print "&lt;/table&gt;"
+</code>
+
+<p>That's a simple example outputting HTML.</p>
+
+<p>You could output a KML file, an iCal file, an RSS feed, or whatever you
+need.</p>
+
+<h2>What next?</h2>
+
+{% load doc_links %}
+<ul>
+    <!-- Link to something on using Javascript directly -->
+    <!-- Something about mime types -->
+    <li>
+        <a href="{% url docs language %}">More documentation</a> on ScraperWiki
+        and common Python visualisation libraries.
+    </li>
+    <li>
+        <a href="{% url get_involved %}" title="Get involved">Get involved!</a>
+        Fix, tag or document our shared public data scrapers.
+    </li>
+</ul>
+
+
+

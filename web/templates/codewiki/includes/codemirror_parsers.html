@@ -1,0 +1,45 @@
+<script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/codemirror.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/highlight.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/stringstream.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/tokenize.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/parsedummy.js" type="text/javascript"></script> 
+    
+    <script>var Parser = DummyParser;</script>
+
+{% ifequal language 'python' %}
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}/contrib/python/js/parsepython.js" type="text/javascript"></script> 
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}contrib/python/css/pythoncolors.css"/> 
+    <script>Parser = PythonParser;</script>
+{% endifequal %}
+{% ifequal language 'html' %}
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/parsexml.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/parsecss.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/tokenizejavascript.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/parsejavascript.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/parsehtmlmixed.js" type="text/javascript"></script> 
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}css/xmlcolors.css"/> 
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}css/jscolors.css"/> 
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}css/csscolors.css"/> 
+    <script>Parser = HTMLMixedParser;</script>
+{% endifequal %}
+{% ifequal language 'php' %}
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/parsexml.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/parsecss.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/tokenizejavascript.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/parsejavascript.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}js/parsehtmlmixed.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}contrib/php/js/tokenizephp.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}contrib/php/js/parsephp.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}contrib/php/js/parsephphtmlmixed.js" type="text/javascript"></script> 
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}css/xmlcolors.css"/> 
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}css/jscolors.css"/> 
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}css/csscolors.css"/> 
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}{{settings.CODEMIRROR_URL}}contrib/php/css/phpcolors.css"/> 
+    <script>Parser = PHPHTMLMixedParser;</script>
+{% endifequal %}
+{% ifequal language 'ruby' %}
+    <script src="{{ MEDIA_URL }}ruby-in-codemirror/js/tokenizeruby.js" type="text/javascript"></script> 
+    <script src="{{ MEDIA_URL }}ruby-in-codemirror/js/parseruby.js" type="text/javascript"></script> 
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}ruby-in-codemirror/css/rubycolors.css"/> 
+    <script>Parser = DummyParser; // RubyParser does not have matcher() command in it </script>
+{% endifequal %}

@@ -1,0 +1,14 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# m h  dom mon dow   command
+
+# Backup Django database, and scraper mercurial repositories
+# ... this one takes 5 minutes (26th Jan 2012)
+0 4 * * * root /var/www/scraperwiki/cron/bin/mysql-backup live
+
+# Backup to bytemark's backup
+0 7 * * * root rsync -qazr --partial /root/backup umi.backup.bytemark.co.uk::umi/
+
+# Every hour, get new screenshots of scrapers from screenshot server
+0 * * * * root rsync -azr -e "ssh -i /home/scraperdeploy/screenshooter-key.rsa" screenshooter@kippax.scraperwiki.com:/home/screenshooter/screenshots/ /var/www/scraperwiki/web/media/screenshots/

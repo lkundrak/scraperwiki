@@ -1,0 +1,19 @@
+{{{header}}}
+
+This email is to confirm your recent subscription
+cancellation. Your subscription will remain active until
+{{subscription_expires_at}}. Here are the details of
+the subscription you cancelled:
+
+Description: {{plan_name}}
+Quantity:    {{subscription_quantity}}
+Total:       {{{subscription_total_amount}}} {{plan_per_interval}}
+Expires at:  {{subscription_expires_at}}
+
+Please keep this email for your records.
+
+To reactivate your subscription before it expires, or to
+view previous invoices, please edit your account at:
+{{account_hosted_maintenance_url}}
+
+{{{footer}}}
