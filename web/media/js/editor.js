@@ -118,7 +118,6 @@ $(document).ready(function()
     setupResizeEvents();
     setupOrbited();
 
-
     //add hotkey - this is a hack to convince codemirror (which is in an iframe) / jquery to play nice with each other
     //which means we have to do some seemingly random binds/unbinds
     function addHotkey(sKeyCombination, oFunction)
