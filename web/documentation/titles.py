@@ -40,6 +40,16 @@ page_titles = {
     "php_time_place_guide" : ("Dates, times and places", "Temporal and geocoding in PHP"),
     "php_time_guide" : ("Dates and times guide", "Parsing and saving temporal data in PHP"),
     
+    "perl_intro_tutorial" : ("First scraper tutorial","How to use ScraperWiki for people who can already code Perl"),
+    "perl_datastore_guide" : ("Datastore copy & paste guide","A guide to the ScraperWiki SQL datastore for Perl programmers"),
+    "perl_help_documentation" : ("ScraperWiki library functions","All the functions in the Perl ScraperWiki module"),
+    "perl_libraries" : ("3rd party libraries","Perl batteries included in ScraperWiki"),
+    "perl_view_guide" : ("First view tutorial","How to use ScraperWiki views in Perl"),
+    "perl_csv_guide" : ("CSV reading guide","Getting data from comma-separated value files in Perl"),
+    "perl_excel_guide" : ("Excel reading guide","Getting data from Excel files in Perl"),
+    "perl_css_guide" : ("HTML parsing guide","Extract data from HTML using CSS selectors in Perl"),
+    "perl_time_guide" : ("Dates and times guide", "Parsing and saving temporal data in Perl"),
+
     "shared_libraries" : ("3rd party libraries","Binaries availabile inside ScraperWiki"),
 
     "html_views": ("HTML Views 101", "How to get the most out of HTML Views on ScraperWiki"),
