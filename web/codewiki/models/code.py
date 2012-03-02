@@ -34,6 +34,7 @@ LANGUAGES_DICT = {
     'python' : 'Python',
     'php' : 'PHP',
     'ruby' : 'Ruby',
+    'perl' : 'Perl',
 
     'html' : 'HTML',
     'javascript' : 'Javascript',
@@ -44,11 +45,11 @@ LANGUAGES = [ (k,v) for k,v in LANGUAGES_DICT.iteritems() ]
 
 # used for new scraper/view dialogs
 # Add "javascript" to enable Javascript
-SCRAPER_LANGUAGES = [ (k, LANGUAGES_DICT[k]) for  k in ["python", "ruby", "php" ] ]
-SCRAPER_LANGUAGES_V = [ '2.7.1', '1.9.2', '5.3.5', ''] 
+SCRAPER_LANGUAGES = [ (k, LANGUAGES_DICT[k]) for  k in ["python", "ruby", "php", "perl" ] ]
+SCRAPER_LANGUAGES_V = [ '2.7.1', '1.9.2', '5.3.5', '5.14.1', '']
 
 VIEW_LANGUAGES = [ (k, LANGUAGES_DICT[k]) for  k in ["python", "ruby", "php", "html"] ]
-HELP_LANGUAGES = [ (k, LANGUAGES_DICT[k]) for  k in ["python", "ruby", "php"] ]
+HELP_LANGUAGES = [ (k, LANGUAGES_DICT[k]) for  k in ["python", "ruby", "php", "perl"] ]
 
 WIKI_TYPES = (
     ('scraper', 'Scraper'),

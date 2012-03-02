@@ -586,6 +586,10 @@ h3 {
 	width: 24px;
 }
 
+#header_inner p span.perl:before {
+	background-position: -64px -16px;
+}
+
 #header_inner p span.html:before {
 	background-position: -64px -1px;
 }
