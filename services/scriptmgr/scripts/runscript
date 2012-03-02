@@ -12,6 +12,7 @@ export RUBYLIB='/home/scraperwiki/ruby/scraperwiki/lib'
 export PYTHONPATH='/home/scraperwiki/python'
 export PHPPATH='/home/scraperwiki/php:$PHPPATH'
 export NODE_PATH='/usr/local/lib/node_modules:/home/scraperwiki/javascript:/home/scriptrunner'
+export PERL5LIB='/home/scraperwiki/perl/lib/'
 export TMPDIR='/tmp'
 # We exec here, to avoid having this script's process lying around;
 # and the same again for the script we run inside the su
