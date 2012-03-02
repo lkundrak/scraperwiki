@@ -40,6 +40,7 @@ def docmain(request, language=None, path=None):
     context["lang_ruby"] = True
     context["lang_python"] = True
     context["lang_php"] = True
+    context["lang_perl"] = True
     # context["lang_javascript"] = True
     
     # not written by anyone yet
@@ -83,6 +84,7 @@ def tutorials(request,language=None):
     context["lang_ruby"] = True
     context["lang_python"] = True
     context["lang_php"] = True
+    context["lang_perl"] = True
 
     context["title"] = "Live tutorials"
     context["para"] = "Screen scraping tutorials entirely within a code editor in your browser"

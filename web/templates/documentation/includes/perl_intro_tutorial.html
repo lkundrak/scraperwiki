@@ -12,16 +12,14 @@ in school in different countries from
 but has since been replaced with an <a href="http://unstats.un.org/unsd/demographic/products/socind/education.htm">Excel spreadsheet</a>.
 </p>
 
-<p><a data-wiki_type="scraper" href="#" class="editor_scraper">Create a new scraper</a>, and choose Ruby as the language.
-(You can also do this tutorial in Python, PHP or Perl if you&rsquo;re more comfortable with those). You&rsquo;ll get a web based code editor.
+<p><a data-wiki_type="scraper" href="#" class="editor_scraper">Create a new scraper</a>, and choose Perl as the language.
+(You can also do this tutorial in Ruby, PHP or Python if you&rsquo;re more comfortable with those). You&rsquo;ll get a web based code editor.
 </p>
 
-<p>Put in a few lines of code to show it runs, and click the &ldquo;Run&rdquo; button or
-type Ctrl+R.
+<p>Put in a few lines of code to show it runs, and click the &ldquo;Run&rdquo; button or type Ctrl+R.
 </p>
 
-<code>p "Hello, coding in the cloud!"
-</code>
+<code>print "Hello, coding in the cloud!"</code>
 
 <p>(As we go through this tutorial, you can copy and paste each 
 block of code onto the end of your growing scraper, and run it each time.)</p>
@@ -32,13 +30,14 @@ printed in the Console tab at the bottom of the editor.
 
 <h2>2. Download HTML from the web</h2>
 
-<p>You can use any normal Ruby library to crawl the web, such as Net::HTTP
-or Mechanize. 
-There is also a simple built in {% doc_link_full 'LANG_help_documentation' language 'ScraperWiki function' %} which may be easier to use.
+<p>You can use any normal Perl library to crawl the web, such as LWP::Simple
+or WWW::Mechanize. There is also a simple built in ScraperWiki function which may
+be easier to use.
+
 </p>
 
-<code>html = ScraperWiki::scrape("http://web.archive.org/web/20110514112442/http://unstats.un.org/unsd/demographic/products/socind/education.htm")
-p html
+<code>my $html = Scraperwiki::scrape ('http://web.archive.org/web/20110514112442/http://unstats.un.org/unsd/demographic/products/socind/education.htm');
+print $html;
 </code>
 
 <p>When you print something quite large, click "more" in the console
@@ -47,28 +46,29 @@ everything that has been downloaded.</p>
 
 <h2>3. Parsing the HTML to get your content</h2>
 
-<p>Nokogiri is Ruby's best Japanese saw for cutting up HTML.
+<p>HTML::TreeBuilder can be used to walk the HTML parse tree.
 </p>
 
-<code>require 'nokogiri'
-doc = Nokogiri::HTML html
-doc.search("div[@align='left'] tr").each do |v|
-  cells = v.search 'td'
-  if cells.count == 12
-    data = {
-      country: cells[0].inner_html,
-      years_in_school: cells[4].inner_html.to_i
-    }
-    puts data.to_json
-  end
-end
+<code>use HTML::TreeBuilder;
+
+my $tree = new HTML::TreeBuilder;
+$tree-&gt;parse ($html);
+$tree-&gt;eof;
+
+foreach my $v ($tree-&gt;look_down (_tag =&gt; 'tr', class =&gt; 'tcont',
+        sub { shift-&gt;look_up (_tag =&gt; 'div', align =&gt; 'left') })) {
+
+        my $data = {
+                country =&gt; [$v-&gt;content_list]-&gt;[0]-&gt;as_text,
+                years_in_school =&gt; [$v-&gt;content_list]-&gt;[1]-&gt;as_text,
+        };
+
+	use Data::Dumper; print Dumper $data;
+}
 </code>
 
-<p>The bits of code like <var>div</var> and <var>td</var> are CSS selectors, just like
-those used to style HTML. Here we use them to select all the table rows. And then, for
-each of those rows, we select the individual cells, and if there are 12 of them (ie: we
-are in the main table body, rather than in one of the header rows), we extract the country
-name and schooling statistic.
+<p>We're selecting 'tr' tags of 'tcont' class that are preceded by
+a 'div' with 'align=left' attribute.
 </p>
 
 <h2>4. Saving to the ScraperWiki datastore</h2>
@@ -76,18 +76,17 @@ name and schooling statistic.
 <p>The datastore is a magic SQL store, one where you don't need to make
 a schema up front.</p>
 
-<p>Replace <var>puts data.to_json</var> in the Nokogiri loop (just before the <var>end</var> line)
+<p>Replace the "Data::Dumper" line in the loop
 with this save command:</p>
 
-<code>    ScraperWiki::save_sqlite(['country'], data)
+<code>        Scraperwiki::save_sqlite (unique_keys =&gt; ['country'], data =&gt; $data);
 </code>
 
-<p>The first argument is the unique keys (just <var>country</var> in this case)
-which identify each piece of data.
+<p>The unique keys (just country in this case) identify each piece of data.
 When the scraper runs again, existing data with the same values for the
 unique keys is replaced.</p>
 
-<p>Go to the Data tab in the editor to see the data loading in. 
+<p>Go to the Data tab in the editor to see the data loading in.
 Wait until it has finished.</p>
 
 <h2>5. Getting the data out again</h2>
@@ -103,8 +102,7 @@ data.  The easiest way to get it all out is to "Download spreadsheet (CSV)".
 <p>For more complex queries "Explore with ScraperWiki API". Try this
 query in the SQL query box.</p>
 
-<code>select * from swdata order by years_in_school desc limit 10
-</code>
+<code>select * from swdata order by years_in_school desc limit 10</code>
 
 <p>It gives you the records for the ten countries where children spend
 the most years at school. </p>

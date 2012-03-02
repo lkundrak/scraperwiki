@@ -1,0 +1,67 @@
+<p>Microsoft Excel spreadsheet files can contain lots of data in cells, formulae,
+notes and so on.</p>
+
+<p>For more details, read the  <a href="http://search.cpan.org/perldoc?Spreadsheet::ParseExcel">Spreadsheet::ParseExcel documentation</a>.</p>
+
+<h2>Opening the file</h2>
+
+<p>Download the Excel file, and load it into the Spreadsheet::ParseExcel class. This example
+is taken from an <a href="http://www.whatdotheyknow.com/request/accident_statistics_2#incoming-208592">FOI request
+for tram accidents</a>.
+
+<code>use Spreadsheet::ParseExcel;
+
+my $content = Scraperwiki::scrape ('http://www.whatdotheyknow.com/request/82804/response/208592/attach/2/ACCIDENTS%20TRAMS%20Laurderdale.xls');
+my $book = new Spreadsheet::ParseExcel-&gt;parse ([$content]);
+</code>
+
+<p>Directly select the worksheet you want by number or name.</p>
+<code>my $sheet = $book-&gt;worksheet (0);
+my $sheet = $book-&gt;worksheet ('LAUDERDALE AVE');
+</code>
+
+<p>If you're not sure what sheets there are, this prints them out.</p>
+<code>printf "%s: row range: %s-%s, column range: %s-%s\n",
+        $_-&gt;get_name, $_-&gt;row_range, $_-&gt;col_range
+        foreach $book-&gt;worksheets;
+</code>
+
+<h2>Reading values</h2>
+
+<p>Read individual cells.</p>
+
+<code>my $cell = $sheet-&gt;get_cell (4, 2);
+print $cell-&gt;value if $cell;
+</code>
+
+<h2>Reading rows</h2>
+
+<p>Here we read the row with headers, somewhat cleaning things up.
+In this case we remove the "." from "FLEET NO.".</p>
+
+<code># Row two is headers
+my ($first_col, $last_col) = $sheet-&gt;col_range;
+my @keys =
+        # Value without a ".", ignoring empty
+        map { defined $_ ? $_-&gt;value =~ /^([^.]+)/ : undef }
+        map { $sheet-&gt;get_cell (2, $_) }
+        $first_col..$last_col;
+</code>
+
+<h2>Saving to the datastore</h2>
+
+<p>Make a hash from the rows and save them.</p>
+
+<code>my ($first_row, $last_row) = $sheet-&gt;row_range;
+foreach my $row ($first_row..$last_row) {
+        my %data = (rownumber =&gt; $row);
+        foreach my $col ($first_col..$last_col) {
+                my $cell = $sheet-&gt;get_cell ($row, $col);
+                next unless defined $cell and $cell-&gt;value;
+                $data{$keys[$col]} = $cell-&gt;value;
+        }
+
+	Scraperwiki::save_sqlite (unique_keys =&gt; ['rownumber'], \%data)
+                if $data{'DATE'} ne 'DATE' and $data{'LOCATION'};
+}
+</code>
