@@ -4,5 +4,6 @@ export RUBYLIB='/home/scraperwiki/ruby/scraperwiki/lib'
 export PYTHONPATH='/home/scraperwiki/python'
 export PHPPATH='/home/scraperwiki/php:$PHPPATH'
 export NODE_PATH='/usr/local/lib/node_modules:/home/scraperwiki/javascript:/home/scriptrunner'
+export PERL5LIB='/home/scraperwiki/perl/lib/'
 export TMPDIR='/tmp'
 su scriptrunner -c "cd ~;/home/startup/exec.$1 --script=/home/scriptrunner/script.$1"
