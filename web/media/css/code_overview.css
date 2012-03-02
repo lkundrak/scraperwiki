@@ -633,6 +633,10 @@ h3 {
 	width: 24px;
 }
 
+#header p span.perl:before {
+	background-position: -64px -16px;
+}
+
 #header p span.html:before {
 	background-position: -64px -1px;
 }

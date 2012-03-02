@@ -18,6 +18,9 @@
     {% if lang_ruby %}
     <a href="{% doc_change_lang request language 'ruby' %}" class="ruby" title="Switch to Ruby documentation"><img src="{{ MEDIA_URL }}/images/icons/ruby.png" width="16" height="16" alt="" /> Ruby</a>
     {% endif %}
+    {% if lang_perl %}
+    <a href="{% doc_change_lang request language 'perl' %}" class="perl" title="Switch to Perl documentation"><img src="{{ MEDIA_URL }}/images/icons/perl.png" width="16" height="16" alt="" /> Perl</a>
+    {% endif %}
     <strong>Choose a language:</strong>
    <br class="clear"/>
 </p>
