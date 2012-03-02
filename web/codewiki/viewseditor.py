@@ -132,6 +132,7 @@ def reload(request, short_name):
 blankstartupcode = { 'scraper' : { 'python': "import scraperwiki\n\n# Blank Python\n\n", 
                                     'php':   "<?php\n\n# Blank PHP\n\n?>\n", 
                                     'ruby':  "# Blank Ruby\n\n",
+                                    'perl':  "use Scrapperwiki\n\n# Blank Perl\n\n",
                                     'javascript': '// Blank Javascript scraper\n'
                                  }, 
                      'view'    : { 'python': "# Blank Python\nsourcescraper = ''\n", 
