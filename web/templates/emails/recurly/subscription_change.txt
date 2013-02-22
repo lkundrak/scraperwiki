@@ -1,0 +1,15 @@
+{{{header}}}
+
+This email confirms your recent subscription change.
+Your new subscription details are:
+
+Description: {{plan_name}}
+Quantity:    {{subscription_quantity}}
+Total:       {{{subscription_total_amount}}} {{plan_per_interval}}
+{{#subscription_active?}}
+Next Payment Date: {{subscription_next_payment_date}}
+{{/subscription_active?}}
+
+Please keep this email for your records. Thanks again for your purchase.
+
+{{{footer}}}

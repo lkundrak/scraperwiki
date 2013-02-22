@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Send alerts to people about broken scrapers in their vaults.
+
+. /var/www/scraperwiki/bin/activate
+python /var/www/scraperwiki/web/alerts/run_updates.py

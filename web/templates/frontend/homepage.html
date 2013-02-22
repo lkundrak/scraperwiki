@@ -1,0 +1,69 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Refine, reuse and request data{% endblock %}
+{% block meta %}
+    <meta name="description" content="ScraperWiki helps coders make data do stuff across the web. Our expert data services also help businesses everywhere use data to gain a competitive edge."/>
+{% endblock %}
+
+{% block body_class %}homepage{% endblock %}
+
+{% block header_outer %}{% endblock %}
+
+{% block content_outer %}
+<div id="minimal">
+    <h1>
+        <span class="coders">Write code that&nbsp;gets&nbsp;data</span>
+        <span class="or">or</span>
+        <span class="businesses">Pay us to get&nbsp;it&nbsp;for&nbsp;you</span> 
+    </h1>
+
+    <h2>
+        <a class="create editor_scraper" data-wiki_type="scraper" href="{% url choose_template 'scraper' %}" onClick="if(typeof _gaq !== 'undefined'){ _gaq.push(['_trackEvent', 'Homepage buttons', 'Write code']); }">Write code</a>
+        <a class="dataservices" href="{% url dataservices %}" onClick="if(typeof _gaq !== 'undefined'){ _gaq.push(['_trackEvent', 'Homepage buttons', 'Request data (business)']); }">Request data</a>
+    </h2>
+    
+</div>
+<div id="customers">
+    <h2><strong>ScraperWiki.</strong> Trusted by some of the biggest names in media and government.</h2>
+    <ul>
+        <li><a href="{% url dataservices %}"><img src="{{MEDIA_URL}}images/customer-logos-grey/bridgestone.gif" width="205" height="70" alt="Bridgestone"></a></li>
+        <li><a href="{% url dataservices %}"><img src="{{MEDIA_URL}}images/customer-logos-grey/emap.gif" width="100" height="70" alt="EMAP"></a></li>
+        <li><a href="{% url dataservices %}"><img src="{{MEDIA_URL}}images/customer-logos-grey/trader-media-group.gif" width="105" height="70" alt="Trader Media Group"></a></li>
+        <li><a href="{% url dataservices %}#case-study"><img src="{{MEDIA_URL}}images/customer-logos-grey/agra-informa.gif" width="110" height="70" alt="Agra Informa"></a></li>
+        <li><a href="http://blog.scraperwiki.com/2011/05/11/access-government-in-a-way-that-makes-sense-to-you-surely-not/" target="_blank"><img src="{{MEDIA_URL}}images/customer-logos-grey/cabinet-office.gif" width="210" height="70" alt="The Cabinet Office"></a></li>
+    </ul>
+</div>
+<div id="content">
+    <div class="tags">
+        <h2><a href="{% url all_tags %}" title="Browse by tag">Popular tags</a></h2>
+        <ul class="tags">
+            {% for tag in tags %}
+            <li><a href="{% url single_tag tag.name %}">{{tag.name}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+	
+	<div class="activity">
+	    <h2><a href="http://blog.scraperwiki.com">From the Blog</a></h2>
+        {% if not debug %}
+	        {% load blog_latest %}
+            {% blog_latest %}
+        {% else %}
+            <div class="blog_latest">Blog not displayed on dev</div>
+        {% endif %}
+    </div>		
+	<br class="clear"/>
+</div>
+{% endblock %}
+
+{% block run_script %}
+var t = $('ul.tags li').length;
+$('ul.tags li').each(function(){
+    var i = $(this).index();
+    $(this).css('opacity', 1-i/(t*1.2)).hover(function(){
+        $(this).css('opacity', 1);
+    }, function(){
+        $(this).css('opacity', 1-i/(t*3));
+    });
+});
+{% endblock %}

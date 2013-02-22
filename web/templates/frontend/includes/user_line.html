@@ -1,0 +1,6 @@
+{% load gravatar %}
+
+<li>
+    <a href="/profiles/{{ other_user.username }}">{% show_gravatar other_user 'medium' %}</a>
+    <a href="/profiles/{{ other_user.username }}">{{ other_user.get_profile.name }} ({{ other_user.username }})</a>
+</li>

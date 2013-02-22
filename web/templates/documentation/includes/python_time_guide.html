@@ -1,0 +1,71 @@
+<p>An important part of scraping is turning string data into structured data.
+Two very common things this happens with are dates and times.</p>
+
+<p>For more details, read the Python <a href="http://labix.org/python-dateutil">dateutil (parser) docs</a>, and the <a href="http://docs.python.org/library/datetime.html">datetime docs</a>.</p>
+
+<h2>Parsing dates/times</h2>
+
+<p>The easiest way is to use a general purpose function that detects
+many common date formats, and converts them into a Python
+date object.
+</p>
+
+<code>import dateutil.parser
+
+print dateutil.parser.parse('21 June 2010').date() # 2010-06-21
+print dateutil.parser.parse('10-Jul-1899').date()  # 1899-07-10
+print dateutil.parser.parse('01/01/01').date()     # 2001-01-01
+
+print dateutil.parser.parse('21 June 2010').date().__class__ # &lt;type 'datetime.date'&gt;
+</code>
+
+<p>Or you can parse times as well, making a Python datetime object.
+
+<code>print dateutil.parser.parse('Tue 27 Sep 2011 00:25:48') # 2011-09-27 00:25:48
+print dateutil.parser.parse('21 June 2010 6am').__class__ # &lt;type 'datetime.datetime'&gt;
+</code>
+
+<h2>Ambiguous cases</h2>
+
+<p>This sometimes goes wrong. For example,
+is this the 2nd March (US) or 3rd February (UK)?</p>
+
+<code>print dateutil.parser.parse('3/2/1999').date() # 1999-03-02
+</code>
+
+<p>You can fix it by giving dateutil various hints. Or if you really want
+control, use a completely explicit format string.</p>
+
+<code>print dateutil.parser.parse('3/2/1999', dayfirst=True).date() # 1999-02-03
+
+import datetime
+print datetime.datetime.strptime('3/2/1999', '%d/%m/%Y').date() # 1999-02-03
+</code>
+
+<h2>Saving to the datestore</h2>
+
+<p>This is easy as pie. You just save either the Python date or datetime
+object, and ScraperWiki will convert it into the format SQLite needs.</p>
+
+<code>import scraperwiki
+
+birth_datetime = dateutil.parser.parse('1/2/1997 9pm') 
+data = { 
+    'name':'stilton', 
+    'birth_datetime' : birth_datetime,
+    'birth_date' : birth_datetime.date()
+}
+scraperwiki.sqlite.save(unique_keys=['name'], data=data)
+</code>
+
+<p>Times are saved as UTC, as SQLite doesn't parse explicit timezones.</p>
+
+<h2>Querying dates</h2>
+
+<p>From the Web API for a scraper, you can do queries based on dates.
+See <a href="http://www.sqlite.org/lang_datefunc.html">SQLite's date/time functions</a> for more.
+</p>
+
+<code>select * from swdata where birth_date < '2000-01-01'</code>
+
+

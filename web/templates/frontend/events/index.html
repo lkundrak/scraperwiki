@@ -1,0 +1,221 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Events{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="ScraperWiki is holding a bunch of journalism data camps across the USA. See which one is closest to you, and come along!" />
+{% endblock %}
+
+{% block javascript %}
+<script src="https://maps.googleapis.com/maps/api/js?v=3&{% if not debug %}key=AIzaSyAfPeP-x7UtzNcoqQ7ZfuILBlCaEH8h2Ak{% endif %}&sensor=false"
+type="text/javascript"></script>
+<script type="text/javascript">
+  function createMap() {
+    var myOptions = {
+        zoom: 4,
+        center: new google.maps.LatLng(37.7, -99.8),
+        mapTypeId: google.maps.MapTypeId.TERRAIN,
+        disableDefaultUI: true,
+        zoomControl: true,
+    };
+    var map = new google.maps.Map(document.getElementById("googlemap"), myOptions);
+    var markers = {};
+    var latlngbounds = new google.maps.LatLngBounds( );
+    var tractor = new google.maps.MarkerImage(
+        '{{MEDIA_URL}}images/maps_tractor.png',
+        new google.maps.Size(54,37),
+        new google.maps.Point(0,0),
+        new google.maps.Point(27,37)
+    );
+    var tractor_hover = new google.maps.MarkerImage(
+        '{{MEDIA_URL}}images/maps_tractor_hover.png',
+        new google.maps.Size(54,37),
+        new google.maps.Point(0,0),
+        new google.maps.Point(27,37)
+    );
+    var parking = new google.maps.MarkerImage(
+        '{{MEDIA_URL}}images/maps_parking.png',
+        new google.maps.Size(40,50),
+        new google.maps.Point(0,0),
+        new google.maps.Point(20,50)
+    );
+    var parking_hover = new google.maps.MarkerImage(
+        '{{MEDIA_URL}}images/maps_parking_hover.png',
+        new google.maps.Size(40,50),
+        new google.maps.Point(0,0),
+        new google.maps.Point(20,50)
+    );
+    var events = [{
+        'shortname':'jdcny',
+        'title':'Journalism Data Camp NY',
+        'date':'4th \u2013 5th February 2012',
+        'lat':40.807443,
+        'lng':-73.963544
+    },{
+        'shortname':'ltdmo',
+        'title':'NICAR Journalism Data Camp',
+        'date':'23rd February 2012',
+        'lat':38.62931,
+        'lng':-90.20743
+    },{
+        'shortname':'jdcdc',
+        'title':'Journalism Data Camp DC',
+        'date':'30th \u2013 31st March 2012',
+        'lat':38.895111,
+        'lng':-77.036667
+    }, {
+        'shortname':'ltdca',
+        'title':'Liberate the Data!',
+        'lat':37.782436,
+        'lng':-122.406621
+    }];
+    var comingsoon = [{
+        'shortname':'jdcil',
+        'title':'Journalism Data Camp IL',
+        'lat':41.881944,
+        'lng':-87.627778
+    },{
+        'shortname':'jdcma',
+        'title':'Journalism Data Camp MA',
+        'lat':42.357778,
+        'lng':-71.061667
+    },{
+        'shortname':'jdctx',
+        'title':'Journalism Data Camp TX',
+        'lat':30.25,
+        'lng':-97.75
+    }];
+    $.each(events, function(i) {
+        var e = events[i];
+        var latlng = new google.maps.LatLng(e.lat, e.lng)
+        latlngbounds.extend( latlng );
+        markers[e.shortname] = new google.maps.Marker({
+            map: map,
+            position: latlng,
+            icon: tractor
+        });
+        google.maps.event.addListener(markers[e.shortname], 'mouseover', function() {
+            $('#' + e.shortname).addClass('hover');
+            markers[e.shortname].setIcon(tractor_hover);
+        });
+        google.maps.event.addListener(markers[e.shortname], 'mouseout', function() {
+            $('#' + e.shortname).removeClass('hover');
+            markers[e.shortname].setIcon(tractor);
+        });
+        google.maps.event.addListener(markers[e.shortname], 'click', function() {
+            location.href = $('#' + e.shortname).attr('href');
+        });
+    });
+    $.each(comingsoon, function(i) {
+        var e = comingsoon[i];
+        var latlng = new google.maps.LatLng(e.lat, e.lng)
+        latlngbounds.extend( latlng );
+        markers[e.shortname] = new google.maps.Marker({
+            map: map,
+            position: latlng,
+            icon: parking
+        });
+        google.maps.event.addListener(markers[e.shortname], 'mouseover', function() {
+            $('#' + e.shortname).addClass('hover');
+            markers[e.shortname].setIcon(parking_hover);
+        });
+        google.maps.event.addListener(markers[e.shortname], 'mouseout', function() {
+            $('#' + e.shortname).removeClass('hover');
+            markers[e.shortname].setIcon(parking);
+        });
+        // google.maps.event.addListener(markers[e.shortname], 'click', function() {
+        //    location.href = $('#' + e.shortname).attr('href');
+        // });
+    });
+    map.fitBounds( latlngbounds );
+  }
+</script>
+{% endblock %}
+
+{% block header %}
+	<h2><small>ScraperWiki</small> Journalism Data Camps</h2>
+	<p>Scraping, exploring and liberating data in a city near you.</p>
+{% endblock %}
+
+{% block content %}
+        <div id="event_sidebar">
+            <!--<h2>Current events:</h2>
+            <ul class="events">
+                <li><a id="ltdca" href="http://newshack.eventbrite.com/">
+                    <h3>Liberate the Data!</h3>
+                    <h4>
+                        <span class="date">22nd June</span>
+                        <span class="location">San Francisco, CA</span>
+                    </h4>
+                </a></li>
+            </ul>-->
+            <h2>Coming soon:</h2>
+            <ul class="events">
+                <li><a id="jdcil">
+                    <h3>Journalism Data Camp IL</h3>
+                    <h4>
+                        <span class="date">TBC</span>
+                        <span class="location">Chicago, IL</span>
+                    </h4>
+                </a></li>
+                <li><a id="jdcma">
+                    <h3>Journalism Data Camp MA</h3>
+                    <h4>
+                        <span class="date">TBC</span>
+                        <span class="location">Boston, MA</span>
+                    </h4>
+                </a></li>
+                <li><a id="jdctx">
+                    <h3>Journalism Data Camp TX</h3>
+                    <h4>
+                        <span class="date">TBC</span>
+                        <span class="location">Austin, TX</span>
+                    </h4>
+                </a></li>
+            </ul>
+            <h2>Past events:</h2>
+            <ul class="events past">
+                <li><a id="ltdca" href="http://newshack.eventbrite.com/">
+                    <h3>Liberate the Data!</h3>
+                    <h4>
+                        <span class="date">22nd June</span>
+                        <span class="location">San Francisco, CA</span>
+                    </h4>
+                </a></li>
+                <li><a href="/events/jdcdc/" id="jdcdc">
+                    <h3>Journalism Data Camp DC</h3>
+                    <h4>
+                        <span class="date">30th&ndash;31st Mar</span>
+                        <span class="location">Washington, DC</span>
+                    </h4>
+                </a></li>
+                <li><a href="/events/ltdmo/" id="ltdmo">
+                    <h3>Liberate the Data!</h3>
+                    <h4>
+                        <span class="date">23rd Feb</span>
+                        <span class="location">St Louis, MO</span>
+                    </h4>
+                </a></li>
+                <li><a href="/events/jdcny/" id="jdcny">
+                    <h3>Journalism Data Camp NY</h3>
+                    <h4>
+                        <span class="date">3rd&ndash;4th Feb</span>
+                        <span class="location">Columbia, NY</span>
+                    </h4>
+                </a></li>
+            </ul>
+        </div>
+        <div id="event_details">
+            <div id="googlemap" style="width: 100%; height: 400px"></div>
+        </div>
+        <br class="clear" />
+{% endblock %}
+
+
+{% block run_script %}
+    {{block.super}}
+    
+    createMap();
+    
+{% endblock %}
+

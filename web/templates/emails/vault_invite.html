@@ -1,0 +1,9 @@
+{% extends "emails/base_email.html"%}
+{% block content %}
+    <p style="font-size: 16px; line-height: 20px; font-family: Helvetica, Arial, sans-serif; color: #000; margin: 15px 0 0 0;">{{ vault_owner.username }} has just invited you to {{ vault.name }} on ScraperWiki.</p>
+    <p style="font-size: 16px; line-height: 20px; font-family: Helvetica, Arial, sans-serif; color: #000; margin: 15px 0 30px;">To sign up and automatically access the vault, click the link: </p>
+    <a href="{{tokenurl}}" style="padding: 8px 16px; background: #fbcb45; font-size: 20px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: #000000; text-decoration: none; -webkit-border-radius: 50px; -moz-border-radius: 50px; border-radius: 50px;">Click here to accept invitation.</a>
+{% endblock %}
+{% block footer %}
+    <p style="font-size: 14px; line-height: 19px; font-family: Helvetica, Arial, sans-serif; color: #999999; margin: 80px 0 40px 0">You&rsquo;re receiving this email because the ScraperWiki user {{ vault_owner.username }} wants to add you to their vault.  If you don&rsquo;t know them, just ignore this email.</p>
+{% endblock %}

@@ -1,0 +1,15 @@
+drop	table	if exists	log
+;
+
+create	table	log
+(
+	id		integer	primary key auto_increment,
+	stamp		timestamp,
+	scraperid	varchar(255),
+	runid		varchar(255),
+	pytime		varchar(31),
+	event		varchar(255),
+	arg1		text,
+	arg2		text
+)
+;

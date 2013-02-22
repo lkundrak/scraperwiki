@@ -1,0 +1,47 @@
+# resourcedir-backup
+# David Jones, ScraperWiki Limited
+#
+# Script to backup the useful content of resourcedir, that is, the sqlite
+# databases associated with each data script.  We expect this script to be run
+# from cron (daily).
+
+#       mutex file
+#
+# Open a mutual exclusion lock on the file, unless another process already owns one.
+#
+# If the file is already locked by another process, the operation fails.
+# This function defines a lock on a file as having a file descriptor open to the file.
+# This function uses FD 9 to open a lock on the file.  To release the lock, close FD 9:
+# exec 9>&-
+#
+# See: http://stackoverflow.com/questions/185451/quick-and-dirty-way-to-ensure-only-one-instance-of-a-shell-script-is-running-at#731634
+mutex() {
+    local file=$1 pid pids 
+
+    exec 9>>"$file"
+    { pids=$(fuser -f "$file"); } 2>&- 9>&- 
+    for pid in $pids; do
+        [[ $pid = $$ ]] && continue
+
+        exec 9>&- 
+        return 1 # Locked by a pid.
+    done 
+}
+
+mutex /var/run/resourcedir-backup.lock || { echo "Already running resourcedir-backup." >&2; exit 1; }
+
+# So that errors cause the script to exit early.
+set -e
+
+dir=$(mktemp -d /tmp/resourcedir-XXXXXX)
+
+for s in $(find /var/www/scraperwiki/resourcedir -name defaultdb.sqlite -print | sort)
+do
+    scrapername=$(basename $(dirname "$s"))
+    sqlite3 "$s" .dump |
+      gzip --rsyncable > "${dir}/${scrapername}.sql.gz"
+done
+
+cd $(dirname "$dir")
+tar cf /root/backup/sqlite.tar $(basename "$dir")
+rm -rf "$dir"

@@ -1,0 +1,143 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Journalism Data Camp DC | Events{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="ScraperWiki/AUSOC Journalism Data Camp, Washington DC, with the Washington Post" />
+{% endblock %}
+
+{% block body_class_extra %} event{% endblock %}
+
+{% block javascript %}
+<script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAfPeP-x7UtzNcoqQ7ZfuILBlCaEH8h2Ak&sensor=false"
+type="text/javascript"></script>
+<script type="text/javascript">
+  function createMap() {
+    var latlng = new google.maps.LatLng(38.90449, -77.03489);
+    var myOptions = {
+      zoom: 16,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("googlemap"), myOptions);
+    var marker = new google.maps.Marker({
+        map:map,
+        animation: google.maps.Animation.DROP,
+        position: latlng
+      });
+  }
+</script>
+{% endblock %}
+
+{% block header %}
+	<h2><small>ScraperWiki/AUSOC</small> Journalism Data Camp <small>DC</small></h2>
+	<p class="deets"><span class="when">March 30th &amp; 31st</span> <span class="price">Hosted by The Washington Post</span> <span class="twitter">#jdcdc</span></p>
+	<p>Three streams, two days, one goal: opening data in the nation&rsquo;s capital!</p>
+	<p class="links">
+	    <a href="#streams" class="findoutmore">Find out more</a>
+	    <a href="#tickets" class="reserveaspace"><em>Sign up closed</em></a>
+	</p>
+{% endblock %}
+
+{% block content %}
+        <div id="event_sidebar">
+            <h4 class="association">In association with</h4>
+            <div class="module">
+                <p><a href="http://www.american.edu/soc/" target="_blank"><img src="{{MEDIA_URL}}images/event_logo_ausoc.gif" width="268" height="32" /></p>
+                <p><a href="http://www.washingtonpost.com/" target="_blank"><img src="{{MEDIA_URL}}images/event_logo_washingtonpost.gif" width="268" height="42" /></p>
+                <p><a href="http://www.knightfoundation.org/" target="_blank"><img src="{{MEDIA_URL}}images/event_logo_knight_black.gif" width="268" height="35" /></a></p>
+                <p><a href="http://www.sunlightfoundation.com/" target="_blank"><img src="{{MEDIA_URL}}images/event_logo_sunlight_small2.gif" width="98" height="50" /></a><a href="http://www.ap.org/" target="_blank"><img src="{{MEDIA_URL}}images/event_logo_ap2.gif" width="70" height="50" /></a><a href="http://www.j-lab.org/" target="_blank"><img src="{{MEDIA_URL}}images/event_logo_jlab2.gif" width="100" height="50" /></a></p>
+            </div>
+            <h4 class="who">Who&rsquo;s coming?</h4>
+            <div class="module">
+                <a href="http://jdcdc.eventbrite.com/" id="guestlist">See the guestlist on<span> Eventbrite</span></a>
+            </div>
+            <h4 class="when">When?</h4>
+            <div class="module">
+                <p>09:00&ndash;18:00 Friday 30th Mar 2012</p>
+                <p>09:00&ndash;18:00 Saturday 31st Mar 2012</p>
+            </div>
+            <h4>Where?</h4>
+            <div class="module">
+                <div id="googlemap" style="width: 268px; height: 250px; margin: 5px 0"></div>
+                <p class="address"><a href="http://maps.google.com/maps?q=Washington%20Post%20Conference%20Center,%201st%20Floor,%201150%2015th%20Street%20NW,%20Washington,%20D.C.%2020071" target="_blank" title="Show in Google Maps">Washington Post Conference Center,<br/>1st Floor,<br/>1150 15th Street NW,<br/>Washington, D.C. 20071</a></p>
+                <p><i>Nearest metro stations:</i><br/>
+                McPherson Square (orange/blue line)<br/>
+                Farragut North (red line)</p>
+            </div>  
+        </div>
+        <div id="event_details">
+            <h3 class="description">Why we need you <span class="hint">Click to find out more</span></h3>
+            <div id="description">
+                <p class="first">There are mountains of documents and websites out there that contain essential data about the US, but someone needs to liberate and analyze it to keep businesses and government accountable.</p>
+                <p>ScraperWiki, together with American University School of Communication, The Washington Post, and the Knight Foundation are doing just that. We need journalists, students, computer scientists, programmers, statisticians and public officials to dig up the&nbsp;data!</p>
+                <p class="last"><img src="{{MEDIA_URL}}images/event_big_arrow.gif" width="45" height="65" alt="" />All you need is enthusiasm and a laptop &ndash; we&rsquo;ll be supplying the food, drink&nbsp;and&nbsp;prizes thanks to support from the Sunlight Foundation, J-Lab and Associated Press. <b>Entry is free</b> but space is limited. So check out the three&nbsp;streams below, and reserve a ticket before&nbsp;they&nbsp;go.</p>
+            </div>
+            <h3 class="streams">Pick a stream <span class="hint">Click to see the streams</span></h3>
+            <div id="streams">
+                <div class="stream">
+                    <h4><span class="stream a">Stream A:</span> Journalism Data Derby</h4>
+                    <img src="{{MEDIA_URL}}images/event_race_tractor.gif" width="156" height="128" alt="" style="float: right; margin: 0 0 10px 10px" />
+                    <p>Use data to uncover facts and drive your story home. Work in teams to identify stories, create hypotheses, and then gather, clean, analyse and visualise the data you need. The most innovative approaches and original ideas will win&nbsp;prizes.</p>
+                    <p>This stream is perfect for journalists <strong>with or without programming experience</strong>, or anyone who wants to dive deep into the production of a data&nbsp;story.</p>
+                </div>
+                <hr/>
+                <div class="stream">
+                    <h4><span class="stream b">Stream B:</span> Liberate the Data</h4>
+                    <p><a id="liberatesomedata" href="https://views.scraperwiki.com/run/washington_data_liberation_vote/">Tell us what data<br/>you&rsquo;d like liberated!<img src="{{MEDIA_URL}}images/icons/mac_cursor.png" width="13" height="19" alt=""></a></p>
+                    <p>We want to open up more data, and you&rsquo;re the people to do it! This stream is the place for <strong>experienced Python, PHP or Ruby coders</strong>. Come pick up some high-level scraping skills and then get in the driver&rsquo;s seat by liberating data for the Data&nbsp;Derby.</p>
+                    <p>We&rsquo;ll have a list of inaccessible datasets on hand that we need your help to access. And, of course, the most productive liberators will be recognized with&nbsp;prizes!</p>
+                </div>
+                <hr/>
+                <div class="stream">
+                    <h4><span class="stream c">Stream C:</span> Learn to Scrape</h4>
+                    <img src="{{MEDIA_URL}}images/event_blobby_developer.gif" width="80" height="128" alt="" style="float:left; margin: 15px 15px 10px 0" />
+                    <p>If you already have some <strong>basic Python or Ruby skills</strong>, but want to know more about using ScraperWiki to get at more of the data you want, this is the stream for you. We&rsquo;ll be holding two tutorial sessions: one in Python on Friday morning, and one in Ruby on Friday&nbsp;afternoon.</p>
+                    <p>By the end of Friday you&rsquo;ll have all the knowledge you need to come back on Saturday and join a race team in <span class="stream a">Stream&nbsp;A</span> or liberate some data in <span class="stream b">Stream&nbsp;B.</span></p>
+                </div>
+            </div>
+            <h3 class="tickets">Sign up with Eventbrite <span class="hint">Click to reserve a ticket</span></h3>
+            <div id="tickets">
+                <p class="tip"><span>Quick tip:</span> <strong>You only need to book one ticket</strong> &ndash; <em>either</em> the Data Derby <em>or</em> Liberate the Data <em>or</em> Learning Python <em>or</em> Learning Ruby. The streams will all merge on Saturday.</p>
+                <div style="width:100%; text-align:left;" ><iframe  src="http://www.eventbrite.com/tickets-external?eid=2848629327&ref=etckt" frameborder="0" height="380" width="100%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:100%; text-align:left;" ><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/etckt" >Online Ticketing</a><span style="color:#ddd;" > for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://jdcdc.eventbrite.com?ref=etckt" >ScraperWiki/AUSOC and The Washington Post DC #jdcdc</a><span style="color:#ddd;" > powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=etckt" >Eventbrite</a></div></div>
+            </div>
+        </div>
+        <br class="clear" />
+{% endblock %}
+
+
+{% block run_script %}
+    {{block.super}}
+    
+    createMap();
+    
+    $('.links a').bind('click', function(e){
+        e.preventDefault();
+        var target = $($(this).attr('href'));
+        if(target.is(':visible')){
+            $('html, body').animate({
+                scrollTop: target.offset().top - 80
+            }, 500, 'swing');
+        } else {
+            target.slideDown(function(){
+                $('html, body').animate({
+                    scrollTop: target.offset().top - 80
+                }, 500, 'swing');
+            }).prev().addClass('active').siblings('.active').removeClass('active').next().slideUp();          
+        }
+    });
+    
+    $('#streams, #tickets').hide();
+    
+    $('h3.description').addClass('active');
+    
+    $('h3.description, h3.streams, h3.tickets').bind('click', function(){
+        if( ! $(this).next().is(':visible')){
+            $(this).addClass('active').next().slideDown();
+            $(this).siblings('.active').removeClass('active');
+            $('#description, #streams, #tickets').not($(this).next()).slideUp();
+        }
+    });
+    
+{% endblock %}
+

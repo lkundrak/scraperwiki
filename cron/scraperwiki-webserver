@@ -1,0 +1,15 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# ... this one takes 45 minutes (26th Jan 2012)
+0 1 * * * root nice /var/www/scraperwiki/cron/bin/code-backup
+
+# Remove dummy users, scrapers etc. that the Selenium test script can make
+0 0 * * * scraperdeploy cd /var/www/scraperwiki/ && source bin/activate && cd web && python manage.py clear_selenium_byproducts
+
+# Every morning update KPIs
+0 11 * * * scraperdeploy cd /var/www/scraperwiki/ && source bin/activate && cd web && python manage.py update_kpis
+#
+# Send alerts to people about broken scrapers in their vaults.
+2 * * * * scraperdeploy cd /var/www/scraperwiki/web && . ../bin/activate && python manage.py notify_vault_exceptions
+

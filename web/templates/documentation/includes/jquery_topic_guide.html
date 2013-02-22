@@ -1,0 +1,71 @@
+<h2>JQuery cheat sheet</h2>
+<p><a href="http://jquery.com/">JQuery</a> is an essential Javascript library that you need to know.
+Its function set is accessed through the single letter variable '$'.</p>
+
+<p>Start your HTML template</p>
+<code>&lt;html>
+&lt;head>
+  &lt;script src="https://media.scraperwiki.com/js/jquery-1.5.2.js">&lt;/script>
+  &lt;script src="https://media.scraperwiki.com/js/json-min.js">&lt;/script>
+&lt;/head>
+&lt;body>
+&lt;/body>
+&lt;/html>
+</code>
+
+<p>Good practice to wrap the execution inside a ready block.  Insert this just above the lower &lt;/body> tag.</p>
+<code>&lt;script>var a = "Hi there"; 
+$(window).ready(function() 
+{
+    alert(a); 
+    setTimeout(function() { alert("Hi again") }, 2000); // delayed function
+}); 
+&lt;/script>
+</code>
+
+<p>Make some basic elements to interact with.  (Insert just after the upper &lt;body> element)</p>
+<code>&lt;h3 class="foooo">A heading block&lt;h3>
+&lt;div id="baar">This is inside a div block 
+  &lt;span class="dunn">yummy&lt;/span>&lt;/div>
+</code>
+
+<p>The '$' element selects elements using the same rules as in css 
+(in particular a '.' for a class and a '#' for an id).  
+The values and attributes of selected elements can be changed.
+Make some basic elements to interact with.  (Insert just after the upper &lt;body> element)</p>
+
+<code>alert($("span.dunn").text()); // extracts the text
+$("span.dunn").html("&lt;i>chocky&lt;/i>"); // encodes the html
+$("span.dunn").text("&lt;i>chocky&lt;/i>"); // escapes the html
+$("span.dunn").css({color:"red", "font-size":90}); // sets the style
+$("span.dunn").hide(2000, function() { $(this).remove(); }); // disappears over 2 seconds
+</code>
+
+<p>You can bind an <a href="http://api.jquery.com/category/events/">event</a> on 
+any object.</p>
+<code>$("span.dunn").bind('click', function(e) { alert(e.pageY); }); 
+$("span.dunn").click(function(e) {;}); // equivalent shortcut
+</code>
+
+<p>Aside from evaluating directly, you can convert to and from JSON using the included library</p>
+<code>var g = $.toJSON({thing:"VALUE", "x x":[1, 2, 3]}); 
+alert(g); 
+var obj = $.evalJSON(g);
+</code>
+
+<p><a href="http://api.jquery.com/jQuery.ajax/">Ajax</a> allows for callbacks to the server</p>
+<code>var nam = escape("rising_bar_chart"); 
+var url = "https://api.scraperwiki.com/api/1.0/scraper/getinfo?&name="+nam; 
+$.ajax({url: url, 
+  dataType: "jsonp",
+  context: document.body,
+  success: function(v){ alert($.toJSON(v)); }
+  error: function(jq, status) { alert(status); }
+});
+</code>
+
+<p>You can set things up more conveniently and use the data parameter.</p>
+<code>$.ajaxSetup({error:function(jq, status) { alert(status); }}); 
+$.ajax({url: url, dataType: "jsonp", data:{"name":"rising_bar_chart"}, type:"GET",
+  success: function(v){ alert($.toJSON(v)); }}); 
+</code>

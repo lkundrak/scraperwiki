@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <title>{{ scraper.title }} | ScraperWiki</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	{% load compress %}
+	{% compress css%}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/jquery-ui-1.7.2.custom.css" />
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/main.css?{{settings.REVISION}}" />
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/editor.css?{{settings.REVISION}}" />
+
+    {% ifequal codemirrorversion_main '0' %}
+      <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/css/xmlcolors.css"/> 
+      <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/css/jscolors.css"/> 
+      <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/css/csscolors.css"/> 
+    {% endifequal %}
+    {% ifequal codemirrorversion_main '2' %}
+      <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/lib/codemirror.css"/> 
+      <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/theme/default.css"/> 
+    {% endifequal %}
+    {% endcompress %}
+
+    {# See http://orbited.org/wiki/Deployment#Cross-SubdomainDeployment for explanation #}
+    <script>document.domain = document.domain;</script>
+
+	
+    <script src="{{ settings.ORBITED_URL }}/static/Orbited.js"></script>
+    <script>Orbited.settings.streaming = false</script>
+
+	{% compress js %}
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.5.2.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-ui-1.7.2.custom.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.cookie.js"></script>    
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/json-min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.json-2.2.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.simplemodal.1.4.js"></script>    
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.timeago.js"></script>
+	
+
+    {% ifequal codemirrorversion_main '0' %}
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/js/codemirror.js"></script>
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/js/highlight.js" type="text/javascript"></script> 
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/js/stringstream.js" type="text/javascript"></script> 
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/js/tokenize.js" type="text/javascript"></script> 
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/js/parsexml.js" type="text/javascript"></script> 
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/js/parsecss.js" type="text/javascript"></script> 
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/js/tokenizejavascript.js" type="text/javascript"></script> 
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/js/parsejavascript.js" type="text/javascript"></script> 
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/js/parsehtmlmixed.js" type="text/javascript"></script> 
+    {% endifequal %}
+    {% ifequal codemirrorversion_main '2' %}
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/lib/codemirror.js"></script>
+      <script src="{{ MEDIA_URL }}CodeMirror-{{codemirrorversion}}/mode/python/python.js"></script>
+    {% endifequal %}
+	{% endcompress %}
+
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.htmlClean-min.js"></script>
+	
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/editorconnection.js?{{settings.REVISION}}"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/editorqueues.js?{{settings.REVISION}}"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/editortabs.js?{{settings.REVISION}}"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/editorpatching.js?{{settings.REVISION}}"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/editorpatchqueues.js?{{settings.REVISION}}"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/editorcodemirror.js?{{settings.REVISION}}"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/editor.js?{{settings.REVISION}}"></script>
+
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/csrf.js?{{settings.REVISION}}"></script>       
+
+    {# for popupDiff history #}
+    {% ifequal codemirrorversion_main '0' %}
+      {% with scraper.language|lower as language %}
+        {% include 'codewiki/includes/codemirror_parsers.html' %}
+      {% endwith %}
+    {% endifequal %}
+
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/codeviewer.js?{{settings.REVISION}}"></script> 
+
+
+ {# highlightCode(code, Parser), highlightOtherCode(greencode, redcode, matcheropcodes, Parser) #}
+
+    <script type="text/javascript">
+    {% if not debug %}
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-21451224-1']);
+          _gaq.push(['_setDomainName', 'none']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+    {% else %}
+        var _gaq = null; 
+    {% endif %}
+    </script>
+</head>
+
+<body>
+
+{# Hidden inputs for passing to js #}
+<input type="hidden" id="short_name"        value="{{ scraper.short_name }}"/>
+<input type="hidden" id="scraper_guid"      value="{{ scraper.guid }}"/>
+<input type="hidden" id="window_guid"       value="{{ windowguid }}"/>
+<input type="hidden" id="sourcescraper"     value="{{ sourcescraper }}"/>            
+<input type="hidden" id="fork"              value="{{ fork }}"/>            
+<input type="hidden" id="fork_url_action"   value="{% url editor scraper.wiki_type scraper.language %}?fork={{scraper.short_name}}"/>
+<input type="hidden" id="username"          value="{{ request.user.username }}"/>
+<input type="hidden" id="userrealname"      value="{{ request.user.get_profile.name }}"/>
+<input type="hidden" id="scraper_owners"    value="{{ scraper.owner.username }}"/>
+<input type="hidden" id="beta_user"         value="{% if request.user.get_profile.beta_user %}yes{% endif %}"/>
+<input type="hidden" id="isstaff"           value="{% if request.user.is_staff %}yes{% endif %}"/>
+<input type="hidden" id="savecode_authorized" value="{{ savecode_authorized }}"/>
+<input type="hidden" id="scraperlanguage"   value="{{ scraper.language }}"/>
+<input type="hidden" id="originalrev"       value="{{rev}}"/>
+<input type="hidden" id="originalrevdateepoch" value="{{revdateepoch}}"/>
+<input type="hidden" id="originalrevusername" value="{{revusername}}"/>
+<input type="hidden" id="originalrevuserrealname" value="{{revuserrealname}}"/>
+<input type="hidden" id="rollback_rev"       value="{{rollback_rev}}"/>
+<input type="hidden" id="codemirror_url"    value="{{MEDIA_URL}}CodeMirror-{{codemirrorversion}}/"/>
+<input type="hidden" id="texteditor"        value="{{texteditor}}"/>
+<input type="hidden" id="id_wiki_type"      value="{{scraper.wiki_type}}"/>
+<input type="hidden" id="codemirrorversion" value="{{codemirrorversion}}/"/>
+
+{# declare all the URLs the javascript is going to want access to #}
+<input type="hidden" id="userprofileurl"    value="{% url profile 'XXX' %}"/>
+<input type="hidden" id="saveurl"           value="{% url handle_editor_save %}"/>
+<input type="hidden" id="proxycachedurl"    value="{% url proxycached %}"/>
+<input type="hidden" id="quickhelpurl"      value="{% url quickhelp %}"/>
+{% if scraper.short_name %}
+  <input type="hidden" id="rawcodeurl"        value="{% url raw scraper.short_name %}"/>
+  <input type="hidden" id="diffsequrl"        value="{% url diffseq scraper.short_name %}"/>
+{% endif %}
+
+{% if scraper.short_name %}
+    <input type="hidden" id="viewrunurl"    value="{{settings.VIEW_URL}}{% url rpcexecute scraper.short_name %}{% if scraper.access_apikey %}?apikey={{scraper.access_apikey}}{% endif %}"/>
+    <input type="hidden" id="editorreloadurl" value="{% url reload scraper.short_name %}"/>
+{% endif %}
+
+<div class="editor">
+    
+    <div id="draft_warning" class="alert_outer"{% ifnotequal rev 'draft' %} style="display:none;"{% endifnotequal %}>
+        A temporary version of your {{scraper.wiki_type}} has been saved. <a href="{% url login %}?next={% url handle_session_draft %}">Sign in to save permanently</a> <a class="secondary" href="{% url delete_draft %}">Discard this {{scraper.wiki_type}}</a>
+    </div>
+
+    <div id="protected_warning" class="alert_outer" style="display:none;" >
+        This {{scraper.wiki_type}} is protected: You can only watch other people editing. <a href="{% url editor scraper.wiki_type scraper.language %}?fork={{scraper.short_name}}" target="_blank">Make my own copy of this scraper</a>
+    </div>
+
+    <div id="login_warning" class="alert_outer" style="display:none;" >
+        You are in read-only mode. <a href="{% url login %}{% if scraper.short_name %}?next={% url editor_edit scraper.wiki_type scraper.short_name %}{% endif %}">Sign in to edit this {{scraper.wiki_type}}</a> <a class="secondary" href="{% url editor scraper.wiki_type scraper.language %}?fork={{scraper.short_name}}" target="_blank">Copy as a guest</a>
+    </div>
+
+    <div id="rollback_warning" class="alert_outer" style="display:none;" >
+        <div class="alert_inner">
+            <strong>Warning:</strong> You are viewing an earlier version of this {{scraper.wiki_type}}. If you save, the newest version will be overwritten!
+        </div>
+    </div>
+
+    <div id="watcher_alert" class="alert_outer" style="display:none;" >
+        <div class="alert_inner">
+            <span class="editor_name">XXXX</span> is currently editing this scraper. <a>Steal control</a>
+        </div>
+    </div>
+
+
+
+    {# Header #}
+    <div class="editor_header">
+        {% if scraper.short_name %}
+            <a id="back_to_overview" href="{% url code_overview scraper.wiki_type scraper.short_name %}"><img src="{{MEDIA_URL}}images/icons/back_arrow.png" width="16" height="16" alt="" />Back to {{scraper.wiki_type}} overview</a>
+        {% else %}
+            {% if fork %}
+                <a id="back_to_overview" href="{% url code_overview scraper.wiki_type fork %}"><img src="{{MEDIA_URL}}images/icons/back_arrow.png" width="16" height="16" alt="" />Back to original {{scraper.wiki_type}}</a>
+            {% endif %}
+        {% endif %}
+      <div class="title">
+        <a id="aCloseEditor" href="{% url frontpage %}" title="Home">
+          <img src="{{ MEDIA_URL }}images/editor_logo.png" width="39" height="25"/>
+        </a>
+        {% if request.user.is_authenticated %}
+        {% if scraper.owner %}
+          {% if scraper.owner.get_profile.name %}<a href="{% url profile scraper.owner.username %}">{{scraper.owner.get_profile.name}}</a>{% else %}<a href="{% url profile scraper.owner.username %}">{{scraper.owner.username}}</a>{% endif %}
+        {% else %}
+          {% if request.user.get_profile.name %}<a href="{% url profile request.user.username %}">{{request.user.get_profile.name}}</a>{% else %}<a href="{% url profile request.user.username %}">{{request.user.username}}</a>{% endif %}
+        {% endif %}
+        / 
+        {% endif %}
+        <input id="id_title" type="text" title="Untitled" value="{{scraper.title}}" name="title"/>
+      </div>
+    </div>
+
+    {# Code editor #}
+    <div class="editor_code" id="codeeditordiv">
+        <textarea id="id_code" style="width:90%" rows="10" cols="80" name="code">{{code}}</textarea>
+    </div>
+
+    {# Controls #}
+    <div class="editor_controls">
+        <a class="helplink" href="{% url docsroot scraper.language %}" target="scraperwiki_docs_{{ scraper.short_name }}" title="Show useful commands">Documentation</a>
+        {% ifnotequal scraper.language 'html' %}{% ifnotequal scraper.language 'javascript' %}
+            <input type="button" class="execute button" value="Run" name="run" id="run" title="Run this {{ wiki_type }} (Ctrl + R, Cmd + R)" disabled />
+        {% endifnotequal %}{% endifnotequal %}
+        {% ifequal scraper.wiki_type 'view' %}{% ifnotequal scraper.language 'javascript' %}
+            <input type="button" class="button" value="Preview" name="preview" id="preview" title="Preview this view (Ctrl + P, Cmd + P)"/>
+        {% endifnotequal %}{% endifequal %}
+        {% ifequal scraper.wiki_type 'scraper' %}{% ifequal scraper.language 'javascript' %}
+            <input type="button" class="execute button" value="Run" name="run" id="run" title="Run this {{ wiki_type }} (Ctrl + R, Cmd + R)" disabled />
+        {% endifequal %}{% endifequal %}
+        <input type="button" value="I want to edit" id="btnEdit" class="button" style="display:none" />
+
+        {# used to be a dropdown select option #}
+        <input type="hidden" id="automode" class="staff" value="{% if scraper.id %}autosave{% else %}draft{% endif %}"/>
+
+        {% ifequal scraper.wiki_type 'view' %}{% ifnotequal scraper.language 'html' %}{% ifnotequal scraper.language 'javascript' %}
+            <label for="id_urlquery" class="hide">Urlquery:</label>
+            <input id="id_urlquery" type="text" class="text" name="urlquery" title="URL query string passed to the view" /> 
+        {% endifnotequal %}{% endifnotequal %}{% endifequal %}
+
+        <img id="running_annimation" src="{{MEDIA_URL}}/images/running.gif"/>
+
+        <!--<input type="button" id="btnWatch" class="watch button" name="action" value="Watch" title="Give up editing; watches someone else editing instead"/> -->
+        <span id="watch_button_area" style="display:none">You are editing,</span>
+        <span id="watcherstatus"></span>
+        <input type="button" value="Relinquish" id="btnWatch" style="margin-left: 7px; display:none" />
+        <div class="right">
+            <span id="idlastrev" >
+            </span>
+
+            <!-- {% if scraper.id %}
+                <a id="aCloseEditor1" href="{% url code_overview scraper.wiki_type scraper.short_name %}">close editor</a>
+            {% else %}
+                <a id="aCloseEditor1" href="{% url frontpage %}">close editor</a>
+            {% endif %} -->
+            <input type="button" id="btnCommitPopup" class="commit button" name="action" value="Save" title="Save this {{scraper.wiki_type}} (Ctrl + S, Cmd + S)"/>
+            <input type="button" id="btnForkNow" class="fork button" name="action" value="Copy" title="Copy this {{scraper.wiki_type}}"/>
+        </div>
+    </div>
+
+    {# Consoles #}
+    <div id="outputeditordiv" class="editor_output">
+        <div class="tabs">
+            <ul>			
+	            {% ifnotequal scraper.language 'html' %}
+	                <li class="console">
+	                    <a href="#output_console" title="Console output from scraper">Console<b class="unread"></b></a>
+	                </li>
+	                <li class="data">
+	                    <a href="#output_data" title="The data that this scraper generates">Data<b class="unread"></b></a>
+	                </li>
+	                <li class="sources">
+	                    <a href="#output_sources" title="Pages you are scraping">Sources<b class="unread"></b></a>
+	                </li>
+	            {% endifnotequal %}
+                <li class="chat">
+                    <a href="#output_chat" title="Communicate to others">Chat<b class="unread"></b></a>
+                </li>
+            </ul>
+        </div>
+        <div class="info">
+            <div id="output_console" class="output">
+                <div class="output_content"></div>
+            </div>
+            <div id="output_data" class="output">
+                <table class="output_content">
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="output_sources" class="output">
+                <div class="output_content"></div>
+            </div>
+            <div id="output_chat" class="output">
+                <table class="output_content">
+                    <tbody></tbody>
+                </table>
+                <input type="text" name="chat_line" value="" id="chat_line"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="hide">
+      <div class="codepreviewer">
+        <span class="revelem">
+            <span class="revchange">-1</span>
+            <span class="revchange">+1</span>
+            <span class="prevrev">PREVREV</span>
+            <span class="ihistory_date">DATE</span>
+            <span class="rev">CURRREV</span>
+        </span>
+        <div>
+            <div class="linenumbers"></div>
+            <pre class="outputlines"></pre>
+        </div>
+      </div>
+    </div>
+</div>
+
+</body>
+</html>

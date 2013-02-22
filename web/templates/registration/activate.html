@@ -1,0 +1,9 @@
+{% extends "frontend/base.html" %}
+{% block css %}{% endblock %}
+
+{% block title %}Registration problem{% endblock %}
+{% block header %}<h2><em>Registration problem</em></h2>{% endblock %}
+{% block content %}
+  <p style="text-align: center">Sorry this link has either already been used or has expired.</p>
+  <p style="text-align: center">If you think that your link has expired please <a href="{% url resend_activation_email %}">request a new one</a>.</p>
+{% endblock %}

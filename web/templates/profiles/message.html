@@ -1,0 +1,20 @@
+<h1>Send a message</h1>
+
+{% if request.user.is_authenticated %}
+
+<form action="{% url user_message profile %}" method="POST">
+    {% csrf_token %}
+    
+    <input id="id_name" name="name" type="hidden" class="required" value="{{ request.user.get_profile.name }}" />
+    <p>{{ form.body.label_tag }}{{ form.body }}</p>
+    {{ form.body.errors }}
+    
+    <p class="last"><input type="submit" value="Send message" /></p>
+
+</form>
+
+{% else %}
+
+<strong>You need to log in to send messages</strong>
+
+{% endif %}

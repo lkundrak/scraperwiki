@@ -1,0 +1,17 @@
+<config>
+
+  <service name="web">
+    <listen ip="0.0.0.0:80"/>
+    <group name="servers" scheduler="roundr" enable="true">
+      <host name="server1" ip="127.0.0.1:20000"/>
+      <host name="server1" ip="127.0.0.1:20001"/>
+    </group>
+  </service>
+
+  <admin>
+    <user name="admin" password="admin" access="full"/>
+    <web listen="localhost:7001" enable="true"/>
+    <ssh listen="localhost:7002" enable="true"/>
+  </admin>
+
+</config>

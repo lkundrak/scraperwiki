@@ -1,0 +1,7 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# Backup SQLite files
+# ... this one takes 1 hour 7 minutes (26th Jan 2012)
+0 2 * * * root /var/www/scraperwiki/cron/bin/resourcedir-backup
+

@@ -1,0 +1,38 @@
+#!/bin/sh
+# hq-backup
+# David Jones, ScraperWiki Limited
+#
+# Backup all stuff to scraperwiki headquarters.
+# Typically run from cron.
+
+verbose=''
+quiet='q'
+host=`hostname`
+
+while [ $# -ne 0 ]
+do
+  case "$1" in
+    -v) quiet='';verbose=${verbose}v;shift;;
+    *) break;;
+  esac
+done
+
+# Only backup to kippax if not on kippax...
+if [ "$host" != "kippax" ]
+then
+  # Note that suffix is used to rename the old file, so Friday's file
+  # gets renamed on Saturday, and typically has suffix .saturday.
+  suffix=.$(date +\%A | tr '[A-Z]' '[a-z]')
+  destdir=swbackup@kippax.scraperwiki.com:/home/swbackup/$(hostname)/
+
+  if [ "$verbose" = "v" ]
+  then
+    date
+  fi
+  rsync "-az${quiet}${verbose}" -e 'ssh -i /root/backup-key.rsa' /root/backup/ "$destdir" -b --suffix="$suffix"
+  if [ "$verbose" = "v" ]
+  then
+    date
+  fi
+fi
+

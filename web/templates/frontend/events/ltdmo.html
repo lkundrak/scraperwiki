@@ -1,0 +1,96 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Liberate the Data! | Events{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="Liberate the Data! In St Louis with ScraperWiki, IRE and NICAR" />
+{% endblock %}
+
+{% block body_class_extra %} event{% endblock %}
+
+{% block javascript %}
+<script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAfPeP-x7UtzNcoqQ7ZfuILBlCaEH8h2Ak&sensor=false"
+type="text/javascript"></script>
+<script type="text/javascript">
+  function createMap() {
+    var latlng = new google.maps.LatLng(38.62931, -90.20743);
+    var myOptions = {
+      zoom: 16,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("googlemap"), myOptions);
+    var marker = new google.maps.Marker({
+        map:map,
+        animation: google.maps.Animation.DROP,
+        position: latlng
+      });
+  }
+</script>
+{% endblock %}
+
+{% block header %}
+	<h2>Liberate the Data! <small>St Louis, Missouri</small></h2>
+	<p class="deets"><span class="when">February 23rd</span> <span class="price">With IRE &amp; NICAR</span> <span class="twitter">#ltdmo</span></p>
+	<p>Join the fight. Free the data!</p>
+	<p class="links">
+	    <a href="#description" class="findoutmore">Find out more</a>
+	    <a href="#tickets" class="reserveaspace"><em>Sign up closed</em></a>
+	</p>
+{% endblock %}
+
+{% block content %}
+        <div id="event_sidebar">
+            <h4 class="association">In association with</h4>
+            <div class="module">
+                <p><a href="http://www.ire.org/" target="_blank"><img src="{{MEDIA_URL}}images/event_logo_ire.gif" width="195" height="47" /></a></p>
+                <p><a href="http://www.knightfoundation.org/" target="_blank"><img src="{{MEDIA_URL}}images/event_logo_knight_black.gif" width="268" height="35" /></a></p>
+            </div>
+            <h4 class="who">Who&rsquo;s coming?</h4>
+            <div class="module">
+                <a href="http://liberatethedata.eventbrite.com/" id="guestlist">See the guestlist on<span> Eventbrite</span></a>
+            </div>
+            <h4 class="when">When?</h4>
+            <div class="module">
+                <p>18:00 Thursday 23rd Feb 2012 to</p>
+                <p>06:00 Friday 24th Feb 2012</p>
+            </div>
+            <h4>Where?</h4>
+            <div class="module">
+                <div id="googlemap" style="width: 268px; height: 250px; margin: 5px 0"></div>
+                <p class="address"><a href="http://maps.google.co.uk/maps?q=St.+Louis+Union+Station+Marriott&ll=38.632226,-90.206594&spn=0.045526,0.090895&hq=St.+Louis+Union+Station+Marriott" target="_blank" title="Show in Google Maps"><strong>St Louis Union Station Marriott,</strong><br/>One St Louis Station,<br/>St Louis, MO 63103</a></p>
+            </div>  
+        </div>
+        <div id="event_details">
+            <h3 class="description active">Data liberators, start your engines&hellip;</h3>
+            <div id="description">
+                <p>Join Investigative Reporters and Editors (IRE), NICAR and ScraperWiki for a 12-hour data liberation marathon during the 2012 Computer-Assisted Reporting Conference in St Louis.</p>
+                <p><a id="liberatesomedata" href="https://views.scraperwiki.com/run/nicar_data_liberation_vote/">Nominate a dataset<br/>to be liberated!<img src="{{MEDIA_URL}}images/icons/mac_cursor.png" width="13" height="19" alt=""></a></p>
+                <p>We&rsquo;re soliciting your nominations for data sets that you&rsquo;re longing to crunch but haven&rsquo;t been able to get your hands on. We&rsquo;ll build a list of prime candidates for liberation. Then, on the opening evening of the CAR Conference, all those willing to join in the fight to free the data will join in an overnight scraping fest. The experts from ScraperWiki will be on hand to lend their expertise and their platform.</p>
+                <p>We&rsquo;ll provide refreshments and wifi, <strong>you just need to bring a laptop</strong>.</p>
+                <p>For more information on the CAR Conference, go to <a href="http://www.ire.org/conferences/nicar-2012/">www.ire.org/conferences/nicar-2012</a></p>
+            </div>
+            <h3 class="tickets active">Sign up with Eventbrite</h3>
+            <div id="tickets">
+                <div style="width:100%; text-align:left;" ><iframe  src="http://www.eventbrite.com/tickets-external?eid=2663066303&ref=etckt" frameborder="0" height="192" width="100%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe><div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:100%; text-align:left;" ><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com/r/etckt" >Online Ticketing</a><span style="color:#ddd;" > for </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://liberatethedata.eventbrite.com?ref=etckt" >Liberate the Data! At the IRE/NICAR Conference, St Louis</a><span style="color:#ddd;" > powered by </span><a style="color:#ddd; text-decoration:none;" target="_blank" href="http://www.eventbrite.com?ref=etckt" >Eventbrite</a></div></div>
+            </div>
+        </div>
+        <br class="clear" />
+{% endblock %}
+
+
+{% block run_script %}
+    {{block.super}}
+    
+    createMap();
+    
+    $('.links a').bind('click', function(e){
+        e.preventDefault();
+        var target = $($(this).attr('href'));
+        $('html, body').animate({
+            scrollTop: target.offset().top - 80
+        }, 500, 'swing');
+    });
+    
+{% endblock %}
+

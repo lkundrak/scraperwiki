@@ -1,0 +1,132 @@
+{% load doc_links %}
+
+<div class="section">
+  <p>The Ruby environment in ScraperWiki comes with the ScraperWiki module loaded.</p>
+
+  <p>The source code implementation of these functions can be found 
+  <a href="https://bitbucket.org/ScraperWiki/scraperwiki/src/tip/scraperlibs/ruby/scraperwiki/lib">in
+  our bitbucket repository</a>.</p>
+</div>
+
+<h3>Scraping</h3>
+<p>You can also use any Ruby HTTP library, such as <em>httpclient</em>.</p>
+
+<dl>
+<dt>ScraperWiki::<strong>scrape</strong>(url[, params])</dt>
+    <dd>Returns the downloaded string from the given url.</dd>
+    <dd><var>params</var> are sent using POST if set.
+    </dd>
+</dl>
+
+<h3><span id="sql"></span>Datastore (SQLite)</h3>
+<p>ScraperWiki provides a fully-fledged SQLite database for each scraper which
+you can save to.  You can read the data back that has been committed by other
+scrapers, or extract it <a href="{% url docsexternal %}">through the API</a>. 
+</p>
+<p>
+{% doc_link_full 'LANG_datastore_guide' language %} for examples.
+<a href="http://www.sqlite.org/lang.html">SQL as understood by SQLite</a> for the query language.
+</p>
+
+<dl>
+<dt>ScraperWiki::<strong>save_sqlite</strong>(unique_keys, data[, table_name="swdata", verbose=2])</dt>
+    <dd>Saves a data record into the datastore into the table given by table_name.  </dd>
+    <dd><var>data</var> is a hash with string or symbol field names as keys;
+    <var>unique_keys</var> is an array
+        that is a subset of <var>data.keys</var> which determines when a record is to be
+        over-written.
+    <dd>For large numbers of records data can be a list of hashes.
+    <dd>verbose alters what is shown in the Data tab of the editor.
+    </dd>
+
+<dt>ScraperWiki::<strong>attach</strong>(name[, asname])</dt>
+    <dd><p>Attaches to the datastore of another scraper named
+    <var>name</var> (which should be the <em>short-name</em> of the scraper, as it
+    appears in the URL of its overview page).</p>
+    <p><var>asname</var> is an optional alias for the attached datastore.</p>
+    </dd>
+
+<dt>ScraperWiki::<strong>select</strong>(val1[, val2])</dt>
+    <dd>Executes a select command on the datastore, for example select("* from swdata limit 10").</dd>
+    <dd>Returns an array of hashes for the records that have been selected.</dd>
+    <dd><var>val2</var> is an optional array of parameters used when the select command contains '?'s.
+    </dd>
+
+
+<dt>ScraperWiki::<strong>sqliteexecute</strong>(cmd[, parms])</dt>
+    <dd>Executes any arbitrary sqlite command (except attach), for
+    example create, delete, insert or drop.</dd>
+    <dd><var>parms</var> is an optional array of parameters used
+    when the command in <var>cmd</var> contains question marks.</dd>
+    <dd>(for example, "insert into swdata values (?,?,?)").
+    </dd>
+
+<dt>ScraperWiki::<strong>commit</strong>()</dt>
+    <dd>Commits to the file after a series of execute commands.  (save_sqlite() auto-commits after every action).
+    </dd>
+
+<dt>ScraperWiki::<strong>show_tables</strong>([dbname])</dt>
+    <dd>Returns an array of tables and their schemas in either the current or an attached database.</dd>
+
+<dt>ScraperWiki::<strong>table_info</strong>(name)</dt>
+    <dd>Returns an array of attributes for each element of the table.</dd>
+
+<dt>ScraperWiki::<strong>save_var</strong>(key, value)</dt>
+    <dd>Saves an arbitrary single value into a sqlite table called "swvariables". 
+        Can be used to make scrapers able to continue after an interruption.
+    </dd>
+
+<dt>ScraperWiki::<strong>get_var</strong>(key[, default])</dt>
+    <dd>Retrieves a single value that was saved by <var>save_var</var>.
+    </dd>
+
+</dl>
+
+<h3>Views</h3>
+
+<dt>ScraperWiki::<strong>httpresponseheader</strong>(headerkey, headervalue)</dt>
+    <dd>Set the content-type header to something other than HTML when using a ScraperWiki "view"</dd>
+    <dd>(for example "Content-Type", "image/png").
+    </dd>
+
+
+<h3>Geocoding</h3>
+
+<dl>
+
+<dt>ScraperWiki::<strong>gb_postcode_to_latlng</strong>(postcode)</dt>
+    <dd>Returns an array [lat, lng] in WGS84 coordinates representing the central point of a UK postcode area.
+    </dd>
+
+</dl>
+
+<h3>Miscellaneous</h3>
+
+<dl>
+
+<dt><strong>require</strong> 'scrapers/name'</dt>
+    <dd>Imports the code from another scraper whose shortname is <var>name</name> (a scraper's shortname is what appears in the URL).</dd>
+
+</dl>
+
+<h3>Exceptions</h3>
+
+<dl>
+
+<dt>ScraperWiki::<strong>Error</strong></dt>
+    <dd>This is the base class for all exceptions raised by the
+    ScraperWiki library code.  Currently there is only one
+    subclass used (see below), but we like to leave room for
+    future expansion.</dd>
+
+<dt>ScraperWiki::<strong>CPUTimeExceededError</strong></dt>
+    <dd><p>This is raised when a script running on ScraperWiki has used
+    too much CPU time.  This is implemented in a similar fashion
+    across all our supported languages and is explained in a bit
+    more detail <a href="/docs/python/faq/#cpu_limit"> in
+    the FAQ</a>.</p>
+    
+    <p><a
+    href="https://scraperwiki.com/scrapers/cpu-rb/edit/">This is
+    a simple example of how to catch the exception</a>.</p>
+    </dd>

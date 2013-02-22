@@ -1,0 +1,182 @@
+{% extends "frontend/base.html" %}
+
+{% load formhelper %}
+{% load gravatar %}
+
+{% block title %}
+    {% if not invite %}
+        Log in or create an account
+    {% else %}
+        Create an account to access 
+        {% if invite.vault.user.get_profile.name %}
+            {{invite.vault.user.get_profile.name}}{% else %}
+            {{invite.vault.user.username}}{% endif %}'s vault
+    {% endif %}
+{% endblock %}
+
+{% block header %}
+    {% if not invite %}
+        <h2><em>Log in</em> or <em>create an account</em></h2>
+    {% else %}
+    <!-- {% show_gravatar invite.vault.user 'medium' %} -->
+        <h2><a href="{% url profile invite.vault.user.username %}">
+        {% if invite.vault.user.get_profile.name %}
+            {{invite.vault.user.get_profile.name}}
+        {% else %}
+            {{invite.vault.user.username}}
+        {% endif %}</a>
+        has invited you to the vault <em>{{ invite.vault.name }}</em></h2>
+    {% endif %}
+{% endblock %}
+
+{% block errors %}
+    {% if login_form.errors %}
+        <ul>
+            {% form_errors login_form %}
+        </ul>
+    {% endif %}
+
+    {% if registration_form.errors %}
+        <ul>
+            {% form_errors registration_form %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
+
+
+
+{% block content %}
+{% if not invite %}
+<div class="login">
+    <form method="post" action="." id="login_form">
+        {% csrf_token %}
+        {% if login_form.non_field_errors %}
+            <div id="main_error">
+                {% for error in login_form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+	    <fieldset>
+	        <input type="hidden" name="redirect" value="{{redirect}}"/>
+	    </fieldset>
+	    <ul class="form">
+	        <li{% if login_form.username.errors %} class="error"{% endif %}>
+        	    {{ login_form.user_or_email.label_tag }}
+        	    {{ login_form.user_or_email }}
+    	        {% field_errors login_form.user_or_email %}
+	        </li>
+	        <li{% if login_form.password.errors %} class="error"{% endif %}>
+    	        {{ login_form.password.label_tag }}
+    	        {{ login_form.password }}
+    	        {% field_errors login_form.password %}
+                <a class="forgotten" href="/accounts/password/reset/">Forgotten your password?</a> 	        
+    	    </li>
+        </ul>
+        <div class="last">
+        <p class="remember_me">
+            {{ login_form.remember_me }}&nbsp;{{ login_form.remember_me.label_tag }}
+        </p>
+        <p class="last">
+		    <input type="submit" id="login_submit" name="submit" value="Log in" />
+		</p>
+		</div>
+		<br class="clear" />
+	</form>
+</div>
+{% endif %}
+
+<div class="signup">
+
+	<form method="post" action="." id="registration_form">
+        {% csrf_token %}
+        {% if invite %}
+            <h3>Sign up to access the vault</h3>
+        {% else %}
+            <h3>Sign up for a free account</h3>
+        {% endif %}
+        {% if registration_form.non_field_errors %}
+            <div id="main_error">
+                {% for error in registration_form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+	    <fieldset>
+	       <input type="hidden" name="redirect" value="{{redirect}}"/>
+         {% if invite.token %}
+          <input type="hidden" name="token" value="{{invite.token}}"/>
+         {% endif %}
+	    </fieldset>
+       	<div id="divSignupTerms">
+           	<h4>Terms and conditions <a href="{% url terms %}" target="_new">Open in a new window</a></h4>
+            <div class="scroll">
+               {% include 'shared/terms_and_conditions_2.html' %}
+            </div>
+            <ul>
+               <li>
+            	    {{ registration_form.tos }}
+            	    {{ registration_form.tos.label_tag }}        	    
+            	    {% field_errors registration_form.tos %}
+            	</li>
+            </ul>
+       </div>
+	    <ul class="form">	    
+	        <li{% if registration_form.name.errors %} class="error"{% endif %}>
+    	    {{ registration_form.name.label_tag }}
+    	    {{ registration_form.name }}
+    	    {% field_errors registration_form.name %}        	        
+    	    </li>
+	        <li{% if registration_form.username.errors %} class="error"{% endif %}>
+    	    {{ registration_form.username.label_tag }}
+    	    {{ registration_form.username }}
+    	    {% field_errors registration_form.username %}
+    	    </li>
+	        <li{% if registration_form.email.errors %} class="error"{% endif %}>
+    	    {{ registration_form.email.label_tag }}
+    	    {{ registration_form.email }}
+                {% field_errors registration_form.email %} 
+                <span class="tip">(We&rsquo;ll use this to find your <a href="http://en.gravatar.com/" target="_blank">Gravatar</a> if you&nbsp;have&nbsp;one)</span>       	    
+	        </li>
+	        <li{% if registration_form.password1.errors %} class="error"{% endif %}>
+        	    {{ registration_form.password1.label_tag }}
+        	    {{ registration_form.password1 }}
+                {% field_errors registration_form.password1 %}            	    
+        	</li>
+	        <li{% if registration_form.password2.errors %} class="error"{% endif %}>
+        	    {{ registration_form.password2.label_tag }}
+        	    {{ registration_form.password2 }}
+                {% field_errors registration_form.password2 %}            	    
+        	</li>
+    	</ul>
+        <p class="last">
+		    <input type="submit" name="register" value="Create my account" />
+		</p>
+	</form>
+	
+</div>
+{% endblock %}
+
+{% block run_script %}
+$(function(){
+
+    if(window.location.hash == '#signup'){
+		$('#header h2').html('<em>Sign up</em> for a free account');
+		$('#registration_form h3').remove();
+		$('#content div.signup').css('margin-bottom', 40).after($('#content div.login'));
+		$('#id_name').focus();
+	}
+
+    $('#id_name').bind('keyup', function(){
+		var username = $(this).val();
+		var username = username.toLowerCase().replace(/\W/g, '');
+		$('#id_username').val(username);
+	});
+
+	$('#id_username').bind('keyup', function(){
+	    $(this).unbind('keyup');
+		$('#id_name').unbind('keyup');
+	}).bind('blur', function(){
+		var username = $(this).val().replace(/\W/g, '');
+		$(this).val(username);
+	});
+});
+
+{% endblock %}

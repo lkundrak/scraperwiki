@@ -1,0 +1,31 @@
+{{{header}}}
+
+
+<div style="font-size: 16px; line-height: 21px; font-family: Helvetica, Arial, sans-serif; color: #333333; background: #eeeeee; padding: 20px; margin: 0 0 30px 0;">
+  <!-- Customer details -->
+  <table cellpadding="0" cellspacing="0" width="460">
+    <tr>
+      <td valign="top">
+        <b>{{billing_full_name}}</b><br />
+        {{{billing_full_address}}}
+      </td>
+      <td valign="top" style="text-align: right">
+        {{#subscription_active?}}
+          <b style="display: block">Your new plan:</b>
+          <span style="display: block">{{plan_name}} ({{{subscription_subtotal_amount}}})</span>
+          <b style="display: block; margin-top: 10px">Next invoice date</b>
+          <span style="display: block">{{subscription_next_payment_date}}</span>
+        {{/subscription_active?}}
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 style="font-size: 22px; line-height: 26px; font-family: Helvetica, Arial, sans-serif; color: #666666; margin: 0px; font-weight: normal;">Subscription Changed</h2>
+
+<p style="font-size: 16px; line-height: 20px; font-family: Helvetica, Arial, sans-serif; color: #000; margin: 15px 0 0 0;">This email confirms your recent subscription change to the above details. Thank you.</p>
+
+<p style="font-size: 16px; line-height: 20px; font-family: Helvetica, Arial, sans-serif; color: #000; margin: 15px 0 0 0;">For more information, please see your <a href="{{account_hosted_maintenance_url}}">Account Details</a>.
+
+
+{{{footer}}}

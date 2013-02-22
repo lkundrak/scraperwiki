@@ -1,0 +1,49 @@
+{% extends "frontend/base.html" %}
+{% load pagination_tags %}
+{% load gravatar %}
+{% block css %}{% endblock %}
+{% block title %}Profile Details: {{profile.display_name}}
+{% endblock %}
+
+{% block header %}
+	<h2>{% show_gravatar profile.user 'medium' %} <em>Profiles</em> / <a href="{% url profile profile.user.username %}">{{profile.display_name}}</a></h2>
+	{% ifequal profile.user user %}
+	<p><a href="{% url profiles_edit_profile %}" onClick="if(typeof _gaq !== 'undefined'){ _gaq.push(['_trackEvent', 'Profile buttons', 'Edit profile']); }">Edit Profile &amp; Settings</a></p>
+	{% else %}
+	{% if request.user.is_authenticated and profile.messages and request.user.get_profile.messages %}
+    <p><a href="{% url user_message profile.user.username %}" id="compose_user_message" onClick="if(typeof _gaq !== 'undefined'){ _gaq.push(['_trackEvent', 'Profile buttons', 'Send message']); }"><img src="{{ MEDIA_URL }}images/icons/email.png" width="16" height="16" alt="" /> Send a private message</a></p>
+    {% endif %}
+	{% endifequal %}
+{% endblock %}
+
+{% block content %}
+
+    {% if profile.bio %}
+        <p class="bio">{{ profile.bio }}</p>
+    {% else %}
+        {% ifequal profile.user user %}
+        <p class="bio blankslate">You have no bio yet. Don&rsquo;t be shy! <a href="{% url profiles_edit_profile %}">Click here to add one.</a></p>
+        {% endifequal %}
+    {% endif %}
+
+    {% if owned_code_objects %}
+        {% autopaginate owned_code_objects 20 %}	
+        <h2 class="scrapersandviews">Scrapers and views ({{ paginator.count }})</h2>    	
+        <ul class="scraper_list">
+        {% for code in owned_code_objects %}
+            {% include 'frontend/includes/code_object_line.html' %}
+        {% endfor %}
+        </ul>
+		{% paginate %}
+	{% else %}
+	    {% ifequal profile.user user %}
+        <div class="blankslate">
+            <h3>You have no scrapers or views yet.</h3>
+            <p><a href="{% url docsroot %}">Try one of our tutorials</a> or <a data-wiki_type="scraper" href="#" class="editor_scraper">Create your first scraper</a></p>
+        </div>
+        {% else %}
+        <p class="empty">This user has no scrapers or views yet.</p>
+        {% endifequal %}
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,24 @@
+<div class="blog_latest">
+    <div class="blog_headline">
+        {% if headline_image_url %}
+            <div class="image_wrap">
+                <img src="{{headline_image_url}}"/>
+            </div>
+        {% endif %}
+        <h5>Blogged: <a href="{{headline.link}}">{{headline.title|safe}}</a></h5>
+        {% autoescape off %}
+            <p>{{headline.summary}}</p>
+        {% endautoescape %}
+    </div>
+    <span style="display: block; height: 1px; clear: right"></span>
+    <div class="blog_subs">
+        <h5>More from the ScraperWiki data blog ...</h5>
+        <ul>
+            {% for sub in subs %}
+                <li>
+                    <a href="{{sub.link}}">{{sub.title|safe}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

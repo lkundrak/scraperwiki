@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: {% if debug %}/{% else %}/not-used-on-live{% endif %}
+Disallow: {% url search %}
+Disallow: /scrapers/run_event/
+Disallow: /scrapers/run_event_json/

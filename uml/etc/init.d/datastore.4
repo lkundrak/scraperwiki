@@ -1,0 +1,43 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          ghserver
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop GHServer server
+### END INIT INFO
+
+logger "Datastore.4: Start script executed"
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="Datastore.4"
+NAME="datastore.4"
+VARDIR=/var
+PIDFILE=$VARDIR/run/$NAME.pid
+LOGFILE=$VARDIR/log/scraperwiki/$NAME.log
+DAEMON=/bin/sh
+CONFIG=/var/www/scraperwiki/uml/uml.cfg
+DAEMON_ARGS="/var/www/scraperwiki/services/datastore/appfiles/datastore.4.tac"
+SCRIPTNAME=/etc/init.d/$NAME
+
+export PYTHONPATH="/var/www/scraperwiki/services/datastore:$PYTHONPATH"
+
+case "$1" in
+  start)
+    logger "$DESC: Starting"
+    echo "Starting $DESC... $PIDFILE"
+    twistd -y "$DAEMON_ARGS" --logfile "$LOGFILE" --pidfile "$PIDFILE"
+    ;;
+  stop)
+    logger "$DESC: Stopping"
+    echo "Stopping $DESC..."
+    kill `cat $PIDFILE`
+    ;;
+  *)
+    logger "$DESC: Invalid usage"
+    echo "Usage: /etc/init.d/$NAME {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0

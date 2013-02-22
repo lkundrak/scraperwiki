@@ -1,0 +1,54 @@
+/* Python */
+span.py-comment {
+  color: #004422;
+  background-color: #eeeeee;
+}
+
+/* PHP */
+span.php-comment {
+  color: #004422;
+  background-color: #eeeeee;
+}
+
+span.php-operator {
+  color: #666666;
+}
+
+/* Ruby */
+.editbox {
+  color: #000000;
+  background-color: #FFFFFF;
+}
+
+.editbox .rb-variable, .editbox .rb-method-call {
+  color: #000000;
+}
+
+.editbox .rb-string {
+  color: #AA2222;
+}
+
+.editbox .rb-comment, .editbox .rb-long-comment {
+  color: #004422;
+  background-color: #eeeeee;
+}
+
+.editbox .rb-keyword {
+  color: #770088;
+}
+
+.editbox .rb-symbol, .editbox .rb-fixnum, .editbox .rb-ascii {
+  color: #228811;
+}
+
+.editbox .rb-method {
+  color: #000000;
+}
+
+.editbox .rb-method-parameter {
+  color: #000000;
+}
+
+.editbox .rb-operator {
+  color: #666666;
+}

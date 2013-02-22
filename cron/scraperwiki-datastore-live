@@ -1,0 +1,6 @@
+MAILTO=cron@scraperwiki.com
+SHELL=/bin/bash
+
+# Backup to bytemark's backup
+0 7 * * * root rsync -qazr --partial /root/backup datastore.backup.bytemark.co.uk::datastore/
+

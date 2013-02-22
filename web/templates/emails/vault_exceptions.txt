@@ -1,0 +1,14 @@
+ScraperWiki
+___________
+
+{{runevents|length}} error{{runevents|length|pluralize}} {{runevents|length|pluralize:"has,have"}} been raised in your vault "{{vault.name}}" in the last hour:
+
+{% for runevent in runevents %}___________
+
+{{ runevent.scraper.title }}
+https://scraperwiki.com/scrapers/{{ runevent.scraper.short_name }}
+
+{{ runevent.exception_message }}
+
+{% endfor %}___________
+

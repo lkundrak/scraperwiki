@@ -1,0 +1,100 @@
+<p>The easiest and most familiar way to extract data from HTML web pages is to use
+"CSS selectors". These are part of the same rules which in web stylesheets are
+used to describe the spacing, colour and layout of web pages.</p>
+
+<p>For more details, read the <a href="http://nokogiri.org/tutorials">Nokogiri documentation</a>,
+or the <a href="http://www.w3.org/TR/CSS2/selector.html">CSS selector specification</a>.</p>
+
+<h2>Getting started</h2>
+
+<p>Grab the HTML web page, and parse the HTML using Nokogori.</p>
+
+<code>require 'nokogiri'
+html = ScraperWiki::scrape("https://scraperwiki.com/")
+doc = Nokogiri::HTML(html)
+</code>
+
+<p>Select all <b>&lt;a></b> elements that are inside <b>&lt;div class="featured"></b>.
+These queries work the same way as CSS stylesheets or jQuery. They are called
+CSS selectors, and are quite powerful.
+</p>
+
+<code>doc.css('div.featured a').each do |link|
+  puts link.class
+end
+</code>
+
+
+<p>Print out all of a tag and its contents as HTML (put this and the next example inside the "each" loop, before the "end").</p>
+<code>  puts link.to_html</code>
+
+<p>Read attributes, such as the target of the <b>&lt;a&gt;</b> tags.</p>
+<code>  puts link['href']</code>
+
+
+<h2>Simple text extraction</h2>
+
+<p>Select the first <b>&lt;strong></b> element inside <b>&lt;div id="footer_inner"></b>.</p>
+<code>el = doc.css("div#footer_inner strong")[0]
+puts el
+</code>
+
+<p>Extract the text from inside the tag.</p>
+<code>puts el.content</code>
+
+
+<h2>Deep text extraction</h2>
+
+<p>Get all text recursively, throwing away any child tags.</p>
+<code>eg = Nokogiri::HTML.fragment('&lt;h2&gt;A thing &lt;b&gt;goes boom&lt;/b&gt; up &lt;i&gt;on &lt;em&gt;the tree&lt;/em&gt;&lt;/i&gt;&lt;/h2&gt;');
+puts eg.content() # 'A thing goes boom up on the tree'
+</code>
+
+<p>Sometimes you have nearly pure text elements that still have &lt;i&gt; and &lt;b&gt; elements which you want to retain.  
+Such an element can be extracted using a recursive function.</p>
+<code>def ctext(el)
+  if el.text? 
+    return el.text
+  end
+  result = [ ]
+  for sel in el.children
+    if (!["b", "i"].include?(sel.name))
+      raise "disallowed tag: " + sel.name
+    end
+    if sel.element? 
+      result.push("&lt;"+sel.name+"&gt;")
+    end
+    result.push(ctext(sel))
+    if sel.element? 
+      result.push("&lt;/"+sel.name+"&gt;")
+    end
+  end
+  return result.join
+end
+</code>
+
+<p>This gives an error if there are other unexpected elements, such as &lt;em&gt;.</p>
+<code>puts ctext(eg)</code>
+
+<h2>Finding data manually</h2>
+
+<p>Iterate down through the elements in the document and see the tags and attributes on each element.</p>
+<code>for el in doc.css('html').children
+    puts el.name
+    for el2 in el.children
+        puts "--" + el2.name + " " + el2.attributes.to_json
+    end
+end
+</code>
+
+<p>Navigate around the document.</p>
+<code>eg = Nokogiri::HTML.fragment('&lt;h2&gt;A thing &lt;b&gt;goes boom&lt;/b&gt; up &lt;i&gt;on &lt;em&gt;the tree&lt;/em&gt;&lt;/i&gt;&lt;/h2&gt;')
+goes_boom = eg.children()[0].children()[1]
+puts goes_boom                  # &lt;b&gt;goes boom&lt;b&gt;
+puts goes_boom.parent.name      # h2
+puts goes_boom.next             #  up 
+puts goes_boom.next.next.name   # i
+puts goes_boom.parent.children.map {|x| x.name}.join(",") # text,b,text,i
+</code>
+
+

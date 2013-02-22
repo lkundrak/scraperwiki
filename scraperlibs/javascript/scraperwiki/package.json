@@ -1,0 +1,7 @@
+{ "name" : "scraperwiki"
+, "version" : "1.0.0"
+, "description" : "ScraperWiki client library"
+, "author" : "Ross Jones <ross@scraperwiki.com>"
+, "main" : "lib/scraperwiki"
+,"engines" : { "node" : ">= 0.4.0" }
+}

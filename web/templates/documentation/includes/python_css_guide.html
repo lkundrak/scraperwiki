@@ -1,0 +1,93 @@
+<p>The easiest and most familiar way to extract data from HTML web pages is to use
+"CSS selectors". These are part of the same rules which in web stylesheets are
+used to describe the spacing, colour and layout of web pages.</p>
+
+<p>For more details, read the <a href="http://lxml.de/lxmlhtml.html">lxml documentation</a>,
+or the <a href="http://www.w3.org/TR/CSS2/selector.html">CSS selector specification</a>.</p>
+
+<h2>Getting started</h2>
+
+<p>Grab the HTML web page, and parse the HTML using lxml.</p>
+
+<code>import scraperwiki
+import lxml.html
+html = scraperwiki.scrape("https://scraperwiki.com/")
+root = lxml.html.fromstring(html)
+</code>
+
+<p>Select all <b>&lt;a></b> elements that are inside <b>&lt;div class="featured"></b>.
+These queries work the same way as CSS stylesheets or jQuery. They are called
+CSS selectors, and are quite powerful.
+</p>
+
+<code>for el in root.cssselect("div.featured a"):
+    print el
+</code>
+
+
+<p>Print out all of a tag and its contents as HTML.</p>
+<code>    print lxml.html.tostring(el)</code>
+
+<p>Read attributes, such as the target of the <b>&lt;a&gt;</b> tags.</p>
+<code>    print el.attrib['href']</code>
+
+
+<h2>Simple text extraction</h2>
+
+<p>Select the first <b>&lt;strong></b> element inside <b>&lt;div id="footer_inner"></b>.</p>
+<code>el = root.cssselect("div#footer_inner strong")[0]
+print el
+</code>
+
+<p>Extract the text from inside the tag.</p>
+<code>print el.text</code>
+
+<p>Any trailing text from just after the close tag.</p>
+<code>print el.tail</code>
+
+
+<h2>Deep text extraction</h2>
+
+<p>Get all text recursively, throwing away any child tags.</p>
+<code>eg = lxml.html.fromstring('&lt;h2&gt;A thing &lt;b&gt;goes boom&lt;/b&gt; up &lt;i&gt;on &lt;em&gt;the tree&lt;/em&gt;&lt;/i&gt;&lt;/h2&gt;')
+print eg.text_content() # 'A thing goes boom up on the tree'
+</code>
+
+<p>Sometimes you have nearly pure text elements that still have &lt;i&gt; and &lt;b&gt; elements which you want to retain.  
+Such an element can be extracted using a recursive function.</p>
+<code>def ctext(el):
+    result = [ ]
+    if el.text:
+        result.append(el.text)
+    for sel in el:
+        assert sel.tag in ["b", "i"]
+        result.append("&lt;"+sel.tag+"&gt;")
+        result.append(ctext(sel))
+        result.append("&lt;/"+sel.tag+"&gt;")
+        if sel.tail:
+            result.append(sel.tail)
+    return "".join(result)
+</code>
+
+<p>This gives an error if there are other unexpected elements, such as &lt;em&gt;.</p>
+    <code>print ctext(eg)</code>
+
+<h2>Finding data manually</h2>
+
+<p>Iterate down through the elements in the document and see the tags and attributes on each element.</p>
+<code>for el in root:
+    print el.tag
+    for el2 in el:
+        print "--", el2.tag, el2.attrib
+</code>
+
+<p>Navigate around the document.</p>
+<code>eg = lxml.html.fromstring('&lt;h2&gt;A thing &lt;b&gt;goes boom&lt;/b&gt; up &lt;i&gt;on &lt;em&gt;the tree&lt;/em&gt;&lt;/i&gt;&lt;/h2&gt;')
+print eg[1].tag                # i
+print eg[1].getparent().tag    # h2
+print eg[1].getprevious().tag  # b
+print eg[1].getnext()          # None
+print eg[1].getchildren()      # [&lt;Element em&gt;]
+</code>
+
+

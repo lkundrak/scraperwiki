@@ -1,0 +1,10 @@
+ScraperWiki
+___________
+
+[ID {{ instance.id }}] Request for data from {{ instance.name }} <{{ instance.email }}>:
+
+"{{ instance.description }}"
+
+Email address: {{ instance.email }}
+Phone or Skype: {{ instance.phone }}
+IP address: {{ instance.ip }} <http://www.infosniper.net/index.php?ip_address={{ instance.ip }}>

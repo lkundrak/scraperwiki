@@ -1,0 +1,9 @@
+{{{header}}}
+
+Your subscription for our {{plan_name}} plan has now expired.
+
+Please keep this email for your records.  If you have any
+questions, please contact {{company_email}}.
+Thanks again for your purchase.
+
+{{{footer}}}

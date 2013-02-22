@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>PDF Cropper</title>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.5.2.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-ui-1.7.2.custom.min.js"></script>	
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.autoheight.js"></script>	
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.Jcrop.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/main.css" />	
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/jquery.Jcrop.css" />	
+    <script type="text/javascript">
+        function setCrop(c)
+        {
+            var qtail = '{{qtail}}'; 
+            var width = $('#pdfpageid').attr('width'); 
+            var height = $('#pdfpageid').attr('height'); 
+            ix1 = Math.ceil(c.x * 1000 / width);
+            iy1 = Math.ceil(c.y * 1000 / width);
+            ix2 = Math.ceil(c.x2 * 1000 / width); 
+            iy2 = Math.ceil(c.y2 * 1000 / width);
+            var dlk = ix1 + "," + iy1 + "_" + ix2 + "," + iy2; 
+            var bvisibility = (((ix1 == ix2) || (iy1 == iy2)) ? "none" : "inline"); 
+
+            $('#consolidatelink').text("rect_"+dlk)
+            $('#consolidateclicklink').attr('href', "clip_"+dlk+qtail).css({'display':bvisibility}); ; 
+            $('#consolidatelink').attr('href', "rect_"+dlk+qtail).css({'display':bvisibility}); 
+        };
+        $(document).ready(function() 
+        { 
+            $('#pdfpageid').load(function() 
+            { 
+                $('#loadingmess').hide();  
+                $('#pdfpageid').Jcrop( { onSelect: setCrop, onChange: setCrop, keySupport: false } ); 
+            }); 
+
+            var imglink = "{{MAIN_URL}}{% url cropimg 'png' srcdoc page cropping %}{{qtail}}"; 
+            var linkedimg = '<a title="PDF excerpt" href="{{MAIN_URL}}{% url croppage srcdoc page cropping %}{{qtail}}"><img src="'+imglink+'"></a>'; 
+            $('#imglink').attr("href", imglink); 
+            $('p#share_links input').attr('value', linkedimg); 
+
+            $('a#instructionslink').click(function () { $('div#instructions').css({'display':'block'}); }); 
+        });
+    </script>
+</head>
+<body class="fullscreen">
+
+<div id="full_bar">
+    <h1>Page {{page}} of {{Pages}} of <a href="{{pdfurl}}" title="Go original pdf">{{pdfurl|urlizetrunc:25}}</a>
+    </h1>
+    <p id="share_links">Embed <a href="#" id="imglink" style="color:blue">image</a>: <input type="text" readonly value=""></p>
+    <a href="{%url frontpage %}" id="powered"><span class="hide">Powered by ScraperWiki</span></a>
+</div> 
+
+<form id="newpdfdoclink" action="{% url cropdoc %}">
+    <a href="#instructions" id="instructionslink">[<em>Instructions</em>]</a>
+    {% if prevpage %}
+        <a href="{% url croppage srcdoc prevpage %}{{qtail}}">(&lt;&lt; previous)</a>
+    {% endif %}
+    {% if nextpage %}
+        <a href="{% url croppage srcdoc nextpage %}{{qtail}}">(next &gt;&gt;)</a>
+    {% endif %}
+
+    {% if losecroppings %}
+        Lose cropping: 
+        {% for m, rcropping in losecroppings %}
+          <a href="{% url croppage srcdoc page rcropping %}{{qtail}}">{{m}}</a>
+        {% endfor %}
+    {% endif %}
+
+    <a href="" id="consolidatelink" title="Click here to consolidate the highlight">Drag and select area</a>
+    <a href="" id="consolidateclicklink" title="Click here to clip the selection">Clip area</a>
+    || New doclink: <input type="text" name="url" value="" title="paste in url of new document"> <input type="submit" value="Go">
+</form>
+
+
+<div class="pdfpagediv">
+    <div class="dpdfpagediv">
+    <h1 id="loadingmess">LOADING</h1>
+    <img id="pdfpageid" src="{% url cropimg 'pngprev' srcdoc page cropping %}{{qtail}}">
+    </div>
+</div>
+
+<p style="clear:both">
+    {% if prevpage %}
+        <a href="{% url croppage srcdoc prevpage %}{{qtail}}">(&lt;&lt; previous)</a>
+    {% endif %}
+    {% if nextpage %}
+        <a href="{% url croppage srcdoc nextpage %}{{qtail}}">(next &gt;&gt;)</a>
+    {% endif %}
+</p>
+
+<div id="instructions" style="text-align:left; width:40%; margin-left:auto; margin-right:auto; display:none">
+<h2>Notes</h2>
+<p>This is a small application that allows you to reference highlighted excerpts from 
+unweildy PDF files.  Suppose you want to illustrate an article with a list of names found at the bottom 
+of page 89 of a large official report.  By pasting the URL into the text box above and clicking on 'Go' 
+you can (1) render that particular page on its own, then clip out the part of the page that contains the 
+information, and finally highlight the particular names or columns you wish to bring to the attention 
+of your readers.  Paste the text from the 'Embed image' box into your HTML document to provide an easy 
+and effective illustration that links back to the information in context, and thence back to the 
+original document itself.</p>
+
+<p>This technology has been ported from undemocracy.com where it was used in documents 
+<a href="http://www.undemocracy.com/A-64-PV.1/page_1/rect_247,75_539,318/rect_180,190_438,303">link this</a>.</p>
+
+<p>Future work includes:
+<ul>
+<li>* Tools to provide an easy way to catalogue and produce annotations on a PDF document.</li>
+<li>* Links to the holding pages, because PDFs rarely have links in themselves, and are linked to from an 
+index page that links to other places and other related documents and information.</li>
+<li>* Recording backlinks and incoming links.</li>
+<li>* Annotating the rendered image with title and page number.</li>
+<li>* Ability to render at different resolutions.</li>
+<li>* Interactive use of this tool with numbers taken from pdftohtml output to generate the top and tail snips
+and column aligning measures that allow for efficient use of scraperwiki scraping.</li>
+</ul>
+</p>
+</div>
+</body>
+</html>

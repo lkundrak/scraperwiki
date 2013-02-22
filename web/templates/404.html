@@ -1,0 +1,35 @@
+{% extends "frontend/base.html" %}
+
+{% block body_class_extra %} fourohfour{% endblock %}
+
+{% block title %}{% if heading %}
+    {{heading}}
+{% else %}
+    Oops! Something went wrong&hellip;
+{% endif %}{% endblock %}
+
+{% block header_outer %}
+	<div id="header">
+		{% if heading %}
+            <h2>{{heading}}</h2>
+        {% else %}
+            <h2>Oops! Something went wrong&hellip;</h2>
+        {% endif %}
+	</div>
+{% endblock %}
+
+{% block content %}
+
+    {% if body %}
+        <p>{{body}}</p>
+    {% else %}
+        <p>&ldquo;Have you tried switching it off and on again?&rdquo;</p>
+    {% endif %}
+
+    <div class="attention" style="text-align: center">
+      <form class="fourohfourhint" action="/search/" method="post">
+          {% csrf_token %}
+          <p>Try visiting our <a href="/">homepage</a> or <a href="{% url docsroot %}">documentation</a></p><p>or <label for="fourohfoursearch">searching our site:</label><input type="text" name="q" id="fourohfoursearch" /><input type="submit" id="fourohfourgo" value="Go" /></p>
+      </form>
+    </div>
+{% endblock %}

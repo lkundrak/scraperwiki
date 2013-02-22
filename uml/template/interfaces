@@ -1,0 +1,13 @@
+#  This file created by cloneuml, do not edit.
+#
+auto lo
+iface lo inet loopback
+address 127.0.0.1
+netmask 255.0.0.0
+
+auto eth0
+iface eth0 inet static
+    address %{eth}
+    network %{net}
+    netmask 255.255.255.0
+    gateway %{tap}

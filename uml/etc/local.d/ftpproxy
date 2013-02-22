@@ -1,0 +1,40 @@
+#!/bin/sh
+
+DESC="FTPProxy"
+NAME=ftpproxy
+CONFIG=/var/www/scraperwiki/uml/uml.cfg
+DAEMON=/var/www/scraperwiki/uml/ftpproxy/ftpproxy.py
+DAEMON_ARGS="--daemon --subproc --varDir=/var/www/scraperwiki/uml/var --config=$CONFIG"
+PIDFILE=./var/run/$NAME.pid
+
+do_start()
+{
+	mkdir -p ./var/run
+	mkdir -p ./var/log
+	mkdir -p ./var/log/scraperwiki
+	$DAEMON $DAEMON_ARGS
+}
+
+do_stop()
+{
+	[ -f $PIDFILE ] && {
+		kill -TERM `cat $PIDFILE`
+		rm -f $PIDFILE
+		}
+}
+
+case "$1" in
+  start)
+	do_start
+	;;
+  stop)
+	do_stop
+	;;
+  restart)
+  	do_stop
+  	do_start
+	;;
+  *)
+	echo "Usage: $NAME {start|stop|restart}" >&2
+	;;
+esac

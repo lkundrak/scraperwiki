@@ -1,0 +1,8 @@
+{% extends "emails/base_email.html"%}
+{% block content %}
+    <h2 style="font-size: 22px; line-height: 26px; font-family: Helvetica, Arial, sans-serif; color: #666666; margin: 0px; font-weight: normal;">[ID {{ instance.id }}] Request for data from <a href="mailto:{{ instance.email }}" style="color: #111">{{ instance.name }}</a>:</h2>
+    <blockquote style="font-size: 18px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: #333333; background: #eeeeee; padding: 20px; margin: 20px 0 30px 0;"><p style="margin: 0">{{ instance.description|linebreaksbr }}</p></blockquote>
+    <p style="font-size: 18px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: #666666">Email address: <a href="mailto:{{ instance.email }}" style="color: #111">{{ instance.email }}</a>.</p>
+    <p style="font-size: 18px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: #666666">Phone or Skype: {{ instance.phone }}.</p>
+    <p style="font-size: 18px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: #666666">IP address: <a href="http://www.infosniper.net/index.php?ip_address={{ instance.ip }}" style="color: #111">{{ instance.ip }}</a>.</p>
+{% endblock %}

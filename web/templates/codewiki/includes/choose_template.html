@@ -1,0 +1,35 @@
+{% load screen_shot %}
+<h1>Create a new {{wiki_type}}</h1>
+<ul id="chooser">
+    {% for language, display_language, version in languages %}
+    <li><a href="{% url editor wiki_type language %}{% if sourcescraper %}?sourcescraper={{sourcescraper}}{% endif %}"><img src="{{MEDIA_URL}}/images/icons/{{language}}.png" alt="{{display_language}}"/> {{display_language}}{% if version %} <em>v {{ version }}</em>{% endif %}</a></li>
+    {% endfor %}
+</ul>
+
+{% if user_vaults.count or vault_membership %}
+<div id="chooser_vaults">
+    <h2><input type="checkbox" /> Save this in a vault&hellip;</h2>
+    <p style="display: none">
+        <label for="chooser_name_box" title="You need to name your {{wiki_type}} before it can be created in the Vault">Save as:</label> <input type="text" id="chooser_name_box" class="text" />
+    </p>
+    <p style="display: none">
+        <label for="chooser_vault">Save in:</label>
+        <select id="chooser_vault" name="chooser_vault">
+            {% if user_vaults.count %}
+            <optgroup label="Your vault{{user_vaults.count|pluralize}}">
+    			{% for v in user_vaults.all %}
+                	<option value="{% url add_to_vault wiki_type 'python' v.id %}">{{ v.name }}</option>
+    			{% endfor %}
+    		</optgroup>
+    		{% endif %}
+    		{% if vault_membership %}
+    		<optgroup label="Shared vault{{vault_membership|pluralize}}">
+    			{% for v in vault_membership %}
+                	<option value="{% url add_to_vault wiki_type 'python' v.id %}">{{ v.name }}</option>
+    			{% endfor %}
+			{% endif %}
+			</optgroup>
+        </select>
+    </p>
+</div>
+{% endif %}

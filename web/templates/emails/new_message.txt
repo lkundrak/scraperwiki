@@ -1,0 +1,16 @@
+ScraperWiki
+___________
+
+You have a new message from {{ sending_user_profile.display_name }}:
+
+"{{ body }}"
+
+To reply, visit: {{ reply_url }}
+
+___________
+
+Don't care? You can edit your email preferences here:
+https://scraperwiki.com/profiles/edit
+
+
+

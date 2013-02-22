@@ -1,0 +1,15 @@
+import scraperwiki
+import uuid
+from string import ascii_lowercase
+
+# Populate a DB
+arbitrarydict = {}
+for row in range(20):
+    arbitrarydict['key'] = row
+    for column_letter in ascii_lowercase:
+        arbitrarydict[column_letter] = uuid.uuid4()
+    scraperwiki.sqlite.save(['key'], arbitrarydict)
+    print row
+    
+    
+    

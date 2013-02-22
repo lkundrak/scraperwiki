@@ -1,0 +1,23 @@
+/******************************************************************************
+* switchboard specific settings. We need to have different versions of these 
+* based on the environment. Expect that on live servers this will be ignored 
+* in preference to a version stored in /etc
+******************************************************************************/
+exports.settings =
+{ 
+	read_port: 10001, 
+	write_port: 10002,
+	
+	// Either a list of ips or a regex
+	allowed_write_ips: [ '127.0.0.1' ], 
+	
+	// Either a list of ips or a regex
+	allowed_read_ips:  [ '127.0.0.1' ],  
+	
+	// Maximum number of writers per channel
+	max_writers: 5,
+	max_readers: 1,
+	
+	logfile: '/var/log/scraperwiki/switchboard.log',
+	loglevel: 0, // debug: 0, info: 1, warn: 2, fatal: 3 
+};

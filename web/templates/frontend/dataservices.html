@@ -1,0 +1,176 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}Data Services{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="ScraperWiki is the data hub for professional data scientists. Our Corporate Data Services enable you to tap into that thriving community so you always find the right person for the job. ScraperWiki also helps organise data across your enterprise, combining the flexibility of general purpose code with a rock-solid API and granular permissions over precisely who sees what." />
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.verticalcarousel.js"></script>
+{% endblock %}
+
+{% block header_outer %}
+    <div id="split-header">
+        <div class="primary">
+            <h1>Liberate Your Data!</h1>
+            <h2>With ScraperWiki Data Services</h2>
+            <p>ScraperWiki&rsquo;s data scientists help B2B Media customers ask the&nbsp;right&nbsp;questions of their data, and analyse&nbsp;it&nbsp;forensically.</p>
+            <p>They are experts at extracting value from external data, and&nbsp;combining it with&nbsp;internal&nbsp;datasets.</p>
+            <p class="buttons"><a class="our-process" href="#our-process">Find out more&hellip;</a> <a class="get-in-touch" href="#get-in-touch">Get in touch!</a></p>
+            <span class="gear" id="gear_1"></span>
+            <span class="gear" id="gear_2"></span>
+            <span class="gear" id="gear_3"></span>
+            <span class="arrow" id="arrow_1"></span>
+        </div>
+        <div class="secondary">
+            <h2>As trusted by</h2>
+            <div id="logos">
+                <a href="#case-study">
+                    <img src="{{ MEDIA_URL }}images/customer-logos/agra-informa.gif" width="300" height="95" alt="Agra Informa" />
+                </a>
+                <a href="http://blog.scraperwiki.com/2012/11/30/what-has-europe-ever-done-for-us/">
+                    <img src="{{ MEDIA_URL }}images/customer-logos/lexis-nexis.gif" width="300" height="65" alt="Lexis Nexis" />
+                </a>
+                <a>
+                    <img src="{{ MEDIA_URL }}images/customer-logos/trader-media-group.gif" width="300" height="95" alt="Trader Media Group" />
+                </a>
+                <a>
+                    <img src="{{ MEDIA_URL }}images/customer-logos/emap.gif" width="300" height="95" alt="EMAP" />
+                </a>
+                <a>
+                    <img src="{{ MEDIA_URL }}images/customer-logos/bridgestone.gif" width="300" height="60" alt="Bridgestone" />
+                </a>
+                <a href="http://blog.scraperwiki.com/2011/02/25/read-all-about-it-read-all-about-it-%E2%80%9Cscraperwiki-gets-on-the-guardian-front-page-%E2%80%9D/">
+                    <img src="{{ MEDIA_URL }}images/customer-logos/the-guardian.gif" width="300" height="65" alt="The Guardian" />
+                </a>
+                <a href="http://blog.scraperwiki.com/2011/05/11/access-government-in-a-way-that-makes-sense-to-you-surely-not/">
+                    <img src="{{ MEDIA_URL }}images/customer-logos/cabinet-office.gif" width="300" height="60" alt="Cabinet Office" />
+                </a>
+                <a href="http://www.channel4.com/news/could-councils-sell-land-to-fill-budget-holes">
+                    <img src="{{ MEDIA_URL }}images/customer-logos/dispatches.gif" width="300" height="80" alt="Dispatches" />
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+<div class="intro">
+    <h3>Complement or augment your internal data team</h3>
+    <p>ScraperWiki is a data science platform that<br/>keeps easy things easy, and makes hard things possible.</p>
+    <p>Our data scientists bring a wealth of experience to<br/>each and every customer project. And our custom-built data hub<br/>keeps the process transparent&nbsp;and&nbsp;collaborative.</p>
+</div>
+
+<div id="our-process">
+    <div class="aside">
+        <div class="hgroup">
+            <h4>A day in the life of</h4>
+            <h3>A ScraperWiki<br/>Data Scientist</h3>
+        </div>
+        <p>My name&rsquo;s Thomas Levine, and I&rsquo;m a Data Scientist at&nbsp;ScraperWiki.</p>
+        <p>To me, data science is a combination of software engineering and statistics. You need to be flexible, inquisitive and rigorous.</p>
+        <p>I like getting almost <em>forensic</em> with data. Recently we were scraping some PDFs and I could tell, by looking at the files, that they were edited by hand in Microsoft Word, then converted to PDF, and that somewhere along the way, they were sometimes printed out and scanned. Knowing that, we were able to correct the data better than our customer ever imagined, because we knew it almost better than they did.</p>
+    </div>
+    <h3>Our Process</h3>
+    <p>We pride ourselves on following an agile, transparent process for satisfying our customers&rsquo;s needs. It includes:</p>
+    <ol>
+        <li class="one"><strong>Investigation.</strong> We collaboratively create a brief, and scope the data project.</li>
+        <li class="two"><strong>Getting data.</strong> Whether it&rsquo;s internal or external, PDFs or Excel spreadsheets, web pages or other databases.</li>
+        <li class="three"><strong>Cleaning data.</strong> Turning postcodes into points on a map, or structuring and matching fuzzy data, like company names and time formats.</li>
+        <li class="four"><strong>Analysing data.</strong> Whether it&rsquo;s crafting custom maps and visualisations, or preparing the data for export into Tableau or your business intelligence software.</li>
+        <li class="five"><strong>Support (SLA).</strong> Data changes, and ScraperWiki&rsquo;s here for the long haul – we ensure your data is always available and always up to date.</li>
+    </ol>
+</div>
+
+<div id="global">
+    <h3>Right people. Right place. Right time.</h3>
+    <p>We&rsquo;re able to call upon a worldwide community of data scientists,<br/>to help with data projects in multiple languages and multiple territories.</p>
+</div>
+
+<div class="aside" id="case-study">
+    <div class="hgroup">
+        <h4>Case Study</h4>
+        <h3>Agricultural data science for media&nbsp;blue-chip, Agra&nbsp;Informa</h3>
+    </div>
+    <p>When B2B data publisher <a href="http://agra-net.com" target="_blank">Agra Informa</a> needed to move 10 years&rsquo; worth of commodity pricing data (buried deep inside hundreds of PDFs) into a new digital platform, they came to ScraperWiki.</p>
+    <p>Our team of data scientists fed documents from Informa&rsquo;s FTP server into ScraperWiki&rsquo;s exclusive PDF extractor, before cleaning and structuring the data, and piping it into a Tableau visualisation on Informa&rsquo;s publishing platform.</p>
+    <blockquote>&ldquo;ScraperWiki did just what we asked them to do. Delivery of finished product was very good and responsiveness to customer queries was excellent.&rdquo;</blockquote>
+    <p>With the new, clean data, Agra Informa could offer a better and more accurate service to its digital subscribers &ndash; increasing revenue and reducing print and distribution costs. ScraperWiki&rsquo;s platform ensures the data is always fresh and always accountable.</p>
+</div>
+
+<div id="get-in-touch">
+    <h3>Get in touch</h3>
+    <p style="margin: 8px 0 0 0">Our data scientists are ready to help you make the most of&nbsp;your&nbsp;data. Let&rsquo;s discuss where&nbsp;to&nbsp;start&hellip;</p>
+    <div class="medium" id="phone">
+        <h4>Call us on:</h4>
+        <a href="tel:00441513315200">+44 (0)151 3315200</a>
+    </div>
+    <div class="medium" id="email">
+        <h4>Email us at:</h4>
+        <a href="mailto:dataservices@scraperwiki.com">dataservices@scraperwiki.com</a>
+    </div>
+    <div class="medium" id="callback">
+        <h4>Or request a call-back:</h4>
+        <form action=".#get-in-touch" method="post" id="request">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <p class="error">{{form.non_field_errors.0}}</p>
+            {% endif %}
+            {% if submitted %}
+            <p class="thanks">Thanks for your details. We will be in touch shortly. 
+                Your request ticket number is {{ id }}.</p>
+            {% else %}
+            <div class="question name {% if form.name.errors %} error{% endif %}">
+                <p>{{form.name.label_tag}}
+                {{form.name}}</p>
+                {% if form.name.errors %}<p class="error">{{ form.name.errors }}</p>{% endif %}
+            </div>
+            <div class="question phone {% if form.phone.errors or form.no_phone %}error{% endif %}">
+                <p>{{form.phone.label_tag}}
+                {{form.phone}}</p>
+                {% if form.phone.errors %}<p class="error">{{ form.phone.errors }}</p>{% endif %}
+            </div>
+            <div class="question email {% if form.email.errors or form.no_email %}error{% endif %}">
+                <p>{{form.email.label_tag}}
+                {{form.email}}</p>
+                {% if form.email.errors %}<p class="error">{{ form.email.errors }}</p>{% endif %}
+            </div>
+            <div class="question description{% if form.description.errors %} error{% endif %}">
+                <p>{{form.description.label_tag}}
+                {{form.description}}</p>
+                {% if form.description.errors %}<p class="error">{{ form.description.errors }}</p>{% endif %}
+            </div>
+            <div class="last">
+                {{form.ip}} <input type="submit" value="Call me back" id="send" />
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<br class="clear" />
+
+{% endblock %}
+
+{% block run_script %}
+    $(function(){
+        $('.subnav.dataservices a').bind('click', function(e){
+            e.preventDefault();
+            var target = $($(this).attr('href').replace('/dataservices/', ''));
+            if(target.length){
+                var scrollTop = target.offset().top - 40;
+            } else {
+                var scrollTop = 100;
+            }
+            $('html, body').animate({
+                scrollTop: scrollTop
+            }, 250, 'swing');
+        });
+        $('body.dataservices #logos').verticalCarousel();
+        $('<a>').addClass('submit').html($('#send').val() + ' <span>&#x25BA;</span>').bind('click', function(){
+            $(this).prev().trigger('click');
+        }).insertAfter($('#send')).prev().hide();
+    });
+{% endblock %}

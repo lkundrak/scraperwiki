@@ -1,0 +1,25 @@
+{% extends "frontend/base.html" %}
+{% block css %}{% endblock %}
+
+{% block title %}ScraperWiki registration{% endblock %}
+{% block header %}<h2><em>ScraperWiki registration</em></h2>{% endblock %}
+
+{% block content %}
+	{% include 'shared/form_errors.html' %}
+
+	<form method="post" action="/accounts/register/">
+        {% csrf_token %}
+	    {% if form.username.errors %}
+
+	    {% endif %}
+	    {{ form.username.label_tag }}
+	    {{ form.username }}
+	    {{ form.email.label_tag }}
+	    {{ form.email }}
+	    {{ form.password1.label_tag }}
+	    {{ form.password1 }}
+	    {{ form.password2.label_tag }}
+	    {{ form.password2 }}
+		<input type="submit" value="register" />
+	</form>
+{% endblock %}

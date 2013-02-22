@@ -1,0 +1,113 @@
+{% extends "frontend/base.html" %}
+{% load formhelper %}
+{% load gravatar %}
+
+{% block css %}{% endblock %}
+
+{% block title %}Profile Creation{% endblock %}
+
+{% block errors %}
+  {% if form.errors %}
+      <ul>
+          {% form_errors form %}
+      </ul>
+  {% endif %}
+  
+{% endblock %}
+
+{% block header %}
+	<h2>{% show_gravatar user 'medium' %} <em>Profiles</em> / <a href="{% url profile user.username %}">{{profile.display_name}}</a> / <a href="{% url profiles_edit_profile %}">Edit</a></h2>
+	<p><a href="{% url profile user.username %}">Back to your scrapers</a></p>
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        
+    	<form method="post">
+        {% csrf_token %}
+        
+            <div class="save top">
+                <input type="hidden" name="success_url" value="/" />
+                <a href="{% url profile user.username %}" class="discard"><img src="{{ MEDIA_URL }}images/icons/cross.png" width="16" height="16" alt="" /> Discard Changes</a><input type="submit" class="button" value="Save changes" /><a href="#" class="submit_link save"><img src="{{ MEDIA_URL }}images/icons/tick.png" width="16" height="16" alt="" /> Save Changes</a>
+            </div>
+
+            <div id="profileform">
+                <h3>Your profile</h3>
+                <p class="name">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                    {% field_errors form.name %}
+                </p>
+                <p class="email">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    {% field_errors form.email %}
+                </p>
+                <p class="bio">
+                    {{ form.bio.label_tag }}
+                    {{ form.bio }}
+                    {% field_errors form.bio %}
+                </p>
+                {% if not "free" in profile.plan %}
+                  <p id="apikey"><span>Cobalt API key:</span> {{ profile.apikey }}</p>
+                {% endif %}
+                <p class="password">
+                    <a href="{% url auth_password_change %}"><img src="{{ MEDIA_URL }}images/icons/key.png" width="16" height="16" alt="" /> Change&nbsp;your&nbsp;password</a>
+                </p>
+                <p class="profilepic">
+                    <a href="http://en.gravatar.com" target="_blank">{% show_gravatar profile.user 'small' %} Change profile image</a>
+                </p>
+            </div>
+                
+            <div id="settingsform">
+                <h3>Your settings</h3>
+                <div id="alerts">
+                    <h4>Alerts</h4>
+                    
+                    <p class="alert_frequency">
+                        {{ form.alert_frequency }}
+                        <label for="id_alert_frequency">Email me when my scrapers stop working or someone edits them</label>
+                        <br class="clear" />
+                        {% field_errors form.alert_frequency %}
+                    </p>
+                  
+                    <p class="messages">
+                        {{ form.messages }}
+                        <label for="id_messages" style="cursor:help" title="Don&rsquo;t worry, nobody will see your email address: Messages are sent from feedback@scraperwiki.com">I&rsquo;d like to send and receive messages via ScraperWiki</span></label>
+                        <br class="clear" />
+                        {% field_errors form.messages %}
+                    </p>
+                
+                </div>
+
+				{% if profile.possible_feature_count != 0 %}
+                <div id="features">
+                    <h4>Features</h4>
+                    <p>We regularly test new features that could make ScraperWiki even better. You can use these checkboxes to opt in or out of our current feature trials.</p>
+                    {{ form.features }}
+                </div>
+				{% endif %}
+				
+				<!-- THIS WON'T WORK UNTIL views.py PASSES emailer_code_objects TO THE TEMPLATE -->
+				{% if emailer_code_objects %}
+                  <div id="emailers">Your emailer scripts: 
+                    {% for code in emailer_code_objects %}
+                      <a href="{% url code_overview code.wiki_type code.short_name %}">
+                         {% if code.title %}{{ code.title }}{% else %}{{ code.short_name }}{% endif %}
+                      </a>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                
+            </div>
+
+            <br class="clear" />
+            
+            <div class="save bottom">
+                <a href="{% url profile user.username %}" class="discard"><img src="{{ MEDIA_URL }}images/icons/cross.png" width="16" height="16" alt="" /> Discard Changes</a><input type="submit" class="button" value="Save changes" /><a href="#" class="submit_link save"><img src="{{ MEDIA_URL }}images/icons/tick.png" width="16" height="16" alt="" /> Save Changes</a>
+            </div>
+            
+            
+    	</form>
+    </div>
+{% endblock %}

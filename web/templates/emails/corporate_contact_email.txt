@@ -1,0 +1,12 @@
+Hello ScraperWiki Team,
+
+Someone has just filled in the Corporate
+Contact form.  Here are their details:
+
+Name: {{ callback_name }}
+Company: {{ callback_company }}
+Telephone Number: {{ callback_number }}
+
+Thanks!
+
+The Automatic Corporate Contact thing

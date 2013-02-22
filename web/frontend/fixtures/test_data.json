@@ -1,0 +1,140 @@
+[
+
+    {
+        "pk": 1, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "test_admin", 
+            "is_active": 1, 
+            "is_superuser": 1, 
+            "is_staff": 1, 
+            "last_login": "2010-02-19 06:59:18", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$43443$fc8746663d8382374d530b20326b6b833de7d5cf", 
+            "email": "", 
+            "date_joined": "2010-02-19 06:59:18"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "test_user", 
+            "is_active": 1, 
+            "is_superuser": 0, 
+            "is_staff": 0, 
+            "last_login": "2010-02-19 06:59:46", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$944ad$2c7e125e0c72bd9054fb421a4b2cc489fb9a8edd", 
+            "email": "", 
+            "date_joined": "2010-02-19 06:59:46"
+        }
+    }, 
+    {
+        "pk": 1,
+        "model": "frontend.userprofile",
+        "fields" : {
+            "user" : 1,
+            "name" : "Administrative Testuser",
+            "bio" : "I am an admin test user, oh yay",
+            "created_at": "2010-01-01 19:11:11", 
+            "beta_user" : 0,
+            "apikey" : ""
+        }
+    },
+    {
+        "pk": 2,
+        "model": "frontend.userprofile",
+        "fields" : {
+            "user" : 2,
+            "name" : "Generalpurpose Testuser",
+            "bio" : "I am a general purpose test user, yes",
+            "created_at": "2010-01-01 19:11:11", 
+            "beta_user" : 0,
+            "apikey" : ""
+        }
+    },
+    {
+        "pk": 1, 
+        "model": "sites.site", 
+        "fields": {
+            "domain": "example.com", 
+            "name": "example.com"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "codewiki.scraper", 
+        "fields": {
+            "last_run": null, 
+            "record_count": 0, 
+            "relations": [], 
+            "run_interval": 86400
+        }
+    },
+    {
+        "pk": 1, 
+        "model": "codewiki.code", 
+        "fields": {
+            "short_name": "test_scraper",
+            "status": "ok", 
+            "privacy_status": "public", 
+            "description": "", 
+            "title": "Test Scraper", 
+            "created_at": "2010-02-19 07:09:14", 
+            "featured": 0, 
+            "line_count": 0, 
+            "guid": "0"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "codewiki.usercoderole", 
+        "fields": {
+            "role": "owner", 
+            "user": 2, 
+            "code": 1
+        }
+    },
+    {
+        "pk": 2, 
+        "model": "codewiki.scraper", 
+        "fields": {
+            "last_run": null, 
+            "record_count": 0, 
+            "relations": [], 
+            "run_interval": 86400
+        }
+    },
+    {
+        "pk": 2, 
+        "model": "codewiki.code", 
+        "fields": {
+            "short_name": "test_run_event_json_scraper",
+            "status": "ok", 
+            "privacy_status": "public", 
+            "description": "", 
+            "title": "Test JSON Scraper", 
+            "created_at": "2010-02-19 07:09:14", 
+            "featured": 0, 
+            "line_count": 0, 
+            "guid": "0"
+        }
+    }, 
+    {
+        "pk": 2,
+        "model": "codewiki.scraperrunevent",
+        "fields": {
+            "scraper":2,
+            "run_id":"1312472226.854351_9310d5cb-279f-4f55-92b7-3356be09427f",
+            "pid":-1,
+            "run_started":"2010-02-19 09:10:00",
+            "run_ended":"2010-02-19 09:10:10",
+            "records_produced":3,
+            "pages_scraped":4,
+            "output":"testrun"
+        }
+    }
+]

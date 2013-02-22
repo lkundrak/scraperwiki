@@ -1,0 +1,97 @@
+{% extends "frontend/base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="ScraperWiki is an online tool for gathering, cleaning and analysing data from the web. It has a thriving community of programmers writing code and visualisations, and also offers paid corporate services and private data feeds." />
+{% endblock %}
+
+{% block header %}
+	<h2><em>About ScraperWiki</em></h2>
+	<p>All about ScraperWiki and the people behind it</p>
+{% endblock %}
+
+{% block content %}
+<div id="what_we_do">
+    <h2><img src="{{ MEDIA_URL }}images/footer_tractor.png">ScraperWiki&nbsp;makes data&nbsp;<em>do</em>&nbsp;things</h2>
+    <h4>From helping Australian citizens <a href="http://blog.scraperwiki.com/2011/03/21/scraperwiki-ing-down-under/">keep track of planning applications</a>, to assisting American lawyers <a href="https://scraperwiki.com/business/#legal">get marketing leads</a> from Government data.</h4>
+    <div class="platform">
+        <p>We have a web-based platform &ndash; or <a href="http://blog.okfn.org/2012/03/09/from-cms-to-dms-c-is-for-content-d-is-for-data/">data hub</a> &ndash; where programmers write scripts to get, clean and analyse data sets. They can simply schedule code to run automatically, and they can reuse the structured data with our flexible API.</p>
+        <a class="call_to_action create editor_scraper" data-wiki_type="scraper" href="{% url choose_template 'scraper' %}" onClick="if(typeof _gaq !== 'undefined'){ _gaq.push(['_trackEvent', 'About page buttons', 'Write code']); }">Write code</a>
+    </div>
+    <div class="business">
+        <p>Meanwhile, <a href="https://scraperwiki.com/dataservices/">our Data Services</a> enable businesses to work with our data scientists and extract hidden value from data. They can see their data being created, control access to it, and download the resulting spreadsheets.</p>
+        <a class="call_to_action request_data" href="{% url dataservices %}" onClick="if(typeof _gaq !== 'undefined'){ _gaq.push(['_trackEvent', 'About page buttons', 'Request data']); }">Request data</a>
+    </div>
+</div>
+
+<div id="team">
+    <h2>Our team</h2>
+    <div class="odd">
+        <a href="http://twitter.com/frabcus" title="@frabcus on Twitter"><img src="{{ MEDIA_URL }}images/about_francis.png" /></a>
+        <h3><a href="http://twitter.com/frabcus" title="@frabcus on Twitter">Francis Irving</a> <small>CEO</small></h3>
+        <p>Former <a href="http://www.mysociety.org">mySociety</a> developer, and creator of the popular developer tool <a href="http://www.tortoisecvs.org">TortoiseCVS</a>.
+    </div>
+    <div class="even">
+        <a href="http://twitter.com/amcguire62" title="@amcguire62 on Twitter"><img src="{{ MEDIA_URL }}images/about_aidan.png" /></a>
+        <h3><a href="http://twitter.com/amcguire62" title="@amcguire62 on Twitter">Aidan McGuire</a> <small>CFO</small></h3>
+        <p>Founder of <a href="http://www.bluefountain.com/">Blue Fountain</a>, with a banking background.</p>
+    </div>
+    <div class="odd">
+        <a href="http://twitter.com/ainemcguire" title="@ainemcguire on Twitter"><img src="{{ MEDIA_URL }}images/about_aine.png" /></a>
+        <h3><a href="http://twitter.com/ainemcguire" title="@ainemcguire on Twitter">Aine McGuire</a> <small>CMO</small></h3>
+        <p>Founded <a href="http://www.pygmalionsolutions.com/">Pygmalion</a>, the UK&rsquo;s first Microsoft Gold Certified Partner.</p>
+    </div>
+    <div class="even">
+        <a href="http://twitter.com/zarino" title="@zarino on Twitter"><img src="{{ MEDIA_URL }}images/about_zarino.png" /></a>
+        <h3><a href="http://twitter.com/zarino" title="@zarino on Twitter">Zarino Zappia</a> <small>VP,&nbsp;Product</small></h3>
+        <p>Designer, coder and Internetologist, with a Masters from the <a href="http://www.oii.ox.ac.uk">Oxford Internet Institute</a>.</p>
+    </div>
+    <div class="odd">
+        <a href="http://twitter.com/drjtwit" title="@drjtwit on Twitter"><img src="{{ MEDIA_URL }}images/about_david.png" /></a>
+        <h3><a href="http://twitter.com/drjtwit" title="@drjtwit on Twitter">David Jones</a> <small>First&nbsp;Engineer</small></h3>
+        <p>Coder, climber, and director of <a href="http://climatecode.org">Climate Code Foundation</a>.</p>
+    </div>
+    <div class="even">
+        <a href="http://twitter.com/chrisb33" title="@chrisb33 on Twitter"><img src="{{ MEDIA_URL }}images/about_chris.png" /></a>
+        <h3><a href="http://twitter.com/chrisb33" title="@chrisb33 on Twitter">Chris Blower</a> <small>Platform&nbsp;Engineer</small></h3>
+        <p>Enjoys learning different technologies, flashpacking and photography.</p>
+    </div>
+    <div class="odd">
+        <img src="{{ MEDIA_URL}}images/about_dragon.png" />
+        <h3>&lsquo;Dragon&rsquo; Dave McKee <small>Data&nbsp;Scientist</small></h3>
+        <p>When not liberating data, Dragon <a href="http://www.profounddecisions.co.uk">hits people over the head with swords</a>.</p>
+    </div>
+    <div class="even">
+        <a href="http://twitter.com/zbeauvais" title="@zbeauvais on Twitter"><img src="{{ MEDIA_URL }}images/about_zach.png" /></a>
+        <h3><a href="http://twitter.com/zbeauvais" title="@zbeauvais on Twitter">Zach Beauvais</a> <small>Community&nbsp;Manager</small></h3>
+        <p>Tech journalist, coffee geek and storyteller.</p>
+    </div>
+    <div class="odd">
+        <a href="http://twitter.com/silbs" title="@silbs on Twitter"><img src="{{ MEDIA_URL }}images/about_jane.png" /></a>
+        <h3><a href="http://twitter.com/silbs" title="@silbs on Twitter">Jane Silber</a> <small>Chair&nbsp;of&nbsp;the&nbsp;Board</small></h3>
+        <p>CEO of <a href="http://canonical.com">Canonical</a>. World-class businesswoman and Open Source evangelist.</p>
+    </div>
+    <div class="even">
+        <a href="http://twitter.com/goatchurch" title="@goatchurch on Twitter"><img src="{{ MEDIA_URL }}images/about_julian.png" /></a>
+        <h3><a href="http://twitter.com/goatchurch" title="@goatchurch on Twitter">Julian Todd</a> <small>Director</small></h3>
+        <p>Creator of <a href="http://www.theyworkforyou.com">TheyWorkForYou.com</a>, Julian dives and caves, but would never cave dive.</p>
+    </div>
+</div>
+
+<div id="history_and_funding">
+    <h2>Company History</h2>
+    <p class="first">Back in 2003, ScraperWiki&rsquo;s founders were the first people in the world to write computer programs to download Government information and make it more accessible to citizens. They created websites like <a href="http://theyworkforyou.com/">TheyWorkForYou</a>, which inspired <a href="http://sunlightfoundation.com/">the Sunlight Foundation</a>.</p>
+    <p class="second">ScraperWiki was founded in 2009 by Julian Todd and Aidan McGuire. We received initial funding from British TV station Channel 4. After fostering an active community of open data coders and data journalists, ScraperWiki won the <a href="http://thenextweb.com/uk/2011/06/23/scraperwiki-a-uk-open-data-project-wins-280k-award/">Knight News Challenge</a> in 2011.</p>
+    <p class="logos"></p>
+    <p class="third last">In 2012 ScraperWiki closed a <a href="http://blog.scraperwiki.com/2012/02/09/1-million-to-build-a-data-platform-2/">million dollar round of investment</a> led by EV, to improve our platform for coders and build out our business offering.</p>
+</div>
+
+<div id="thanks">
+    <h2>Thanks</h2>
+    <p class="first">As well as our awesome team, above, we&rsquo;d also like to thank; Richard Pope, product manager for the first version of ScraperWiki; Tom Mortimer-Jones, Ross Jones, Anna Powell-Smith, Mike Richardson and Sym Roe, who helped build it; Nicola Hughes (developer advocate) and Judith Townend (event organiser extraordinaire); Tom Steinberg and Jamie Arnold, for mentoring; and <a href="http://www.francisdavey.co.uk">Francis Davey</a>, for legal advice.</p>
+    <p class="second">Our logo is a &lsquo;<a href="http://en.wikipedia.org/wiki/Wheel_tractor-scraper">wheel tractor-scraper</a>&rsquo; (like a huge cheese slice for moving soil) and it was designed by <a href="http://twitter.com/jamesweiner">James Weiner</a>. We also use <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a> by Mark James and <a href="http://p.yusukekamiyamane.com">Fugue icons</a> by Yusuke Kamiyamane.</p>
+    <p class="third last">The ScraperWiki website is Open Source and licensed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html">Affero GPL</a>. Check us out on <a href="http://bitbucket.org/ScraperWiki/scraperwiki/">BitBucket</a>.
+</div>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{{{header}}}
+
+We had trouble processing your credit card.  Your subscription
+has now expired due to non-payment. If you have any questions,
+please contact {{company_email}}.
+
+For more information, please see your account details:
+{{account_hosted_url}}
+
+{{{footer}}}

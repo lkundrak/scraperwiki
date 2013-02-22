@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <title>{{ scraper.title }} | ScraperWiki</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	{% load compress %}
+
+    {# See http://orbited.org/wiki/Deployment#Cross-SubdomainDeployment for explanation #}
+    <script>document.domain = document.domain;</script>
+
+	
+    <script src="{{ settings.ORBITED_URL }}/static/Orbited.js"></script>
+    <script>Orbited.settings.streaming = false</script>
+
+	<style>
+	 #editor {
+        position: absolute;
+        width: 760px;
+        height: 100%;
+    }
+	</style>
+	<script src="{{MEDIA_URL}}js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="{{MEDIA_URL}}js/ace/mode-{{scraper.language}}.js" type="text/javascript" charset="utf-8"></script>	
+	<script src="{{MEDIA_URL}}js/ace/theme-twilight.js" type="text/javascript" charset="utf-8"></script>	
+ 	<script>
+    window.onload = function() {
+        var editor = ace.edit("editor");
+		editor.setTheme("ace/theme/twilight");
+ 		var mode = require("ace/mode/{{scraper.language}}").Mode;
+    	editor.getSession().setMode(new mode());		
+    };
+    </script>	
+</head>
+
+<body>
+
+<div id="editor">{{ code }}</div>
+
+</body>
+</html>

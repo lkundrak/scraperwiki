@@ -1,0 +1,99 @@
+{% load doc_links %}
+
+<div class="section">
+  <p>The PHP environment in ScraperWiki comes loaded with special functions in the namespace "scraperwiki::".</p>
+
+  <p>The source code implementation of these functions can be found 
+  <a href="https://bitbucket.org/ScraperWiki/scraperwiki/src/efd21ea1c875/scraperlibs/scraperwiki.php">here</a>.</p>
+</div>
+
+<h3>Scraping</h3>
+<p>You can also use any PHP HTTP library.</p>
+
+<dl>
+<dt>scraperwiki::<strong>scrape</strong>($url)</dt>
+    <dd>Returns the downloaded string 
+</dd>
+</dl>
+
+<h3><span id="sql"></span>Datastore (SQLite)</h3>
+<p>ScraperWiki provides a fully-fledged SQLite database for each scraper which
+you can save to.  You can read the data back that has been committed by other
+scrapers, or extract it <a href="{% url docsexternal %}">through the API</a>. 
+</p>
+<p>
+{% doc_link_full 'LANG_datastore_guide' language %} for examples.
+<a href="http://www.sqlite.org/lang.html">SQL as understood by SQLite</a> for the query language.
+</p>
+
+<dl>
+<dt>scraperwiki::<strong>save_sqlite</strong>($unique_keys, $data[, $table_name="swdata", $verbose=2])</dt>
+    <dd>Saves a data record into the datastore into the table given by $table_name.  <dd>
+    <dd>$data is an array with field names as keys, $unique_keys must be an
+        array that is a subset of array_keys($data) which determines when a record
+        is over-written. 
+    <dd>For large numbers of records $data can be an array of arrays.
+    <dd>verbose alters what is shown in the Data tab of the editor.
+    </dd>
+
+<dt>scraperwiki::<strong>attach</strong>($name[, $asname])</dt>
+    <dd>
+      <p>Attaches to the datastore of another scraper named <var>$name</var>
+      (which should be the <em>short-name</em> of the scraper, as it appears
+      in the URL of its overview page).</p>
+      <p><var>$asname</var> is an optional alias for the attached datastore.</p>
+    </dd>
+
+<dt>scraperwiki::<strong>select</strong>($val1[, $val2])</dt>
+    <dd>Executes a select command on the datastore, e.g. select("* from swdata limit 10")</dd>
+    <dd>Returns an array of key arrays for the records that have been selected.</dd>
+    <dd>$val2 is an optional list of parameters if the select command contains '?'s.
+    </dd>
+
+<dt>scraperwiki::<strong>sqliteexecute</strong>($val1[, $val2])</dt>
+    <dd>Executes any arbitrary sqlite command (except attach), e.g. create, delete, insert or drop.</dd>
+    <dd>$val2 is an optional indexed array of parameters if the command in $val1 contains question marks.</dd>
+    <dd>(e.g. "insert into swdata values (?,?,?)").
+    </dd>
+
+<dt>scraperwiki::<strong>sqlitecommit</strong>()</dt>
+    <dd>Commits to the file after a series of execute commands.  (save_sqlite() auto-commits after every action).
+    </dd>
+
+<dt>scraperwiki::<strong>show_tables</strong>([$dbname])</dt>
+    <dd>Returns an array of tables and their schemas in either the current or an attached database.</dd>
+
+<dt>scraperwiki::<strong>table_info</strong>($name)</dt>
+    <dd>Returns an array of attributes for each element of the table.</dd>
+
+<dt>scraperwiki::<strong>save_var</strong>($key, $value)</dt>
+    <dd>Saves an arbitrary single-value into a sqlite table called "swvariables". 
+        e.g. Can be used to make scrapers able to continue after an interruption.
+    </dd>
+
+<dt>scraperwiki::<strong>get_var</strong>($key[, $default])</dt>
+    <dd>Retrieves a single value that was saved by save_var.
+    </dd>
+
+</dl>
+
+
+<h3>Views</h3>
+
+<dt>scraperwiki::<strong>httpresponseheader</strong>($headerkey, $headervalue)</dt>
+    <dd>Set the content-type header to something other than HTML when using a ScraperWiki "view" </dd>
+    <dd>(e.g. "Content-Type", "image/png")
+    </dd>
+
+
+<h3>Geocoding</h3>
+
+<dl>
+<dt>scraperwiki::<strong>gb_postcode_to_latlng</strong>($postcode)</dt>
+    <dd>Returns an array($lat, $lng) in WGS84 coordinates representing the central point of a UK postcode area.
+    </dd>
+
+</dl>
+
+
+
